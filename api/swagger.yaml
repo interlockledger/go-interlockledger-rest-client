@@ -1,0 +1,5053 @@
+openapi: 3.0.1
+info:
+  title: InterlockLedger Node REST API
+  description: A node instance inside the peer-to-peer network of the InterlockLedger
+  contact:
+    name: InterlockLedger Network Core Team
+    url: https://interlockledger.network
+    email: core@interlockledger.network
+  version: v7.2.0
+servers:
+- url: /
+paths:
+  /chain:
+    get:
+      tags:
+      - Chain
+      summary: Gets list of chain instances
+      operationId: Chains_List
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainIdModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Chain
+      summary: Creates a new chain in this node
+      operationId: Chain_Create
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ChainCreationModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ChainCreationModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ChainCreationModel'
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChainCreatedModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /chain/{chain}:
+    get:
+      tags:
+      - Chain
+      summary: Gets chain details
+      operationId: Chain_Details
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the instance
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ChainSummaryModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /chain/{chain}/activeApps:
+    get:
+      tags:
+      - Chain
+      summary: Enumerate apps that are currently permitted on this chain
+      operationId: Chain_ActiveApps_List
+      parameters:
+      - name: chain
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Chain
+      summary: Add apps to the permitted list for the chain
+      operationId: Chain_ActiveApps_Add
+      parameters:
+      - name: chain
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      requestBody:
+        description: List of apps to be permitted
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+          text/json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+          application/*+json:
+            schema:
+              type: array
+              items:
+                type: integer
+                format: int64
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: integer
+                  format: int64
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /chain/{chain}/interlockings:
+    get:
+      tags:
+      - Chain
+      summary: Lists interlocks registered in the chain
+      operationId: Chain_Interlockings_List
+      parameters:
+      - name: chain
+        in: path
+        description: Local chain to query
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: howManyFromLast
+        in: query
+        description: How many interlocking records to return. If ommited or 0 => All
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+      - name: page
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterlockingRecordModelPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Chain
+      summary: Forces an interlock on a target chain
+      operationId: Chain_Interlocking_Add
+      parameters:
+      - name: chain
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ForceInterlockModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/ForceInterlockModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/ForceInterlockModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterlockingRecordModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /chain/{chain}/key:
+    get:
+      tags:
+      - Chain
+      summary: Enumerate keys that are currently permitted on chain
+      operationId: Chain_PermittedKeys_List
+      parameters:
+      - name: chain
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KeyDetailsModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Chain
+      summary: Add keys to the permitted list for the chain
+      operationId: Chain_PermittedKeys_Add
+      parameters:
+      - name: chain
+        in: path
+        description: ""
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      requestBody:
+        description: List of keys to permitted
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeyPermitModel'
+          text/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeyPermitModel'
+          application/*+json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/KeyPermitModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/KeyDetailsModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/configuration:
+    get:
+      tags:
+      - Documents
+      summary: Retrieve limits and defaults configured for MultiDocument support on
+        this node
+      operationId: Documents_Get_Config
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentUploadConfiguration'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/transaction:
+    post:
+      tags:
+      - Documents
+      summary: Begin a transaction to store a set of documents (may 'rollback' on
+        timeout or errors)
+      operationId: Documents_Begin_Transaction
+      requestBody:
+        description: Chosen parameters to start the transaction
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DocumentsBeginTransactionModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/DocumentsBeginTransactionModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/DocumentsBeginTransactionModel'
+        required: true
+      responses:
+        "201":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsTransactionModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/transaction/{transactionId}:
+    get:
+      tags:
+      - Documents
+      summary: Returns the ongoing status of a transaction
+      operationId: Documents_Get_TransactionStatus
+      parameters:
+      - name: transactionId
+        in: path
+        description: Id of the transaction
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsTransactionModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Documents
+      summary: Adds another document to a pending transaction of a MultiDocument
+      operationId: Documents_Add_Document
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: name
+        in: query
+        required: true
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: comment
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: path
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: Content-Type
+        in: header
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsTransactionModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/transaction/{transactionId}/commit:
+    post:
+      tags:
+      - Documents
+      summary: Store set of uploaded documents returning the locator
+      operationId: Documents_Commit_Transaction
+      parameters:
+      - name: transactionId
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                pattern: "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$"
+                type: string
+                description: A Documents Storage Locator
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/{locator}/metadata:
+    get:
+      tags:
+      - Documents
+      summary: Retrieve the metadata for set of documents from chain
+      operationId: Documents_Get_Metadata
+      parameters:
+      - name: locator
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$"
+          type: string
+          description: A Documents Storage Locator
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DocumentsMetadataModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/{locator}/{index}:
+    get:
+      tags:
+      - Documents
+      summary: Retrieve document by position from the set of documents
+      operationId: Documents_Get_SingleDocument
+      parameters:
+      - name: locator
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$"
+          type: string
+          description: A Documents Storage Locator
+      - name: index
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int32
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /documents/{locator}/zip:
+    get:
+      tags:
+      - Documents
+      summary: Retrieve a zip file with all documents
+      operationId: Documents_Get_AllDocuments
+      parameters:
+      - name: locator
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$"
+          type: string
+          description: A Documents Storage Locator
+      responses:
+        "200":
+          description: Success
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}:
+    post:
+      tags:
+      - JsonDocument
+      summary: "Adds a new record - json document data in the body\r\nIt will be encrypted\
+        \ for the client certificate used to store it"
+      operationId: JsonDocuments_Add
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDocumentModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}/withKey:
+    post:
+      tags:
+      - JsonDocument
+      summary: Adds a new record - json document data in the body
+      operationId: JsonDocuments_Add_WithKey
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: X-PubKey
+        in: header
+        description: IL2 text representation of a public key to encrypt the content
+          for
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      - name: X-PubKeyId
+        in: header
+        description: Id of the key
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: string
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDocumentModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}/withIndirectKeys:
+    post:
+      tags:
+      - JsonDocument
+      summary: Adds a new record - json document data in the body
+      operationId: JsonDocuments_Add_WithIndirectKeys
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: X-PubKeyReferences
+        in: header
+        description: "List of references to records on a local chain containing AllowedReaders,\
+          \ the collection of public key will be used to encrypt the content"
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            $ref: '#/components/schemas/RecordReference'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDocumentModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}/withChainKeys:
+    post:
+      tags:
+      - JsonDocument
+      summary: Adds a new record - json document data in the body
+      operationId: JsonDocuments_Add_WithChainKeys
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: X-PubKeyChains
+        in: header
+        description: Id of a local chain from which the 'allowed readers' list of
+          public keys will be used to encrypt the content
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: array
+          items:
+            pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+            type: string
+            description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDocumentModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}/{serial}:
+    get:
+      tags:
+      - JsonDocument
+      summary: Gets an specific JsonDocument
+      operationId: JsonDocuments_Get
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: serial
+        in: path
+        description: JsonDocument serial number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/JsonDocumentModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /jsonDocuments@{chain}/allow:
+    post:
+      tags:
+      - JsonDocument
+      summary: Adds a new list of allowed readers to encrypt documents to
+      operationId: JsonDocuments_AllowReaders
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      requestBody:
+        description: List of allowed readers (pairs of ids and publicKeys)
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AllowedReadersModel'
+          text/json:
+            schema:
+              $ref: '#/components/schemas/AllowedReadersModel'
+          application/*+json:
+            schema:
+              $ref: '#/components/schemas/AllowedReadersModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordReference'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /:
+    get:
+      tags:
+      - Node
+      summary: Get node details
+      operationId: Node_Details
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/NodeDetailsModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /apiVersion:
+    get:
+      tags:
+      - Node
+      summary: "Get REST API version [\"v4.1\"]"
+      operationId: ApiVersion
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: string
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /apps:
+    get:
+      tags:
+      - Node
+      summary: Get list of valid apps in the network
+      operationId: Apps_List
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AppsModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /interlockings/{targetChain}:
+    get:
+      tags:
+      - Node
+      summary: Gets list of interlocking records pointing to a target chain instance
+      operationId: Interlockings_List
+      parameters:
+      - name: targetChain
+        in: path
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: lastKnownBlock
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: lastToFirst
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/InterlockingRecordModelPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /peers:
+    get:
+      tags:
+      - Node
+      summary: Gets list of known peers
+      operationId: Peers_List
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PeerModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /mirrors:
+    get:
+      tags:
+      - Node
+      summary: Gets list of mirror instances
+      operationId: Mirrors_List
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainIdModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Node
+      summary: Creates a new mirror of a chain in this node
+      operationId: Mirror_Add
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+                type: string
+                description: Chain unique ID
+          text/json:
+            schema:
+              type: array
+              items:
+                pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+                type: string
+                description: Chain unique ID
+          application/*+json:
+            schema:
+              type: array
+              items:
+                pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+                type: string
+                description: Chain unique ID
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ChainIdModel'
+                x-content-type: application/json
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}:
+    get:
+      tags:
+      - Record
+      summary: Gets list of records
+      operationId: Records_List
+      parameters:
+      - name: chain
+        in: path
+        description: Chain to query
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: firstSerial
+        in: query
+        description: "Serial number of first record to read. Default: First in whole\
+          \ chain"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: lastSerial
+        in: query
+        description: "Serial number of last record to read. Default: Last in whole\
+          \ chain"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: "Page number starting on 0 (zero). Default: 0"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        description: "Page size in records. Default: 10"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: lastToFirst
+        in: query
+        description: "Should records come in reversed order, from last to first. Default:\
+          \ false"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModelPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Record
+      summary: Adds a new record
+      operationId: Record_Add
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      requestBody:
+        description: Record data
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/NewRecordModel'
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}/{serial}:
+    get:
+      tags:
+      - Record
+      summary: Gets an specific record
+      operationId: Record_Get
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: serial
+        in: path
+        description: Record serial number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}/query:
+    get:
+      tags:
+      - Record
+      summary: Queries using InterlockQL some records
+      operationId: Records_Query
+      parameters:
+      - name: chain
+        in: path
+        description: Chain to query
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: queryAsInterlockQL
+        in: query
+        description: Query in the InterlockQL language
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: howMany
+        in: query
+        description: "How many records to return. Default: all"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: lastToFirst
+        in: query
+        description: "Should records come in reversed order, from last to first. Default:\
+          \ false"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: "Page number starting on 0 (zero). Default: 0"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        description: "Page size in records. Default: 10"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModelPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}/asJson:
+    get:
+      tags:
+      - Record
+      summary: Gets list of records with payload mapped to json
+      operationId: Records_List_AsJson
+      parameters:
+      - name: chain
+        in: path
+        description: Chain to query
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: firstSerial
+        in: query
+        description: "Serial number of first record to read. Default: First in whole\
+          \ chain"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: lastSerial
+        in: query
+        description: "Serial number of last record to read. Default: Last in whole\
+          \ chain"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: page
+        in: query
+        description: "Page number starting on 0 (zero). Default: 0"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        description: "Page size in records. Default: 10"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      - name: lastToFirst
+        in: query
+        description: "Should records come in reversed order, from last to first. Default:\
+          \ false"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModelAsJsonPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+    post:
+      tags:
+      - Record
+      summary: "Adds a new record with a payload encoded as json.\r\nPayload content\
+        \ MUST go in the body, in json, with content type \"application/json\"\r\n\
+        The json value will be mapped to the payload tagged format as described by\
+        \ the metadata\r\nassociated with the payloadTagId - [THIS AFFECTS THE PERFORMANCE\
+        \ SIGNIFICANTLY]."
+      operationId: Record_Add_AsJson
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: applicationId
+        in: query
+        description: Application id of the record
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: payloadTagId
+        in: query
+        description: Payload tag id of the record
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: type
+        in: query
+        description: "[OPTIONAL] Type of record"
+        required: false
+        style: form
+        explode: true
+        schema:
+          $ref: '#/components/schemas/NewRecordType'
+      requestBody:
+        description: Payload data encoded as json
+        content:
+          application/json:
+            schema: {}
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModel'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}/asJson/{serial}:
+    get:
+      tags:
+      - Record
+      summary: Gets an specific record with payload mapped to json (using published
+        metadata)
+      operationId: Record_Get_AsJson
+      parameters:
+      - name: chain
+        in: path
+        description: Id of the chain
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: serial
+        in: path
+        description: Record serial number
+        required: true
+        style: simple
+        explode: false
+        schema:
+          type: integer
+          format: int64
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModelAsJson'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+  /records@{chain}/asJson/query:
+    get:
+      tags:
+      - Record
+      summary: Queries using InterlockQL some records with payload mapped to json
+      operationId: Records_Query_AsJson
+      parameters:
+      - name: chain
+        in: path
+        description: Chain to query
+        required: true
+        style: simple
+        explode: false
+        schema:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+      - name: queryAsInterlockQL
+        in: query
+        description: Query in the InterlockQL language
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: string
+      - name: howMany
+        in: query
+        description: "How many records to return. Default: all"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int64
+      - name: lastToFirst
+        in: query
+        description: "Should records come in reversed order, from last to first. Default:\
+          \ false"
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: boolean
+          default: false
+      - name: page
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 0
+      - name: pageSize
+        in: query
+        description: ""
+        required: false
+        style: form
+        explode: true
+        schema:
+          type: integer
+          format: int32
+          default: 10
+      responses:
+        "200":
+          description: Success
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RecordModelAsJsonPageOf'
+        "400":
+          description: Bad Request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "401":
+          description: Unauthorized
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "403":
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "404":
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "422":
+          description: Client Error
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ProblemDetails'
+        "500":
+          description: Server Error
+components:
+  schemas:
+    Algorithm:
+      type: string
+      enum:
+      - RSA
+      - RSA15
+      - DSA
+      - ElGamal
+      - EcDSA
+      - EdDSA
+      - Unknown
+      - Invalid
+    AllowedReadersModel:
+      type: object
+      properties:
+        contextId:
+          type: string
+          nullable: true
+        readers:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ReaderModel'
+      additionalProperties: false
+    AppsModel:
+      type: object
+      properties:
+        network:
+          type: string
+          description: Network name
+          nullable: true
+          readOnly: true
+        validApps:
+          type: array
+          description: Currently valid apps for this network
+          nullable: true
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/IInterlockAppTraits'
+      additionalProperties: false
+      description: List of valid apps in the network
+      example:
+        validApps:
+        - appVersion: appVersion
+          publisherId: publisherId
+          publisherName: publisherName
+          dataModels:
+          - payloadName: payloadName
+            payloadTagId: 5
+            indexes:
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            description: description
+            version: 5
+            dataFields:
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+          - payloadName: payloadName
+            payloadTagId: 5
+            indexes:
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            description: description
+            version: 5
+            dataFields:
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+          name: name
+          reservedILTagIds:
+          - textualRepresentation: textualRepresentation
+            count: 7
+            isEmpty: true
+            isInvalid: true
+          - textualRepresentation: textualRepresentation
+            count: 7
+            isEmpty: true
+            isInvalid: true
+          start: 2000-01-23T04:56:07.000+00:00
+          description: description
+          id: 2
+          simplifiedHashCode: 9
+          version: 3
+        - appVersion: appVersion
+          publisherId: publisherId
+          publisherName: publisherName
+          dataModels:
+          - payloadName: payloadName
+            payloadTagId: 5
+            indexes:
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            description: description
+            version: 5
+            dataFields:
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+          - payloadName: payloadName
+            payloadTagId: 5
+            indexes:
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            - elements:
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              - descendingOrder: true
+                function: function
+                fieldPath: fieldPath
+              isUnique: true
+              name: name
+            description: description
+            version: 5
+            dataFields:
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+            - cast: None
+              isDeprecated: true
+              isOpaque: true
+              tagId: 6
+              enumerationAsFlags: true
+              name: name
+              description: description
+              elementTagId: 0
+              subDataFields:
+              - null
+              - null
+              enumeration:
+                isInvalid: true
+              version: 1
+          name: name
+          reservedILTagIds:
+          - textualRepresentation: textualRepresentation
+            count: 7
+            isEmpty: true
+            isInvalid: true
+          - textualRepresentation: textualRepresentation
+            count: 7
+            isEmpty: true
+            isInvalid: true
+          start: 2000-01-23T04:56:07.000+00:00
+          description: description
+          id: 2
+          simplifiedHashCode: 9
+          version: 3
+        network: network
+    CastType:
+      type: string
+      enum:
+      - None
+      - DateTime
+      - Integer
+      - TimeSpan
+    CertificatePermitModel:
+      required:
+      - certificateInX509
+      - permissions
+      - purposes
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Key name, ignored on CertificatePermitModel"
+          nullable: true
+        permissions:
+          type: array
+          description: App actions to be permitted by number
+          items:
+            pattern: "^#[0-9]+(,[0-9]+)*$"
+            type: string
+            description: |-
+              Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.
+              - The first number is the AppId and is **required**.
+              - The following numbers are the ActionIds pertaining to that app expressly permitted.
+              - *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*
+        purposes:
+          type: array
+          description: Key valid purposes
+          items:
+            $ref: '#/components/schemas/KeyPurpose'
+        certificateInX509:
+          type: string
+          description: Certificate in X509 bytes
+          format: byte
+      additionalProperties: false
+    ChainCreatedModel:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique record id
+          readOnly: true
+        isClosedForNewTransactions:
+          type: boolean
+          description: Is this record not able to accept new records?
+          readOnly: true
+        lastRecord:
+          type: integer
+          description: Last record (serial number)
+          format: int64
+          readOnly: true
+        lastUpdate:
+          type: string
+          description: Date last record was added
+          format: date-time
+          readOnly: true
+        licensingStatus:
+          type: string
+          description: "Licensing status [optional]"
+          nullable: true
+          readOnly: true
+        name:
+          type: string
+          description: "Name [Optional]"
+          nullable: true
+          readOnly: true
+        sizeInBytes:
+          type: integer
+          description: Chain size in bytes
+          format: int64
+          readOnly: true
+        keyFiles:
+          type: array
+          description: Emergency key file names
+          nullable: true
+          items:
+            $ref: '#/components/schemas/ExportedKeyFile'
+      additionalProperties: false
+      description: Chain created
+      example:
+        keyFiles:
+        - keyFileBytes: ""
+          keyName: keyName
+          keyFileName: keyFileName
+        - keyFileBytes: ""
+          keyName: keyName
+          keyFileName: keyFileName
+        sizeInBytes: 6
+        licensingStatus: licensingStatus
+        lastUpdate: 2000-01-23T04:56:07.000+00:00
+        lastRecord: 0
+        name: name
+        id: id
+        isClosedForNewTransactions: true
+    ChainCreationModel:
+      required:
+      - emergencyClosingKeyPassword
+      - managementKeyPassword
+      - name
+      type: object
+      properties:
+        additionalApps:
+          type: array
+          description: List of additional apps (only the numeric ids)
+          nullable: true
+          items:
+            type: integer
+            format: int64
+        apiCertificates:
+          type: array
+          description: API certificates to authorize with corresponding permissions
+          nullable: true
+          items:
+            $ref: '#/components/schemas/CertificatePermitModel'
+        description:
+          type: string
+          description: "Description (perhaps intended primary usage) [Optional]"
+          nullable: true
+        emergencyClosingKeyPassword:
+          type: string
+          description: Emergency closing key password
+        emergencyClosingKeyStrength:
+          $ref: '#/components/schemas/KeyStrength'
+        keysAlgorithm:
+          $ref: '#/components/schemas/Algorithm'
+        managementKeyPassword:
+          type: string
+          description: App/Key management key password
+        managementKeyStrength:
+          $ref: '#/components/schemas/KeyStrength'
+        name:
+          type: string
+          description: Name
+        operatingKeyStrength:
+          $ref: '#/components/schemas/KeyStrength'
+        parent:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: "Parent record Id [Optional]"
+          nullable: true
+      additionalProperties: false
+      description: Chain creation parameters
+    ChainIdModel:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique record id
+          readOnly: true
+        isClosedForNewTransactions:
+          type: boolean
+          description: Is this record not able to accept new records?
+          readOnly: true
+        lastRecord:
+          type: integer
+          description: Last record (serial number)
+          format: int64
+          readOnly: true
+        lastUpdate:
+          type: string
+          description: Date last record was added
+          format: date-time
+          readOnly: true
+        licensingStatus:
+          type: string
+          description: "Licensing status [optional]"
+          nullable: true
+          readOnly: true
+        name:
+          type: string
+          description: "Name [Optional]"
+          nullable: true
+          readOnly: true
+        sizeInBytes:
+          type: integer
+          description: Chain size in bytes
+          format: int64
+          readOnly: true
+      additionalProperties: false
+      description: Chain Id
+      example:
+        sizeInBytes: 6
+        licensingStatus: licensingStatus
+        lastUpdate: 2000-01-23T04:56:07.000+00:00
+        lastRecord: 0
+        name: name
+        id: id
+        isClosedForNewTransactions: true
+    ChainIdUInt64ValueTuple:
+      type: object
+      additionalProperties: false
+    ChainSummaryModel:
+      required:
+      - id
+      type: object
+      properties:
+        id:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique record id
+          readOnly: true
+        isClosedForNewTransactions:
+          type: boolean
+          description: Is this record not able to accept new records?
+          readOnly: true
+        lastRecord:
+          type: integer
+          description: Last record (serial number)
+          format: int64
+          readOnly: true
+        lastUpdate:
+          type: string
+          description: Date last record was added
+          format: date-time
+          readOnly: true
+        licensingStatus:
+          type: string
+          description: "Licensing status [optional]"
+          nullable: true
+          readOnly: true
+        name:
+          type: string
+          description: "Name [Optional]"
+          nullable: true
+          readOnly: true
+        sizeInBytes:
+          type: integer
+          description: Chain size in bytes
+          format: int64
+          readOnly: true
+        activeApps:
+          type: array
+          description: List of active apps (only the numeric ids)
+          nullable: true
+          readOnly: true
+          items:
+            type: integer
+            format: int64
+        description:
+          type: string
+          description: "Description (perhaps intended primary usage) [Optional]"
+          nullable: true
+          readOnly: true
+        isMirror:
+          type: boolean
+          description: True if this is mirror copy from an outside chain
+      additionalProperties: false
+      description: Chain summary
+      example:
+        sizeInBytes: 6
+        activeApps:
+        - 1
+        - 1
+        isMirror: true
+        licensingStatus: licensingStatus
+        lastUpdate: 2000-01-23T04:56:07.000+00:00
+        lastRecord: 0
+        name: name
+        description: description
+        id: id
+        isClosedForNewTransactions: true
+    CipherAlgorithm:
+      type: string
+      enum:
+      - AES256
+      - None
+    DataField:
+      type: object
+      properties:
+        cast:
+          $ref: '#/components/schemas/CastType'
+        description:
+          type: string
+          nullable: true
+        elementTagId:
+          type: integer
+          format: int64
+          nullable: true
+        enumeration:
+          $ref: '#/components/schemas/EnumerationItems'
+        enumerationAsFlags:
+          type: boolean
+          nullable: true
+        isDeprecated:
+          type: boolean
+          nullable: true
+        isOpaque:
+          type: boolean
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        subDataFields:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/DataField'
+        tagId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+      additionalProperties: false
+      example:
+        cast: None
+        isDeprecated: true
+        isOpaque: true
+        tagId: 6
+        enumerationAsFlags: true
+        name: name
+        description: description
+        elementTagId: 0
+        subDataFields:
+        - null
+        - null
+        enumeration:
+          isInvalid: true
+        version: 1
+    DataIndex:
+      type: object
+      properties:
+        elements:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/DataIndexElement'
+        isUnique:
+          type: boolean
+        name:
+          type: string
+          nullable: true
+      additionalProperties: false
+      example:
+        elements:
+        - descendingOrder: true
+          function: function
+          fieldPath: fieldPath
+        - descendingOrder: true
+          function: function
+          fieldPath: fieldPath
+        isUnique: true
+        name: name
+    DataIndexElement:
+      type: object
+      properties:
+        descendingOrder:
+          type: boolean
+        fieldPath:
+          type: string
+          nullable: true
+        function:
+          type: string
+          nullable: true
+      additionalProperties: false
+      example:
+        descendingOrder: true
+        function: function
+        fieldPath: fieldPath
+    DataModel:
+      type: object
+      properties:
+        dataFields:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/DataField'
+        description:
+          type: string
+          nullable: true
+        indexes:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/DataIndex'
+        payloadName:
+          type: string
+          nullable: true
+        payloadTagId:
+          type: integer
+          format: int64
+        version:
+          type: integer
+          format: int32
+      additionalProperties: false
+      example:
+        payloadName: payloadName
+        payloadTagId: 5
+        indexes:
+        - elements:
+          - descendingOrder: true
+            function: function
+            fieldPath: fieldPath
+          - descendingOrder: true
+            function: function
+            fieldPath: fieldPath
+          isUnique: true
+          name: name
+        - elements:
+          - descendingOrder: true
+            function: function
+            fieldPath: fieldPath
+          - descendingOrder: true
+            function: function
+            fieldPath: fieldPath
+          isUnique: true
+          name: name
+        description: description
+        version: 5
+        dataFields:
+        - cast: None
+          isDeprecated: true
+          isOpaque: true
+          tagId: 6
+          enumerationAsFlags: true
+          name: name
+          description: description
+          elementTagId: 0
+          subDataFields:
+          - null
+          - null
+          enumeration:
+            isInvalid: true
+          version: 1
+        - cast: None
+          isDeprecated: true
+          isOpaque: true
+          tagId: 6
+          enumerationAsFlags: true
+          name: name
+          description: description
+          elementTagId: 0
+          subDataFields:
+          - null
+          - null
+          enumeration:
+            isInvalid: true
+          version: 1
+    DirectoryEntry:
+      type: object
+      properties:
+        comment:
+          type: string
+          nullable: true
+          readOnly: true
+        mimeType:
+          type: string
+          nullable: true
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          readOnly: true
+        path:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        path: path
+        name: name
+        comment: comment
+        mimeType: mimeType
+    DocumentsBeginTransactionModel:
+      type: object
+      properties:
+        chain:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+        comment:
+          type: string
+          nullable: true
+        compression:
+          type: string
+          nullable: true
+        encryption:
+          type: string
+          nullable: true
+        generatePublicDirectory:
+          type: boolean
+          nullable: true
+        iterations:
+          type: integer
+          format: int32
+          nullable: true
+        password:
+          type: string
+          format: byte
+          nullable: true
+        previous:
+          pattern: "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$"
+          type: string
+          description: A Documents Storage Locator
+          nullable: true
+      additionalProperties: false
+    DocumentsMetadataModel:
+      type: object
+      properties:
+        comment:
+          type: string
+          nullable: true
+          readOnly: true
+        compression:
+          type: string
+          nullable: true
+          readOnly: true
+        encryption:
+          type: string
+          nullable: true
+          readOnly: true
+        encryptionParameters:
+          $ref: '#/components/schemas/Parameters'
+        publicDirectory:
+          type: array
+          nullable: true
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/DirectoryEntry'
+      additionalProperties: false
+      example:
+        encryption: encryption
+        publicDirectory:
+        - path: path
+          name: name
+          comment: comment
+          mimeType: mimeType
+        - path: path
+          name: name
+          comment: comment
+          mimeType: mimeType
+        comment: comment
+        compression: compression
+        encryptionParameters:
+          salt: ""
+          iterations: 0
+    DocumentsTransactionModel:
+      type: object
+      properties:
+        canCommitNow:
+          type: boolean
+          readOnly: true
+        chain:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        comment:
+          type: string
+          nullable: true
+          readOnly: true
+        compression:
+          type: string
+          nullable: true
+          readOnly: true
+        countOfUploadedDocuments:
+          type: integer
+          format: int32
+          readOnly: true
+        documentNames:
+          type: array
+          nullable: true
+          readOnly: true
+          items:
+            type: string
+        encryption:
+          type: string
+          nullable: true
+          readOnly: true
+        generatePublicDirectory:
+          type: boolean
+          readOnly: true
+        previous:
+          type: string
+          nullable: true
+          readOnly: true
+        timeOutLimit:
+          type: string
+          format: date-time
+          readOnly: true
+        transactionId:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        chain: chain
+        timeOutLimit: 2000-01-23T04:56:07.000+00:00
+        documentNames:
+        - documentNames
+        - documentNames
+        encryption: encryption
+        previous: previous
+        canCommitNow: true
+        countOfUploadedDocuments: 0
+        comment: comment
+        generatePublicDirectory: true
+        compression: compression
+        transactionId: transactionId
+    DocumentUploadConfiguration:
+      type: object
+      properties:
+        defaultCompression:
+          type: string
+          nullable: true
+        defaultEncryption:
+          type: string
+          nullable: true
+        fileSizeLimit:
+          type: integer
+          format: int64
+        iterations:
+          type: integer
+          format: int32
+          nullable: true
+        permittedContentTypes:
+          type: array
+          nullable: true
+          items:
+            pattern: "^\\w+/\\w[\\-\\.\\w]+\\w(\\+[\\-\\.\\w]+)?(\\|\\.\\w+)+$"
+            type: string
+            description: A permitted document content filter (content-type concatenated
+              with acceptable filename extensions)
+        timeOutInMinutes:
+          type: integer
+          format: int32
+      additionalProperties: false
+      example:
+        permittedContentTypes:
+        - permittedContentTypes
+        - permittedContentTypes
+        timeOutInMinutes: 1
+        defaultCompression: defaultCompression
+        fileSizeLimit: 0
+        defaultEncryption: defaultEncryption
+        iterations: 6
+    EncryptedTextModel:
+      type: object
+      properties:
+        cipher:
+          $ref: '#/components/schemas/CipherAlgorithm'
+        cipherText:
+          type: string
+          format: byte
+          nullable: true
+          readOnly: true
+        readingKeys:
+          type: array
+          nullable: true
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/ReadingKeyModel'
+      additionalProperties: false
+      example:
+        cipher: AES256
+        cipherText: ""
+        readingKeys:
+        - encryptedKey: ""
+          encryptedIV: ""
+          readerId: readerId
+          publicKeyHash: publicKeyHash
+        - encryptedKey: ""
+          encryptedIV: ""
+          readerId: readerId
+          publicKeyHash: publicKeyHash
+    EnumerationItems:
+      type: object
+      properties:
+        isInvalid:
+          type: boolean
+          readOnly: true
+      additionalProperties: false
+      example:
+        isInvalid: true
+    ExportedKeyFile:
+      type: object
+      properties:
+        keyFileBytes:
+          type: string
+          format: byte
+          nullable: true
+        keyFileName:
+          type: string
+          nullable: true
+        keyName:
+          type: string
+          nullable: true
+      additionalProperties: false
+      example:
+        keyFileBytes: ""
+        keyName: keyName
+        keyFileName: keyFileName
+    ForceInterlockModel:
+      type: object
+      properties:
+        hashAlgorithm:
+          $ref: '#/components/schemas/HashAlgorithm'
+        minSerial:
+          type: integer
+          description: "Required minimum of the serial of the last record in target\
+            \ chain whose hash will be pulled. Default: 0"
+          format: int64
+          nullable: true
+        targetChain:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Id of chain to be interlocked
+          nullable: true
+      additionalProperties: false
+      description: Force interlock command details
+    HashAlgorithm:
+      type: string
+      enum:
+      - SHA1
+      - SHA256
+      - SHA512
+      - SHA3_256
+      - SHA3_512
+      - SHA384
+      - Copy
+    IInterlockAppTraits:
+      type: object
+      properties:
+        appVersion:
+          pattern: "^[1-9]\\d*(\\.\\d+)+$"
+          type: string
+          description: A version in the format 'major.minor(.release)'
+          nullable: true
+        dataModels:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/DataModel'
+        description:
+          type: string
+          nullable: true
+        id:
+          type: integer
+          format: int64
+          nullable: true
+        name:
+          type: string
+          nullable: true
+        publisherId:
+          pattern: "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Key unique ID
+          nullable: true
+        publisherName:
+          type: string
+          nullable: true
+        reservedILTagIds:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/LimitedRange'
+        simplifiedHashCode:
+          type: integer
+          format: int32
+          readOnly: true
+        start:
+          type: string
+          format: date-time
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+      additionalProperties: false
+      example:
+        appVersion: appVersion
+        publisherId: publisherId
+        publisherName: publisherName
+        dataModels:
+        - payloadName: payloadName
+          payloadTagId: 5
+          indexes:
+          - elements:
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            isUnique: true
+            name: name
+          - elements:
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            isUnique: true
+            name: name
+          description: description
+          version: 5
+          dataFields:
+          - cast: None
+            isDeprecated: true
+            isOpaque: true
+            tagId: 6
+            enumerationAsFlags: true
+            name: name
+            description: description
+            elementTagId: 0
+            subDataFields:
+            - null
+            - null
+            enumeration:
+              isInvalid: true
+            version: 1
+          - cast: None
+            isDeprecated: true
+            isOpaque: true
+            tagId: 6
+            enumerationAsFlags: true
+            name: name
+            description: description
+            elementTagId: 0
+            subDataFields:
+            - null
+            - null
+            enumeration:
+              isInvalid: true
+            version: 1
+        - payloadName: payloadName
+          payloadTagId: 5
+          indexes:
+          - elements:
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            isUnique: true
+            name: name
+          - elements:
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            - descendingOrder: true
+              function: function
+              fieldPath: fieldPath
+            isUnique: true
+            name: name
+          description: description
+          version: 5
+          dataFields:
+          - cast: None
+            isDeprecated: true
+            isOpaque: true
+            tagId: 6
+            enumerationAsFlags: true
+            name: name
+            description: description
+            elementTagId: 0
+            subDataFields:
+            - null
+            - null
+            enumeration:
+              isInvalid: true
+            version: 1
+          - cast: None
+            isDeprecated: true
+            isOpaque: true
+            tagId: 6
+            enumerationAsFlags: true
+            name: name
+            description: description
+            elementTagId: 0
+            subDataFields:
+            - null
+            - null
+            enumeration:
+              isInvalid: true
+            version: 1
+        name: name
+        reservedILTagIds:
+        - textualRepresentation: textualRepresentation
+          count: 7
+          isEmpty: true
+          isInvalid: true
+        - textualRepresentation: textualRepresentation
+          count: 7
+          isEmpty: true
+          isInvalid: true
+        start: 2000-01-23T04:56:07.000+00:00
+        description: description
+        id: 2
+        simplifiedHashCode: 9
+        version: 3
+    InterlockingRecordModel:
+      type: object
+      properties:
+        applicationId:
+          type: integer
+          format: int64
+          readOnly: true
+        chainId:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        hash:
+          type: string
+          nullable: true
+          readOnly: true
+          deprecated: true
+        network:
+          $ref: '#/components/schemas/NetworkId'
+        payloadTagId:
+          type: integer
+          format: int64
+          readOnly: true
+        reference:
+          pattern: "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$"
+          type: string
+          description: A universal record reference in the form networkName:chainId@recordSerial
+          nullable: true
+          readOnly: true
+        serial:
+          type: integer
+          format: int64
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/RecordType'
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+        payloadBytes:
+          type: string
+          description: The payload's bytes
+          format: byte
+          nullable: true
+          readOnly: true
+        interlockedChainId:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Interlocked Chain
+          nullable: true
+          readOnly: true
+        interlockedRecordHash:
+          type: string
+          description: Interlock Record Hash
+          nullable: true
+          readOnly: true
+        interlockedRecordOffset:
+          type: integer
+          description: Interlocked Record Offset
+          format: int64
+          readOnly: true
+        interlockedRecordSerial:
+          type: integer
+          description: Interlocked Record Serial
+          format: int64
+          readOnly: true
+      additionalProperties: false
+      description: Interlocking details
+      example:
+        payloadTagId: 2
+        type: Root
+        interlockedRecordHash: interlockedRecordHash
+        version: 9
+        interlockedRecordSerial: 2
+        payloadBytes: ""
+        network:
+          textualRepresentation: textualRepresentation
+          proxySeeder:
+            textualRepresentation: textualRepresentation
+            address: address
+            isEmpty: true
+            id: null
+            isInvalid: true
+            portNumber: 5
+          asHex: asHex
+          isEmpty: true
+          isLocalOnly: true
+          isInvalid: true
+          type: Invalid
+          asBytes: ""
+          defaultPort: 5
+          genesis: genesis
+          seeders:
+          - null
+          - null
+          inactive: true
+          isError: true
+          asULong: 6
+          checksum: 1
+          isCustom: true
+          licenseSigners: licenseSigners
+          name: name
+          defaultAddress: defaultAddress
+        reference: reference
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        chainId: chainId
+        serial: 7
+        interlockedRecordOffset: 3
+        applicationId: 0
+        hash: hash
+        interlockedChainId: interlockedChainId
+    InterlockingRecordModelPageOf:
+      type: object
+      properties:
+        items:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/InterlockingRecordModel'
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalNumberOfPages:
+          type: integer
+          format: int32
+        lastToFirst:
+          type: boolean
+      additionalProperties: false
+      example:
+        pageSize: 7
+        lastToFirst: true
+        page: 4
+        items:
+        - payloadTagId: 2
+          type: Root
+          interlockedRecordHash: interlockedRecordHash
+          version: 9
+          interlockedRecordSerial: 2
+          payloadBytes: ""
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+          reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          chainId: chainId
+          serial: 7
+          interlockedRecordOffset: 3
+          applicationId: 0
+          hash: hash
+          interlockedChainId: interlockedChainId
+        - payloadTagId: 2
+          type: Root
+          interlockedRecordHash: interlockedRecordHash
+          version: 9
+          interlockedRecordSerial: 2
+          payloadBytes: ""
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+          reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          chainId: chainId
+          serial: 7
+          interlockedRecordOffset: 3
+          applicationId: 0
+          hash: hash
+          interlockedChainId: interlockedChainId
+        totalNumberOfPages: 1
+    JsonDocumentModel:
+      type: object
+      properties:
+        applicationId:
+          type: integer
+          format: int64
+          readOnly: true
+        chainId:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        hash:
+          type: string
+          nullable: true
+          readOnly: true
+          deprecated: true
+        network:
+          $ref: '#/components/schemas/NetworkId'
+        payloadTagId:
+          type: integer
+          format: int64
+          readOnly: true
+        reference:
+          pattern: "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$"
+          type: string
+          description: A universal record reference in the form networkName:chainId@recordSerial
+          nullable: true
+          readOnly: true
+        serial:
+          type: integer
+          format: int64
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/RecordType'
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+        encryptedJson:
+          $ref: '#/components/schemas/EncryptedTextModel'
+        jsonText:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        reference: reference
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        payloadTagId: 6
+        chainId: chainId
+        serial: 1
+        encryptedJson:
+          cipher: AES256
+          cipherText: ""
+          readingKeys:
+          - encryptedKey: ""
+            encryptedIV: ""
+            readerId: readerId
+            publicKeyHash: publicKeyHash
+          - encryptedKey: ""
+            encryptedIV: ""
+            readerId: readerId
+            publicKeyHash: publicKeyHash
+        applicationId: 0
+        type: Root
+        version: 5
+        jsonText: jsonText
+        hash: hash
+        network:
+          textualRepresentation: textualRepresentation
+          proxySeeder:
+            textualRepresentation: textualRepresentation
+            address: address
+            isEmpty: true
+            id: null
+            isInvalid: true
+            portNumber: 5
+          asHex: asHex
+          isEmpty: true
+          isLocalOnly: true
+          isInvalid: true
+          type: Invalid
+          asBytes: ""
+          defaultPort: 5
+          genesis: genesis
+          seeders:
+          - null
+          - null
+          inactive: true
+          isError: true
+          asULong: 6
+          checksum: 1
+          isCustom: true
+          licenseSigners: licenseSigners
+          name: name
+          defaultAddress: defaultAddress
+    KeyDetailsModel:
+      required:
+      - id
+      - permissions
+      - publicKey
+      - purposes
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Key name, ignored on CertificatePermitModel"
+          nullable: true
+        permissions:
+          type: array
+          description: App actions to be permitted by number
+          items:
+            pattern: "^#[0-9]+(,[0-9]+)*$"
+            type: string
+            description: |-
+              Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.
+              - The first number is the AppId and is **required**.
+              - The following numbers are the ActionIds pertaining to that app expressly permitted.
+              - *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*
+        purposes:
+          type: array
+          description: Key valid purposes
+          items:
+            $ref: '#/components/schemas/KeyPurpose'
+        id:
+          pattern: "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique key id
+        publicKey:
+          type: string
+          description: Key public key
+      additionalProperties: false
+      description: Key details
+      example:
+        permissions:
+        - permissions
+        - permissions
+        purposes:
+        - InvalidKey
+        - InvalidKey
+        name: name
+        id: id
+        publicKey: publicKey
+    KeyPermitModel:
+      required:
+      - id
+      - permissions
+      - publicKey
+      - purposes
+      type: object
+      properties:
+        name:
+          type: string
+          description: "Key name, ignored on CertificatePermitModel"
+          nullable: true
+        permissions:
+          type: array
+          description: App actions to be permitted by number
+          items:
+            pattern: "^#[0-9]+(,[0-9]+)*$"
+            type: string
+            description: |-
+              Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.
+              - The first number is the AppId and is **required**.
+              - The following numbers are the ActionIds pertaining to that app expressly permitted.
+              - *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*
+        purposes:
+          type: array
+          description: Key valid purposes
+          items:
+            $ref: '#/components/schemas/KeyPurpose'
+        id:
+          pattern: "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique key id
+        publicKey:
+          type: string
+          description: Key public key
+      additionalProperties: false
+      description: Key to permit
+    KeyPurpose:
+      type: string
+      enum:
+      - InvalidKey
+      - KeyManagement
+      - Action
+      - ClaimSigner
+      - Encryption
+      - Protocol
+      - ChainOperation
+      - ForceInterlock
+    KeyStrength:
+      type: string
+      enum:
+      - Normal
+      - Strong
+      - ExtraStrong
+      - MegaStrong
+      - SuperStrong
+      - HyperStrong
+      - UltraStrong
+    LimitedRange:
+      type: object
+      properties:
+        count:
+          type: integer
+          format: int32
+        isEmpty:
+          type: boolean
+          readOnly: true
+        isInvalid:
+          type: boolean
+          readOnly: true
+        textualRepresentation:
+          type: string
+          nullable: true
+      additionalProperties: false
+      example:
+        textualRepresentation: textualRepresentation
+        count: 7
+        isEmpty: true
+        isInvalid: true
+    NetworkId:
+      type: object
+      properties:
+        asBytes:
+          type: string
+          format: byte
+          nullable: true
+          readOnly: true
+        asHex:
+          type: string
+          nullable: true
+          readOnly: true
+        asULong:
+          type: integer
+          format: int64
+          readOnly: true
+        checksum:
+          type: integer
+          format: int32
+          readOnly: true
+        defaultAddress:
+          type: string
+          nullable: true
+          readOnly: true
+        defaultPort:
+          type: integer
+          format: int32
+          readOnly: true
+        genesis:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        inactive:
+          type: boolean
+          readOnly: true
+        isCustom:
+          type: boolean
+          readOnly: true
+        isEmpty:
+          type: boolean
+          readOnly: true
+        isError:
+          type: boolean
+          readOnly: true
+        isInvalid:
+          type: boolean
+          readOnly: true
+        isLocalOnly:
+          type: boolean
+          readOnly: true
+        licenseSigners:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        name:
+          type: string
+          nullable: true
+          readOnly: true
+        proxySeeder:
+          $ref: '#/components/schemas/NetworkSeed'
+        seeders:
+          type: array
+          nullable: true
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/NetworkSeed'
+        textualRepresentation:
+          type: string
+          nullable: true
+        type:
+          $ref: '#/components/schemas/NetworkIdType'
+      additionalProperties: false
+      example:
+        textualRepresentation: textualRepresentation
+        proxySeeder:
+          textualRepresentation: textualRepresentation
+          address: address
+          isEmpty: true
+          id: null
+          isInvalid: true
+          portNumber: 5
+        asHex: asHex
+        isEmpty: true
+        isLocalOnly: true
+        isInvalid: true
+        type: Invalid
+        asBytes: ""
+        defaultPort: 5
+        genesis: genesis
+        seeders:
+        - null
+        - null
+        inactive: true
+        isError: true
+        asULong: 6
+        checksum: 1
+        isCustom: true
+        licenseSigners: licenseSigners
+        name: name
+        defaultAddress: defaultAddress
+    NetworkIdType:
+      type: string
+      enum:
+      - Invalid
+      - Predefined
+      - Custom
+    NetworkSeed:
+      type: object
+      properties:
+        address:
+          type: string
+          nullable: true
+        id:
+          $ref: '#/components/schemas/NetworkId'
+        isEmpty:
+          type: boolean
+          readOnly: true
+        isInvalid:
+          type: boolean
+          readOnly: true
+        portNumber:
+          type: integer
+          format: int32
+        textualRepresentation:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        textualRepresentation: textualRepresentation
+        address: address
+        isEmpty: true
+        id: null
+        isInvalid: true
+        portNumber: 5
+    NewRecordModel:
+      required:
+      - applicationId
+      type: object
+      properties:
+        applicationId:
+          type: integer
+          description: Application id this record is associated with
+          format: int64
+        payloadBytes:
+          type: string
+          description: The payload's bytes
+          format: byte
+          nullable: true
+        type:
+          $ref: '#/components/schemas/RecordType'
+      additionalProperties: false
+      description: Generic opaque new record
+    NewRecordType:
+      type: string
+      enum:
+      - Data
+      - Closing
+      - EmergencyClosing
+    NodeDetailsModel:
+      required:
+      - id
+      type: object
+      properties:
+        chains:
+          type: array
+          description: "List of owned chains, only the ids"
+          nullable: true
+          readOnly: true
+          items:
+            pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+            type: string
+            description: Chain unique ID
+        color:
+          pattern: "^(\\w+|#[a-fA-F0-9]{6})$"
+          type: string
+          description: Mapping color
+          readOnly: true
+        extensions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Dictionary with values for extensions on node configuration
+          nullable: true
+          readOnly: true
+        id:
+          pattern: "^Node![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique node id
+          readOnly: true
+        name:
+          type: string
+          description: Node name
+          nullable: true
+          readOnly: true
+        network:
+          type: string
+          description: Network this node participates on
+          nullable: true
+          readOnly: true
+        ownerId:
+          pattern: "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: "Node owner id [Optional]"
+          nullable: true
+          readOnly: true
+        ownerName:
+          type: string
+          description: "Node owner name [Optional]"
+          nullable: true
+          readOnly: true
+        peerAddress:
+          type: string
+          description: Node url for Peer2Peer protocol
+          nullable: true
+          readOnly: true
+        roles:
+          type: array
+          description: List of active roles running in the node
+          nullable: true
+          readOnly: true
+          items:
+            type: string
+        softwareVersions:
+          $ref: '#/components/schemas/SoftwareVersions'
+      additionalProperties: false
+      description: Node details
+      example:
+        extensions:
+          key: extensions
+        color: color
+        ownerName: ownerName
+        chains:
+        - chains
+        - chains
+        roles:
+        - roles
+        - roles
+        name: name
+        id: id
+        ownerId: ownerId
+        softwareVersions:
+          peer2peer: peer2peer
+          main: main
+          coreLibs: coreLibs
+          tags: tags
+        network: network
+        peerAddress: peerAddress
+    Parameters:
+      type: object
+      properties:
+        iterations:
+          type: integer
+          format: int32
+          readOnly: true
+        salt:
+          type: string
+          format: byte
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        salt: ""
+        iterations: 0
+    PeerModel:
+      required:
+      - id
+      type: object
+      properties:
+        address:
+          type: string
+          description: Network address to contact the peer
+          nullable: true
+          readOnly: true
+        color:
+          pattern: "^(\\w+|#[a-fA-F0-9]{6})$"
+          type: string
+          description: Mapping color
+          readOnly: true
+        extensions:
+          type: object
+          additionalProperties:
+            type: string
+          description: Dictionary with values for extensions on node configuration
+          nullable: true
+          readOnly: true
+        id:
+          pattern: "^Node![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Unique node id
+          readOnly: true
+        name:
+          type: string
+          description: Node name
+          nullable: true
+          readOnly: true
+        network:
+          type: string
+          description: Network this node participates on
+          nullable: true
+          readOnly: true
+        ownerId:
+          pattern: "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: "Node owner id [Optional]"
+          nullable: true
+          readOnly: true
+        ownerName:
+          type: string
+          description: "Node owner name [Optional]"
+          nullable: true
+          readOnly: true
+        port:
+          type: integer
+          description: Port the peer is listening
+          format: int32
+          readOnly: true
+        roles:
+          uniqueItems: true
+          type: array
+          description: List of active roles running in the node
+          nullable: true
+          readOnly: true
+          items:
+            type: string
+        softwareVersions:
+          $ref: '#/components/schemas/SoftwareVersions'
+      additionalProperties: false
+      description: Peer details
+      example:
+        extensions:
+          key: extensions
+        address: address
+        color: color
+        ownerName: ownerName
+        port: 0
+        roles:
+        - roles
+        - roles
+        name: name
+        id: id
+        ownerId: ownerId
+        softwareVersions:
+          peer2peer: peer2peer
+          main: main
+          coreLibs: coreLibs
+          tags: tags
+        network: network
+    ProblemDetails:
+      type: object
+      properties:
+        type:
+          type: string
+          nullable: true
+        title:
+          type: string
+          nullable: true
+        status:
+          type: integer
+          format: int32
+          nullable: true
+        detail:
+          type: string
+          nullable: true
+        instance:
+          type: string
+          nullable: true
+      additionalProperties: {}
+      x-schema-name: ProblemDetails
+    ReaderModel:
+      type: object
+      properties:
+        name:
+          type: string
+          nullable: true
+        publicKey:
+          type: string
+          nullable: true
+      additionalProperties: false
+    ReadingKeyModel:
+      type: object
+      properties:
+        encryptedIV:
+          type: string
+          format: byte
+          nullable: true
+          readOnly: true
+        encryptedKey:
+          type: string
+          format: byte
+          nullable: true
+          readOnly: true
+        publicKeyHash:
+          type: string
+          nullable: true
+          readOnly: true
+        readerId:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        encryptedKey: ""
+        encryptedIV: ""
+        readerId: readerId
+        publicKeyHash: publicKeyHash
+    RecordModel:
+      type: object
+      properties:
+        applicationId:
+          type: integer
+          format: int64
+          readOnly: true
+        chainId:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        hash:
+          type: string
+          nullable: true
+          readOnly: true
+          deprecated: true
+        network:
+          $ref: '#/components/schemas/NetworkId'
+        payloadTagId:
+          type: integer
+          format: int64
+          readOnly: true
+        reference:
+          pattern: "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$"
+          type: string
+          description: A universal record reference in the form networkName:chainId@recordSerial
+          nullable: true
+          readOnly: true
+        serial:
+          type: integer
+          format: int64
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/RecordType'
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+        payloadBytes:
+          type: string
+          description: The payload's bytes
+          format: byte
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Generic opaque record
+      example:
+        reference: reference
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        payloadTagId: 6
+        chainId: chainId
+        serial: 1
+        applicationId: 0
+        type: Root
+        version: 5
+        hash: hash
+        payloadBytes: ""
+        network:
+          textualRepresentation: textualRepresentation
+          proxySeeder:
+            textualRepresentation: textualRepresentation
+            address: address
+            isEmpty: true
+            id: null
+            isInvalid: true
+            portNumber: 5
+          asHex: asHex
+          isEmpty: true
+          isLocalOnly: true
+          isInvalid: true
+          type: Invalid
+          asBytes: ""
+          defaultPort: 5
+          genesis: genesis
+          seeders:
+          - null
+          - null
+          inactive: true
+          isError: true
+          asULong: 6
+          checksum: 1
+          isCustom: true
+          licenseSigners: licenseSigners
+          name: name
+          defaultAddress: defaultAddress
+    RecordModelAsJson:
+      type: object
+      properties:
+        applicationId:
+          type: integer
+          format: int64
+          readOnly: true
+        chainId:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+          readOnly: true
+        createdAt:
+          type: string
+          format: date-time
+          readOnly: true
+        hash:
+          type: string
+          nullable: true
+          readOnly: true
+          deprecated: true
+        network:
+          $ref: '#/components/schemas/NetworkId'
+        payloadTagId:
+          type: integer
+          format: int64
+          readOnly: true
+        reference:
+          pattern: "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$"
+          type: string
+          description: A universal record reference in the form networkName:chainId@recordSerial
+          nullable: true
+          readOnly: true
+        serial:
+          type: integer
+          format: int64
+          readOnly: true
+        type:
+          $ref: '#/components/schemas/RecordType'
+        version:
+          type: integer
+          format: int32
+          readOnly: true
+        payload:
+          description: The payload's bytes
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      description: Generic payload as json record
+      example:
+        reference: reference
+        createdAt: 2000-01-23T04:56:07.000+00:00
+        payloadTagId: 6
+        chainId: chainId
+        serial: 1
+        payload: ""
+        applicationId: 0
+        type: Root
+        version: 5
+        hash: hash
+        network:
+          textualRepresentation: textualRepresentation
+          proxySeeder:
+            textualRepresentation: textualRepresentation
+            address: address
+            isEmpty: true
+            id: null
+            isInvalid: true
+            portNumber: 5
+          asHex: asHex
+          isEmpty: true
+          isLocalOnly: true
+          isInvalid: true
+          type: Invalid
+          asBytes: ""
+          defaultPort: 5
+          genesis: genesis
+          seeders:
+          - null
+          - null
+          inactive: true
+          isError: true
+          asULong: 6
+          checksum: 1
+          isCustom: true
+          licenseSigners: licenseSigners
+          name: name
+          defaultAddress: defaultAddress
+    RecordModelAsJsonPageOf:
+      type: object
+      properties:
+        items:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/RecordModelAsJson'
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalNumberOfPages:
+          type: integer
+          format: int32
+        lastToFirst:
+          type: boolean
+      additionalProperties: false
+      example:
+        pageSize: 2
+        lastToFirst: true
+        page: 5
+        items:
+        - reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          payloadTagId: 6
+          chainId: chainId
+          serial: 1
+          payload: ""
+          applicationId: 0
+          type: Root
+          version: 5
+          hash: hash
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+        - reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          payloadTagId: 6
+          chainId: chainId
+          serial: 1
+          payload: ""
+          applicationId: 0
+          type: Root
+          version: 5
+          hash: hash
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+        totalNumberOfPages: 7
+    RecordModelPageOf:
+      type: object
+      properties:
+        items:
+          type: array
+          nullable: true
+          items:
+            $ref: '#/components/schemas/RecordModel'
+        page:
+          type: integer
+          format: int32
+        pageSize:
+          type: integer
+          format: int32
+        totalNumberOfPages:
+          type: integer
+          format: int32
+        lastToFirst:
+          type: boolean
+      additionalProperties: false
+      example:
+        pageSize: 2
+        lastToFirst: true
+        page: 5
+        items:
+        - reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          payloadTagId: 6
+          chainId: chainId
+          serial: 1
+          applicationId: 0
+          type: Root
+          version: 5
+          hash: hash
+          payloadBytes: ""
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+        - reference: reference
+          createdAt: 2000-01-23T04:56:07.000+00:00
+          payloadTagId: 6
+          chainId: chainId
+          serial: 1
+          applicationId: 0
+          type: Root
+          version: 5
+          hash: hash
+          payloadBytes: ""
+          network:
+            textualRepresentation: textualRepresentation
+            proxySeeder:
+              textualRepresentation: textualRepresentation
+              address: address
+              isEmpty: true
+              id: null
+              isInvalid: true
+              portNumber: 5
+            asHex: asHex
+            isEmpty: true
+            isLocalOnly: true
+            isInvalid: true
+            type: Invalid
+            asBytes: ""
+            defaultPort: 5
+            genesis: genesis
+            seeders:
+            - null
+            - null
+            inactive: true
+            isError: true
+            asULong: 6
+            checksum: 1
+            isCustom: true
+            licenseSigners: licenseSigners
+            name: name
+            defaultAddress: defaultAddress
+        totalNumberOfPages: 7
+    RecordReference:
+      type: object
+      properties:
+        tagId:
+          type: integer
+          format: int64
+        value:
+          $ref: '#/components/schemas/ChainIdUInt64ValueTuple'
+        isEmpty:
+          type: boolean
+          readOnly: true
+        isInvalid:
+          type: boolean
+          readOnly: true
+        textualRepresentation:
+          type: string
+          nullable: true
+        chain:
+          pattern: "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$"
+          type: string
+          description: Chain unique ID
+          nullable: true
+        serial:
+          type: integer
+          format: int64
+      additionalProperties: false
+      example:
+        textualRepresentation: textualRepresentation
+        chain: chain
+        tagId: 0
+        serial: 6
+        isEmpty: true
+        isInvalid: true
+        value: {}
+    RecordType:
+      type: string
+      enum:
+      - Root
+      - Data
+      - Closing
+      - EmergencyClosing
+      - Corrupted
+    SoftwareVersions:
+      type: object
+      properties:
+        coreLibs:
+          type: string
+          nullable: true
+          readOnly: true
+        main:
+          type: string
+          nullable: true
+          readOnly: true
+        peer2peer:
+          type: string
+          nullable: true
+        tags:
+          type: string
+          nullable: true
+          readOnly: true
+      additionalProperties: false
+      example:
+        peer2peer: peer2peer
+        main: main
+        coreLibs: coreLibs
+        tags: tags

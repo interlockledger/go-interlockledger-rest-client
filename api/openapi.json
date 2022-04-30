@@ -1,0 +1,5578 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "InterlockLedger Node REST API",
+    "description": "A node instance inside the peer-to-peer network of the InterlockLedger",
+    "contact": {
+      "name": "InterlockLedger Network Core Team",
+      "url": "https://interlockledger.network",
+      "email": "core@interlockledger.network"
+    },
+    "version": "v7.2.0"
+  },
+  "paths": {
+    "/chain": {
+      "get": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Gets list of chain instances",
+        "operationId": "Chains_List",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChainIdModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Creates a new chain in this node",
+        "operationId": "Chain_Create",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChainCreationModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChainCreationModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ChainCreationModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChainCreatedModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chain/{chain}": {
+      "get": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Gets chain details",
+        "operationId": "Chain_Details",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the instance",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ChainSummaryModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chain/{chain}/activeApps": {
+      "get": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Enumerate apps that are currently permitted on this chain",
+        "operationId": "Chain_ActiveApps_List",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Add apps to the permitted list for the chain",
+        "operationId": "Chain_ActiveApps_Add",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of apps to be permitted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "type": "integer",
+                  "format": "int64"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer",
+                    "format": "int64"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chain/{chain}/interlockings": {
+      "get": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Lists interlocks registered in the chain",
+        "operationId": "Chain_Interlockings_List",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Local chain to query",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "howManyFromLast",
+            "in": "query",
+            "description": "How many interlocking records to return. If ommited or 0 => All",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterlockingRecordModelPageOf"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Forces an interlock on a target chain",
+        "operationId": "Chain_Interlocking_Add",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForceInterlockModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForceInterlockModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/ForceInterlockModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterlockingRecordModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/chain/{chain}/key": {
+      "get": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Enumerate keys that are currently permitted on chain",
+        "operationId": "Chain_PermittedKeys_List",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyDetailsModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Chain"
+        ],
+        "summary": "Add keys to the permitted list for the chain",
+        "operationId": "Chain_PermittedKeys_Add",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of keys to permitted",
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeyPermitModel"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeyPermitModel"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/components/schemas/KeyPermitModel"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/KeyDetailsModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/configuration": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Retrieve limits and defaults configured for MultiDocument support on this node",
+        "operationId": "Documents_Get_Config",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentUploadConfiguration"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/transaction": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Begin a transaction to store a set of documents (may 'rollback' on timeout or errors)",
+        "operationId": "Documents_Begin_Transaction",
+        "requestBody": {
+          "description": "Chosen parameters to start the transaction",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentsBeginTransactionModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentsBeginTransactionModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/DocumentsBeginTransactionModel"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "201": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentsTransactionModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/transaction/{transactionId}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Returns the ongoing status of a transaction",
+        "operationId": "Documents_Get_TransactionStatus",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "description": "Id of the transaction",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentsTransactionModel"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Adds another document to a pending transaction of a MultiDocument",
+        "operationId": "Documents_Add_Document",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "name",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "comment",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "path",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Content-Type",
+            "in": "header",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentsTransactionModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/transaction/{transactionId}/commit": {
+      "post": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Store set of uploaded documents returning the locator",
+        "operationId": "Documents_Commit_Transaction",
+        "parameters": [
+          {
+            "name": "transactionId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "pattern": "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$",
+                  "type": "string",
+                  "description": "A Documents Storage Locator"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/{locator}/metadata": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Retrieve the metadata for set of documents from chain",
+        "operationId": "Documents_Get_Metadata",
+        "parameters": [
+          {
+            "name": "locator",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$",
+              "type": "string",
+              "description": "A Documents Storage Locator"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DocumentsMetadataModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/documents/{locator}/{index}": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Retrieve document by position from the set of documents",
+        "operationId": "Documents_Get_SingleDocument",
+        "parameters": [
+          {
+            "name": "locator",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$",
+              "type": "string",
+              "description": "A Documents Storage Locator"
+            }
+          },
+          {
+            "name": "index",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/documents/{locator}/zip": {
+      "get": {
+        "tags": [
+          "Documents"
+        ],
+        "summary": "Retrieve a zip file with all documents",
+        "operationId": "Documents_Get_AllDocuments",
+        "parameters": [
+          {
+            "name": "locator",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$",
+              "type": "string",
+              "description": "A Documents Storage Locator"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success"
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}": {
+      "post": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Adds a new record - json document data in the body\r\nIt will be encrypted for the client certificate used to store it",
+        "operationId": "JsonDocuments_Add",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonDocumentModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}/withKey": {
+      "post": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Adds a new record - json document data in the body",
+        "operationId": "JsonDocuments_Add_WithKey",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "X-PubKey",
+            "in": "header",
+            "description": "IL2 text representation of a public key to encrypt the content for",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-PubKeyId",
+            "in": "header",
+            "description": "Id of the key",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonDocumentModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}/withIndirectKeys": {
+      "post": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Adds a new record - json document data in the body",
+        "operationId": "JsonDocuments_Add_WithIndirectKeys",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "X-PubKeyReferences",
+            "in": "header",
+            "description": "List of references to records on a local chain containing AllowedReaders, the collection of public key will be used to encrypt the content",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/RecordReference"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonDocumentModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}/withChainKeys": {
+      "post": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Adds a new record - json document data in the body",
+        "operationId": "JsonDocuments_Add_WithChainKeys",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "X-PubKeyChains",
+            "in": "header",
+            "description": "Id of a local chain from which the 'allowed readers' list of public keys will be used to encrypt the content",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "items": {
+                "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+                "type": "string",
+                "description": "Chain unique ID"
+              }
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonDocumentModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}/{serial}": {
+      "get": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Gets an specific JsonDocument",
+        "operationId": "JsonDocuments_Get",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "JsonDocument serial number",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/JsonDocumentModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/jsonDocuments@{chain}/allow": {
+      "post": {
+        "tags": [
+          "JsonDocument"
+        ],
+        "summary": "Adds a new list of allowed readers to encrypt documents to",
+        "operationId": "JsonDocuments_AllowReaders",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "List of allowed readers (pairs of ids and publicKeys)",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllowedReadersModel"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllowedReadersModel"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/AllowedReadersModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordReference"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Get node details",
+        "operationId": "Node_Details",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NodeDetailsModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apiVersion": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Get REST API version [\"v4.1\"]",
+        "operationId": "ApiVersion",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/apps": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Get list of valid apps in the network",
+        "operationId": "Apps_List",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AppsModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/interlockings/{targetChain}": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Gets list of interlocking records pointing to a target chain instance",
+        "operationId": "Interlockings_List",
+        "parameters": [
+          {
+            "name": "targetChain",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "lastKnownBlock",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastToFirst",
+            "in": "query",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/InterlockingRecordModelPageOf"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/peers": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Gets list of known peers",
+        "operationId": "Peers_List",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/PeerModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/mirrors": {
+      "get": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Gets list of mirror instances",
+        "operationId": "Mirrors_List",
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChainIdModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Node"
+        ],
+        "summary": "Creates a new mirror of a chain in this node",
+        "operationId": "Mirror_Add",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+                  "type": "string",
+                  "description": "Chain unique ID"
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+                  "type": "string",
+                  "description": "Chain unique ID"
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "type": "array",
+                "items": {
+                  "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+                  "type": "string",
+                  "description": "Chain unique ID"
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/ChainIdModel"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Gets list of records",
+        "operationId": "Records_List",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Chain to query",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "firstSerial",
+            "in": "query",
+            "description": "Serial number of first record to read. Default: First in whole chain",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastSerial",
+            "in": "query",
+            "description": "Serial number of last record to read. Default: Last in whole chain",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number starting on 0 (zero). Default: 0",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size in records. Default: 10",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "lastToFirst",
+            "in": "query",
+            "description": "Should records come in reversed order, from last to first. Default: false",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModelPageOf"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Adds a new record",
+        "operationId": "Record_Add",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Record data",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewRecordModel"
+              }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}/{serial}": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Gets an specific record",
+        "operationId": "Record_Get",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "Record serial number",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}/query": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Queries using InterlockQL some records",
+        "operationId": "Records_Query",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Chain to query",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "queryAsInterlockQL",
+            "in": "query",
+            "description": "Query in the InterlockQL language",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "howMany",
+            "in": "query",
+            "description": "How many records to return. Default: all",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastToFirst",
+            "in": "query",
+            "description": "Should records come in reversed order, from last to first. Default: false",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number starting on 0 (zero). Default: 0",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size in records. Default: 10",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModelPageOf"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}/asJson": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Gets list of records with payload mapped to json",
+        "operationId": "Records_List_AsJson",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Chain to query",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "firstSerial",
+            "in": "query",
+            "description": "Serial number of first record to read. Default: First in whole chain",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastSerial",
+            "in": "query",
+            "description": "Serial number of last record to read. Default: Last in whole chain",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "Page number starting on 0 (zero). Default: 0",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "Page size in records. Default: 10",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          },
+          {
+            "name": "lastToFirst",
+            "in": "query",
+            "description": "Should records come in reversed order, from last to first. Default: false",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModelAsJsonPageOf"
+                }
+              }
+            }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Adds a new record with a payload encoded as json.\r\nPayload content MUST go in the body, in json, with content type \"application/json\"\r\nThe json value will be mapped to the payload tagged format as described by the metadata\r\nassociated with the payloadTagId - [THIS AFFECTS THE PERFORMANCE SIGNIFICANTLY].",
+        "operationId": "Record_Add_AsJson",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "applicationId",
+            "in": "query",
+            "description": "Application id of the record",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "payloadTagId",
+            "in": "query",
+            "description": "Payload tag id of the record",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "type",
+            "in": "query",
+            "description": "[OPTIONAL] Type of record",
+            "schema": {
+              "$ref": "#/components/schemas/NewRecordType"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "Payload data encoded as json",
+          "content": {
+            "application/json": {
+              "schema": { }
+            }
+          }
+        },
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModel"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}/asJson/{serial}": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Gets an specific record with payload mapped to json (using published metadata)",
+        "operationId": "Record_Get_AsJson",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Id of the chain",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "serial",
+            "in": "path",
+            "description": "Record serial number",
+            "required": true,
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModelAsJson"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/records@{chain}/asJson/query": {
+      "get": {
+        "tags": [
+          "Record"
+        ],
+        "summary": "Queries using InterlockQL some records with payload mapped to json",
+        "operationId": "Records_Query_AsJson",
+        "parameters": [
+          {
+            "name": "chain",
+            "in": "path",
+            "description": "Chain to query",
+            "required": true,
+            "schema": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            }
+          },
+          {
+            "name": "queryAsInterlockQL",
+            "in": "query",
+            "description": "Query in the InterlockQL language",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "howMany",
+            "in": "query",
+            "description": "How many records to return. Default: all",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "lastToFirst",
+            "in": "query",
+            "description": "Should records come in reversed order, from last to first. Default: false",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 0
+            }
+          },
+          {
+            "name": "pageSize",
+            "in": "query",
+            "description": "",
+            "schema": {
+              "type": "integer",
+              "format": "int32",
+              "default": 10
+            }
+          }
+        ],
+        "responses": {
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "422": {
+            "description": "Client Error",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Server Error"
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RecordModelAsJsonPageOf"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Algorithm": {
+        "enum": [
+          "RSA",
+          "RSA15",
+          "DSA",
+          "ElGamal",
+          "EcDSA",
+          "EdDSA",
+          "Unknown",
+          "Invalid"
+        ],
+        "type": "string"
+      },
+      "AllowedReadersModel": {
+        "type": "object",
+        "properties": {
+          "contextId": {
+            "type": "string",
+            "nullable": true
+          },
+          "readers": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReaderModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AppsModel": {
+        "type": "object",
+        "properties": {
+          "network": {
+            "type": "string",
+            "description": "Network name",
+            "nullable": true,
+            "readOnly": true
+          },
+          "validApps": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IInterlockAppTraits"
+            },
+            "description": "Currently valid apps for this network",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "List of valid apps in the network"
+      },
+      "CastType": {
+        "enum": [
+          "None",
+          "DateTime",
+          "Integer",
+          "TimeSpan"
+        ],
+        "type": "string"
+      },
+      "CertificatePermitModel": {
+        "required": [
+          "certificateInX509",
+          "permissions",
+          "purposes"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Key name, ignored on CertificatePermitModel",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "pattern": "^#[0-9]+(,[0-9]+)*$",
+              "type": "string",
+              "description": "Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.\n- The first number is the AppId and is **required**.\n- The following numbers are the ActionIds pertaining to that app expressly permitted.\n- *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*"
+            },
+            "description": "App actions to be permitted by number"
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyPurpose"
+            },
+            "description": "Key valid purposes"
+          },
+          "certificateInX509": {
+            "type": "string",
+            "description": "Certificate in X509 bytes",
+            "format": "byte"
+          }
+        },
+        "additionalProperties": false
+      },
+      "ChainCreatedModel": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique record id",
+            "readOnly": true
+          },
+          "isClosedForNewTransactions": {
+            "type": "boolean",
+            "description": "Is this record not able to accept new records?",
+            "readOnly": true
+          },
+          "lastRecord": {
+            "type": "integer",
+            "description": "Last record (serial number)",
+            "format": "int64",
+            "readOnly": true
+          },
+          "lastUpdate": {
+            "type": "string",
+            "description": "Date last record was added",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "licensingStatus": {
+            "type": "string",
+            "description": "Licensing status [optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Chain size in bytes",
+            "format": "int64",
+            "readOnly": true
+          },
+          "keyFiles": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ExportedKeyFile"
+            },
+            "description": "Emergency key file names",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Chain created"
+      },
+      "ChainCreationModel": {
+        "required": [
+          "emergencyClosingKeyPassword",
+          "managementKeyPassword",
+          "name"
+        ],
+        "type": "object",
+        "properties": {
+          "additionalApps": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "List of additional apps (only the numeric ids)",
+            "nullable": true
+          },
+          "apiCertificates": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CertificatePermitModel"
+            },
+            "description": "API certificates to authorize with corresponding permissions",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description (perhaps intended primary usage) [Optional]",
+            "nullable": true
+          },
+          "emergencyClosingKeyPassword": {
+            "type": "string",
+            "description": "Emergency closing key password"
+          },
+          "emergencyClosingKeyStrength": {
+            "$ref": "#/components/schemas/KeyStrength"
+          },
+          "keysAlgorithm": {
+            "$ref": "#/components/schemas/Algorithm"
+          },
+          "managementKeyPassword": {
+            "type": "string",
+            "description": "App/Key management key password"
+          },
+          "managementKeyStrength": {
+            "$ref": "#/components/schemas/KeyStrength"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name"
+          },
+          "operatingKeyStrength": {
+            "$ref": "#/components/schemas/KeyStrength"
+          },
+          "parent": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Parent record Id [Optional]",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Chain creation parameters"
+      },
+      "ChainIdModel": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique record id",
+            "readOnly": true
+          },
+          "isClosedForNewTransactions": {
+            "type": "boolean",
+            "description": "Is this record not able to accept new records?",
+            "readOnly": true
+          },
+          "lastRecord": {
+            "type": "integer",
+            "description": "Last record (serial number)",
+            "format": "int64",
+            "readOnly": true
+          },
+          "lastUpdate": {
+            "type": "string",
+            "description": "Date last record was added",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "licensingStatus": {
+            "type": "string",
+            "description": "Licensing status [optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Chain size in bytes",
+            "format": "int64",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Chain Id"
+      },
+      "ChainIdUInt64ValueTuple": {
+        "type": "object",
+        "additionalProperties": false
+      },
+      "ChainSummaryModel": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "id": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique record id",
+            "readOnly": true
+          },
+          "isClosedForNewTransactions": {
+            "type": "boolean",
+            "description": "Is this record not able to accept new records?",
+            "readOnly": true
+          },
+          "lastRecord": {
+            "type": "integer",
+            "description": "Last record (serial number)",
+            "format": "int64",
+            "readOnly": true
+          },
+          "lastUpdate": {
+            "type": "string",
+            "description": "Date last record was added",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "licensingStatus": {
+            "type": "string",
+            "description": "Licensing status [optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Name [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "sizeInBytes": {
+            "type": "integer",
+            "description": "Chain size in bytes",
+            "format": "int64",
+            "readOnly": true
+          },
+          "activeApps": {
+            "type": "array",
+            "items": {
+              "type": "integer",
+              "format": "int64"
+            },
+            "description": "List of active apps (only the numeric ids)",
+            "nullable": true,
+            "readOnly": true
+          },
+          "description": {
+            "type": "string",
+            "description": "Description (perhaps intended primary usage) [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "isMirror": {
+            "type": "boolean",
+            "description": "True if this is mirror copy from an outside chain"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Chain summary"
+      },
+      "CipherAlgorithm": {
+        "enum": [
+          "AES256",
+          "None"
+        ],
+        "type": "string"
+      },
+      "DataField": {
+        "type": "object",
+        "properties": {
+          "cast": {
+            "$ref": "#/components/schemas/CastType"
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "elementTagId": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "enumeration": {
+            "$ref": "#/components/schemas/EnumerationItems"
+          },
+          "enumerationAsFlags": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isDeprecated": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "isOpaque": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "subDataFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataField"
+            },
+            "nullable": true
+          },
+          "tagId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataIndex": {
+        "type": "object",
+        "properties": {
+          "elements": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataIndexElement"
+            },
+            "nullable": true
+          },
+          "isUnique": {
+            "type": "boolean"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataIndexElement": {
+        "type": "object",
+        "properties": {
+          "descendingOrder": {
+            "type": "boolean"
+          },
+          "fieldPath": {
+            "type": "string",
+            "nullable": true
+          },
+          "function": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DataModel": {
+        "type": "object",
+        "properties": {
+          "dataFields": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataField"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "indexes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataIndex"
+            },
+            "nullable": true
+          },
+          "payloadName": {
+            "type": "string",
+            "nullable": true
+          },
+          "payloadTagId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "DirectoryEntry": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "mimeType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "path": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DocumentsBeginTransactionModel": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true
+          },
+          "compression": {
+            "type": "string",
+            "nullable": true
+          },
+          "encryption": {
+            "type": "string",
+            "nullable": true
+          },
+          "generatePublicDirectory": {
+            "type": "boolean",
+            "nullable": true
+          },
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "previous": {
+            "pattern": "^[A-Za-z0-9\\-\\_]+(\\$[A-Za-z0-9\\-\\_]+)?$",
+            "type": "string",
+            "description": "A Documents Storage Locator",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DocumentsMetadataModel": {
+        "type": "object",
+        "properties": {
+          "comment": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "compression": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "encryption": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "encryptionParameters": {
+            "$ref": "#/components/schemas/Parameters"
+          },
+          "publicDirectory": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DirectoryEntry"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DocumentsTransactionModel": {
+        "type": "object",
+        "properties": {
+          "canCommitNow": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "chain": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "comment": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "compression": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "countOfUploadedDocuments": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "documentNames": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "encryption": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "generatePublicDirectory": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "previous": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "timeOutLimit": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "transactionId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "DocumentUploadConfiguration": {
+        "type": "object",
+        "properties": {
+          "defaultCompression": {
+            "type": "string",
+            "nullable": true
+          },
+          "defaultEncryption": {
+            "type": "string",
+            "nullable": true
+          },
+          "fileSizeLimit": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "permittedContentTypes": {
+            "type": "array",
+            "items": {
+              "pattern": "^\\w+/\\w[\\-\\.\\w]+\\w(\\+[\\-\\.\\w]+)?(\\|\\.\\w+)+$",
+              "type": "string",
+              "description": "A permitted document content filter (content-type concatenated with acceptable filename extensions)"
+            },
+            "nullable": true
+          },
+          "timeOutInMinutes": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "EncryptedTextModel": {
+        "type": "object",
+        "properties": {
+          "cipher": {
+            "$ref": "#/components/schemas/CipherAlgorithm"
+          },
+          "cipherText": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          },
+          "readingKeys": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ReadingKeyModel"
+            },
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "EnumerationItems": {
+        "type": "object",
+        "properties": {
+          "isInvalid": {
+            "type": "boolean",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExportedKeyFile": {
+        "type": "object",
+        "properties": {
+          "keyFileBytes": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true
+          },
+          "keyFileName": {
+            "type": "string",
+            "nullable": true
+          },
+          "keyName": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ForceInterlockModel": {
+        "type": "object",
+        "properties": {
+          "hashAlgorithm": {
+            "$ref": "#/components/schemas/HashAlgorithm"
+          },
+          "minSerial": {
+            "type": "integer",
+            "description": "Required minimum of the serial of the last record in target chain whose hash will be pulled. Default: 0",
+            "format": "int64",
+            "nullable": true
+          },
+          "targetChain": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Id of chain to be interlocked",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Force interlock command details"
+      },
+      "HashAlgorithm": {
+        "enum": [
+          "SHA1",
+          "SHA256",
+          "SHA512",
+          "SHA3_256",
+          "SHA3_512",
+          "SHA384",
+          "Copy"
+        ],
+        "type": "string"
+      },
+      "IInterlockAppTraits": {
+        "type": "object",
+        "properties": {
+          "appVersion": {
+            "pattern": "^[1-9]\\d*(\\.\\d+)+$",
+            "type": "string",
+            "description": "A version in the format 'major.minor(.release)'",
+            "nullable": true
+          },
+          "dataModels": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DataModel"
+            },
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "type": "integer",
+            "format": "int64",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "publisherId": {
+            "pattern": "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Key unique ID",
+            "nullable": true
+          },
+          "publisherName": {
+            "type": "string",
+            "nullable": true
+          },
+          "reservedILTagIds": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/LimitedRange"
+            },
+            "nullable": true
+          },
+          "simplifiedHashCode": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "start": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InterlockingRecordModel": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "chainId": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "hash": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "payloadTagId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "reference": {
+            "pattern": "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$",
+            "type": "string",
+            "description": "A universal record reference in the form networkName:chainId@recordSerial",
+            "nullable": true,
+            "readOnly": true
+          },
+          "serial": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RecordType"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "payloadBytes": {
+            "type": "string",
+            "description": "The payload's bytes",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          },
+          "interlockedChainId": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Interlocked Chain",
+            "nullable": true,
+            "readOnly": true
+          },
+          "interlockedRecordHash": {
+            "type": "string",
+            "description": "Interlock Record Hash",
+            "nullable": true,
+            "readOnly": true
+          },
+          "interlockedRecordOffset": {
+            "type": "integer",
+            "description": "Interlocked Record Offset",
+            "format": "int64",
+            "readOnly": true
+          },
+          "interlockedRecordSerial": {
+            "type": "integer",
+            "description": "Interlocked Record Serial",
+            "format": "int64",
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Interlocking details"
+      },
+      "InterlockingRecordModelPageOf": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/InterlockingRecordModel"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalNumberOfPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastToFirst": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "JsonDocumentModel": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "chainId": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "hash": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "payloadTagId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "reference": {
+            "pattern": "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$",
+            "type": "string",
+            "description": "A universal record reference in the form networkName:chainId@recordSerial",
+            "nullable": true,
+            "readOnly": true
+          },
+          "serial": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RecordType"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "encryptedJson": {
+            "$ref": "#/components/schemas/EncryptedTextModel"
+          },
+          "jsonText": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "KeyDetailsModel": {
+        "required": [
+          "id",
+          "permissions",
+          "publicKey",
+          "purposes"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Key name, ignored on CertificatePermitModel",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "pattern": "^#[0-9]+(,[0-9]+)*$",
+              "type": "string",
+              "description": "Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.\n- The first number is the AppId and is **required**.\n- The following numbers are the ActionIds pertaining to that app expressly permitted.\n- *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*"
+            },
+            "description": "App actions to be permitted by number"
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyPurpose"
+            },
+            "description": "Key valid purposes"
+          },
+          "id": {
+            "pattern": "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique key id"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "Key public key"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Key details"
+      },
+      "KeyPermitModel": {
+        "required": [
+          "id",
+          "permissions",
+          "publicKey",
+          "purposes"
+        ],
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "Key name, ignored on CertificatePermitModel",
+            "nullable": true
+          },
+          "permissions": {
+            "type": "array",
+            "items": {
+              "pattern": "^#[0-9]+(,[0-9]+)*$",
+              "type": "string",
+              "description": "Per app permissions, formated as a comma delimited list of numbers without whitespace and preceded by '#'.\n- The first number is the AppId and is **required**.\n- The following numbers are the ActionIds pertaining to that app expressly permitted.\n- *If only the AppId is provided all ActionIds defined for the current version of the App in the network are permitted!*"
+            },
+            "description": "App actions to be permitted by number"
+          },
+          "purposes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/KeyPurpose"
+            },
+            "description": "Key valid purposes"
+          },
+          "id": {
+            "pattern": "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique key id"
+          },
+          "publicKey": {
+            "type": "string",
+            "description": "Key public key"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Key to permit"
+      },
+      "KeyPurpose": {
+        "enum": [
+          "InvalidKey",
+          "KeyManagement",
+          "Action",
+          "ClaimSigner",
+          "Encryption",
+          "Protocol",
+          "ChainOperation",
+          "ForceInterlock"
+        ],
+        "type": "string"
+      },
+      "KeyStrength": {
+        "enum": [
+          "Normal",
+          "Strong",
+          "ExtraStrong",
+          "MegaStrong",
+          "SuperStrong",
+          "HyperStrong",
+          "UltraStrong"
+        ],
+        "type": "string"
+      },
+      "LimitedRange": {
+        "type": "object",
+        "properties": {
+          "count": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isInvalid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "textualRepresentation": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkId": {
+        "type": "object",
+        "properties": {
+          "asBytes": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          },
+          "asHex": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "asULong": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "checksum": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "defaultAddress": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "defaultPort": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "genesis": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "inactive": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isCustom": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isError": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isInvalid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isLocalOnly": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "licenseSigners": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "proxySeeder": {
+            "$ref": "#/components/schemas/NetworkSeed"
+          },
+          "seeders": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkSeed"
+            },
+            "nullable": true,
+            "readOnly": true
+          },
+          "textualRepresentation": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/NetworkIdType"
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkIdType": {
+        "enum": [
+          "Invalid",
+          "Predefined",
+          "Custom"
+        ],
+        "type": "string"
+      },
+      "NetworkSeed": {
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "nullable": true
+          },
+          "id": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isInvalid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "portNumber": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "textualRepresentation": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NewRecordModel": {
+        "required": [
+          "applicationId"
+        ],
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "integer",
+            "description": "Application id this record is associated with",
+            "format": "int64"
+          },
+          "payloadBytes": {
+            "type": "string",
+            "description": "The payload's bytes",
+            "format": "byte",
+            "nullable": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RecordType"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generic opaque new record"
+      },
+      "NewRecordType": {
+        "enum": [
+          "Data",
+          "Closing",
+          "EmergencyClosing"
+        ],
+        "type": "string"
+      },
+      "NodeDetailsModel": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "chains": {
+            "type": "array",
+            "items": {
+              "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+              "type": "string",
+              "description": "Chain unique ID"
+            },
+            "description": "List of owned chains, only the ids",
+            "nullable": true,
+            "readOnly": true
+          },
+          "color": {
+            "pattern": "^(\\w+|#[a-fA-F0-9]{6})$",
+            "type": "string",
+            "description": "Mapping color",
+            "readOnly": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Dictionary with values for extensions on node configuration",
+            "nullable": true,
+            "readOnly": true
+          },
+          "id": {
+            "pattern": "^Node![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique node id",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Node name",
+            "nullable": true,
+            "readOnly": true
+          },
+          "network": {
+            "type": "string",
+            "description": "Network this node participates on",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ownerId": {
+            "pattern": "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Node owner id [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ownerName": {
+            "type": "string",
+            "description": "Node owner name [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "peerAddress": {
+            "type": "string",
+            "description": "Node url for Peer2Peer protocol",
+            "nullable": true,
+            "readOnly": true
+          },
+          "roles": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of active roles running in the node",
+            "nullable": true,
+            "readOnly": true
+          },
+          "softwareVersions": {
+            "$ref": "#/components/schemas/SoftwareVersions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Node details"
+      },
+      "Parameters": {
+        "type": "object",
+        "properties": {
+          "iterations": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "salt": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PeerModel": {
+        "required": [
+          "id"
+        ],
+        "type": "object",
+        "properties": {
+          "address": {
+            "type": "string",
+            "description": "Network address to contact the peer",
+            "nullable": true,
+            "readOnly": true
+          },
+          "color": {
+            "pattern": "^(\\w+|#[a-fA-F0-9]{6})$",
+            "type": "string",
+            "description": "Mapping color",
+            "readOnly": true
+          },
+          "extensions": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            },
+            "description": "Dictionary with values for extensions on node configuration",
+            "nullable": true,
+            "readOnly": true
+          },
+          "id": {
+            "pattern": "^Node![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Unique node id",
+            "readOnly": true
+          },
+          "name": {
+            "type": "string",
+            "description": "Node name",
+            "nullable": true,
+            "readOnly": true
+          },
+          "network": {
+            "type": "string",
+            "description": "Network this node participates on",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ownerId": {
+            "pattern": "^(Owner|Key)![A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Node owner id [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "ownerName": {
+            "type": "string",
+            "description": "Node owner name [Optional]",
+            "nullable": true,
+            "readOnly": true
+          },
+          "port": {
+            "type": "integer",
+            "description": "Port the peer is listening",
+            "format": "int32",
+            "readOnly": true
+          },
+          "roles": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of active roles running in the node",
+            "nullable": true,
+            "readOnly": true
+          },
+          "softwareVersions": {
+            "$ref": "#/components/schemas/SoftwareVersions"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Peer details"
+      },
+      "ProblemDetails": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "nullable": true
+          },
+          "title": {
+            "type": "string",
+            "nullable": true
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32",
+            "nullable": true
+          },
+          "detail": {
+            "type": "string",
+            "nullable": true
+          },
+          "instance": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": { }
+      },
+      "ReaderModel": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "publicKey": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ReadingKeyModel": {
+        "type": "object",
+        "properties": {
+          "encryptedIV": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          },
+          "encryptedKey": {
+            "type": "string",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          },
+          "publicKeyHash": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "readerId": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecordModel": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "chainId": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "hash": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "payloadTagId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "reference": {
+            "pattern": "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$",
+            "type": "string",
+            "description": "A universal record reference in the form networkName:chainId@recordSerial",
+            "nullable": true,
+            "readOnly": true
+          },
+          "serial": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RecordType"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "payloadBytes": {
+            "type": "string",
+            "description": "The payload's bytes",
+            "format": "byte",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generic opaque record"
+      },
+      "RecordModelAsJson": {
+        "type": "object",
+        "properties": {
+          "applicationId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "chainId": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true,
+            "readOnly": true
+          },
+          "createdAt": {
+            "type": "string",
+            "format": "date-time",
+            "readOnly": true
+          },
+          "hash": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true,
+            "deprecated": true
+          },
+          "network": {
+            "$ref": "#/components/schemas/NetworkId"
+          },
+          "payloadTagId": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "reference": {
+            "pattern": "^(\\w+):(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?@\\d+$",
+            "type": "string",
+            "description": "A universal record reference in the form networkName:chainId@recordSerial",
+            "nullable": true,
+            "readOnly": true
+          },
+          "serial": {
+            "type": "integer",
+            "format": "int64",
+            "readOnly": true
+          },
+          "type": {
+            "$ref": "#/components/schemas/RecordType"
+          },
+          "version": {
+            "type": "integer",
+            "format": "int32",
+            "readOnly": true
+          },
+          "payload": {
+            "description": "The payload's bytes",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Generic payload as json record"
+      },
+      "RecordModelAsJsonPageOf": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordModelAsJson"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalNumberOfPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastToFirst": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecordModelPageOf": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/RecordModel"
+            },
+            "nullable": true
+          },
+          "page": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "pageSize": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "totalNumberOfPages": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "lastToFirst": {
+            "type": "boolean"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecordReference": {
+        "type": "object",
+        "properties": {
+          "tagId": {
+            "type": "integer",
+            "format": "int64"
+          },
+          "value": {
+            "$ref": "#/components/schemas/ChainIdUInt64ValueTuple"
+          },
+          "isEmpty": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "isInvalid": {
+            "type": "boolean",
+            "readOnly": true
+          },
+          "textualRepresentation": {
+            "type": "string",
+            "nullable": true
+          },
+          "chain": {
+            "pattern": "^(Chain!)?[A-Za-z0-9\\-\\_]+(#\\w+)?$",
+            "type": "string",
+            "description": "Chain unique ID",
+            "nullable": true
+          },
+          "serial": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "RecordType": {
+        "enum": [
+          "Root",
+          "Data",
+          "Closing",
+          "EmergencyClosing",
+          "Corrupted"
+        ],
+        "type": "string"
+      },
+      "SoftwareVersions": {
+        "type": "object",
+        "properties": {
+          "coreLibs": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "main": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "peer2peer": {
+            "type": "string",
+            "nullable": true
+          },
+          "tags": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      }
+    }
+  }
+}
