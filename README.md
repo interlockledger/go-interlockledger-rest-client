@@ -6,6 +6,11 @@ Our Go client to the InterlockLedger node REST API.
 
 This library was developed using Go 1.18 but it should work perfectly on older versions.
 
+## How to use it
+
+To see how to use this libraty, check the code `internal/main.go` as it
+describes how to instantiate the client and use it to contact the node.
+
 ## Notes about the code
 
 This code was originally genearated using the 
