@@ -36,7 +36,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/interlockledger/go-interlockledger-rest-client/pkg/client"
+	"github.com/interlockledger/go-interlockledger-rest-client/client"
 )
 
 func main() {
