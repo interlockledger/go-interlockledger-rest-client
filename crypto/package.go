@@ -28,23 +28,8 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package client
-
-import (
-	"time"
-)
-
-type DocumentsTransactionModel struct {
-	CanCommitNow bool `json:"canCommitNow,omitempty"`
-	// Chain unique ID
-	Chain                    string    `json:"chain,omitempty"`
-	Comment                  string    `json:"comment,omitempty"`
-	Compression              string    `json:"compression,omitempty"`
-	CountOfUploadedDocuments int32     `json:"countOfUploadedDocuments,omitempty"`
-	DocumentNames            []string  `json:"documentNames,omitempty"`
-	Encryption               string    `json:"encryption,omitempty"`
-	GeneratePublicDirectory  bool      `json:"generatePublicDirectory,omitempty"`
-	Previous                 string    `json:"previous,omitempty"`
-	TimeOutLimit             time.Time `json:"timeOutLimit,omitempty"`
-	TransactionId            string    `json:"transactionId,omitempty"`
-}
+/*
+This package contains the implementation of all cryptographic utilities used
+by this client library.
+*/
+package crypto

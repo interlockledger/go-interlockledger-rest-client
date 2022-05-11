@@ -31,20 +31,31 @@
 package client
 
 import (
-	"time"
+	"fmt"
+	"os"
 )
 
-type DocumentsTransactionModel struct {
-	CanCommitNow bool `json:"canCommitNow,omitempty"`
-	// Chain unique ID
-	Chain                    string    `json:"chain,omitempty"`
-	Comment                  string    `json:"comment,omitempty"`
-	Compression              string    `json:"compression,omitempty"`
-	CountOfUploadedDocuments int32     `json:"countOfUploadedDocuments,omitempty"`
-	DocumentNames            []string  `json:"documentNames,omitempty"`
-	Encryption               string    `json:"encryption,omitempty"`
-	GeneratePublicDirectory  bool      `json:"generatePublicDirectory,omitempty"`
-	Previous                 string    `json:"previous,omitempty"`
-	TimeOutLimit             time.Time `json:"timeOutLimit,omitempty"`
-	TransactionId            string    `json:"transactionId,omitempty"`
+func ExampleNewAPIClient() {
+	// Creates a new configuration.
+	configuration := NewConfiguration()
+	// Set the name of the server here
+	configuration.BasePath = "https://your_node_server:port/"
+	// Sets the required client certificate. Without it, you will not be able to
+	// access the node as client certificate is the only authentication method
+	// accepted by the client.
+	err := configuration.SetClientCertificate("cert.pem", "key.pem")
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to load the client certificate: %v\n", err)
+		os.Exit(1)
+	}
+	// Create the new client
+	client := NewAPIClient(configuration)
+
+	// Query the version of the server.
+	version, _, err := client.NodeApi.ApiVersion(nil)
+	if err != nil {
+		fmt.Fprintf(os.Stderr, "Unable to query the server's version: %v\n", err)
+		os.Exit(1)
+	}
+	fmt.Printf("The server's version is %s\n", version)
 }

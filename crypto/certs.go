@@ -28,23 +28,48 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package client
+package crypto
 
 import (
-	"time"
+	"crypto/tls"
+	"crypto/x509"
+	"encoding/pem"
+	"fmt"
+	"os"
 )
 
-type DocumentsTransactionModel struct {
-	CanCommitNow bool `json:"canCommitNow,omitempty"`
-	// Chain unique ID
-	Chain                    string    `json:"chain,omitempty"`
-	Comment                  string    `json:"comment,omitempty"`
-	Compression              string    `json:"compression,omitempty"`
-	CountOfUploadedDocuments int32     `json:"countOfUploadedDocuments,omitempty"`
-	DocumentNames            []string  `json:"documentNames,omitempty"`
-	Encryption               string    `json:"encryption,omitempty"`
-	GeneratePublicDirectory  bool      `json:"generatePublicDirectory,omitempty"`
-	Previous                 string    `json:"previous,omitempty"`
-	TimeOutLimit             time.Time `json:"timeOutLimit,omitempty"`
-	TransactionId            string    `json:"transactionId,omitempty"`
+/*
+Loads a certificate with its private key.
+*/
+func LoadCertificateWithKey(certificateFile string, keyFile string) (tls.Certificate, error) {
+	return tls.LoadX509KeyPair(certificateFile, keyFile)
+}
+
+/*
+Loads all certificates inside the specified file. It returns a list of
+certificates loaded. If fails if one or more certificates in the file cannot
+be parsed.
+*/
+func LoadCertificate(certificateFile string) ([]*x509.Certificate, error) {
+	bytes, err := os.ReadFile(certificateFile)
+	if err != nil {
+		return nil, err
+	}
+	certs := make([]*x509.Certificate, 0, 1)
+	for {
+		pemBlock, rest := pem.Decode(bytes)
+		if pemBlock == nil || pemBlock.Type != "CERTIFICATE" {
+			return nil, fmt.Errorf("%s is not a certificate file.", certificateFile)
+		}
+		if cert, err := x509.ParseCertificate(pemBlock.Bytes); err != nil {
+			return nil, err
+		} else {
+			certs = append(certs, cert)
+		}
+		if rest == nil {
+			break
+		}
+		bytes = rest
+	}
+	return certs, nil
 }

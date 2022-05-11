@@ -34,11 +34,20 @@ import (
 	"crypto/tls"
 	"crypto/x509"
 	"net/http"
+
+	"github.com/interlockledger/go-interlockledger-rest-client/crypto"
 )
 
-// Loads the client certificate required to access the API and sets the http.Client.
+/*
+Loads the client certificate required to access the API and sets the
+`http.Client`.
+*/
 func (c *Configuration) SetClientCertificate(certificateFile string, keyFile string) error {
-	cert, err := tls.LoadX509KeyPair(certificateFile, keyFile)
+	cert, err := crypto.LoadCertificateWithKey(certificateFile, keyFile)
+	if err != nil {
+		return err
+	}
+	tls.LoadX509KeyPair(certificateFile, keyFile)
 	if err != nil {
 		return err
 	}
