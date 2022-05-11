@@ -39,6 +39,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
+	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
