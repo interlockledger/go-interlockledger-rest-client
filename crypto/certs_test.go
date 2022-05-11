@@ -31,57 +31,59 @@
 package crypto
 
 import (
-	"crypto/tls"
-	"crypto/x509"
-	"encoding/pem"
-	"fmt"
-	"os"
+	"path"
+	"runtime"
+	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-/*
-Loads a certificate with its private key. Both the certificate and the key must
-be in PEM format.
-*/
-func LoadCertificateWithKey(certificateFile string, keyFile string) (tls.Certificate, error) {
-	return tls.LoadX509KeyPair(certificateFile, keyFile)
+var sampleDir = findSampleDir()
+
+// Returns the sample dir for this package
+func findSampleDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Join(path.Dir(path.Dir(filename)), "samples")
 }
 
-/*
-Loads all certificates inside the specified file and returns them as a list. The
-certificates must be in PEM format.
+func TestLoadCertificateWithKey(t *testing.T) {
+	certFile := path.Join(sampleDir, "cert.pem")
+	keyFile := path.Join(sampleDir, "key.pem")
 
-It fails if there is no certificates to load or if one of them is invalid.
-*/
-func LoadCertificate(certificateFile string) ([]*x509.Certificate, error) {
-	bytes, err := os.ReadFile(certificateFile)
-	if err != nil {
-		return nil, err
-	}
-	certs := make([]*x509.Certificate, 0, 1)
-	for {
-		pemBlock, rest := pem.Decode(bytes)
-		if pemBlock == nil {
-			break
-		} else if pemBlock.Type != "CERTIFICATE" {
-			return nil, fmt.Errorf("Entry %d at file %s is not a certificate but a %s.",
-				len(certs),
-				certificateFile,
-				pemBlock.Type)
-		}
-		if cert, err := x509.ParseCertificate(pemBlock.Bytes); err != nil {
-			return nil, err
-		} else {
-			certs = append(certs, cert)
-		}
-		if len(rest) == 0 {
-			break
-		}
-		bytes = rest
-	}
-	if len(certs) == 0 {
-		return nil, fmt.Errorf("No certificates found in the file.")
-	} else {
-		return certs, nil
-	}
+	pair, err := LoadCertificateWithKey(certFile, keyFile)
+	assert.Nil(t, err)
+	assert.NotNil(t, pair.PrivateKey)
+}
 
+func TestLoadCertificate(t *testing.T) {
+	certFile := path.Join(sampleDir, "cert.pem")
+	cert, err := LoadCertificate(certFile)
+	assert.Nil(t, err)
+	assert.NotNil(t, cert)
+	assert.Equal(t, 1, len(cert))
+
+	certFile = path.Join(sampleDir, "certs.pem")
+	cert, err = LoadCertificate(certFile)
+	assert.Nil(t, err)
+	assert.NotNil(t, cert)
+	assert.Equal(t, 2, len(cert))
+
+	certFile = path.Join(sampleDir, "empty-certs.pem")
+	cert, err = LoadCertificate(certFile)
+	assert.Error(t, err)
+	assert.Nil(t, cert)
+
+	certFile = path.Join(sampleDir, "bad-certs.pem")
+	cert, err = LoadCertificate(certFile)
+	assert.Error(t, err)
+	assert.Nil(t, cert)
+
+	certFile = path.Join(sampleDir, "bad-entry-certs.pem")
+	cert, err = LoadCertificate(certFile)
+	assert.Error(t, err)
+	assert.Nil(t, cert)
+
+	cert, err = LoadCertificate("this file does not exist.")
+	assert.Error(t, err)
+	assert.Nil(t, cert)
 }
