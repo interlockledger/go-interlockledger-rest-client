@@ -35,3 +35,13 @@ type EncryptedTextModel struct {
 	CipherText  string            `json:"cipherText,omitempty"`
 	ReadingKeys []ReadingKeyModel `json:"readingKeys,omitempty"`
 }
+
+// Finds the reading key based on the publicKeyHash.
+func (p *EncryptedTextModel) FindReadingKey(publicKeyHash string) *ReadingKeyModel {
+	for _, v := range p.ReadingKeys {
+		if v.PublicKeyHash == publicKeyHash {
+			return &v
+		}
+	}
+	return nil
+}
