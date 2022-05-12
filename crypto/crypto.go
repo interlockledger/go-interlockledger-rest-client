@@ -153,12 +153,7 @@ func convertRSAPublicKey(publicKey *rsa.PublicKey) ([]byte, error) {
 	eTag.Payload = big.NewInt(int64(publicKey.E)).Bytes()
 	rootTag := impl.NewILTagSequenceTag(tags.TagID(40))
 	rootTag.Payload = []tags.ILTag{nTag, eTag}
-	w := bytes.NewBuffer(nil)
-	err := tags.ILTagSeralize(rootTag, w)
-	if err != nil {
-		return nil, err
-	}
-	return w.Bytes(), nil
+	return tags.ILTagToBytes(rootTag)
 }
 
 // Converts the given public key into a format suitable for use with IL2 API.
