@@ -31,49 +31,18 @@
 package crypto
 
 import (
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"path"
+	"runtime"
 )
 
-func TestLoadCertificateWithKey(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
-	keyFile := getSampleFile("key.pem")
+var sampleDir = findSampleDir()
 
-	pair, err := LoadCertificateWithKey(certFile, keyFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, pair.PrivateKey)
+// Returns the sample dir for this package
+func findSampleDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Join(path.Dir(path.Dir(filename)), "samples")
 }
 
-func TestLoadCertificate(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
-	cert, err := LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 1, len(cert))
-
-	certFile = getSampleFile("certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 2, len(cert))
-
-	certFile = getSampleFile("empty-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-entry-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	cert, err = LoadCertificate("this file does not exist.")
-	assert.Error(t, err)
-	assert.Nil(t, cert)
+func getSampleFile(file string) string {
+	return path.Join(sampleDir, file)
 }
