@@ -31,7 +31,6 @@
 package jsondocs
 
 import (
-	"crypto"
 	"fmt"
 
 	"github.com/interlockledger/go-iltags/utils"
@@ -40,56 +39,59 @@ import (
 )
 
 var (
+	// If the cipher scheme is unsupported.
+	ErrUnsupportedCipher = fmt.Errorf("Unsupported cipher.")
+	// The key is not available.
 	ErrKeyNotAvailable = fmt.Errorf("Key not available.")
+	// The current key is not a reading key for the given entry.
+	ErrNotAReadingKey = fmt.Errorf("Not a reading key.")
 )
 
-/*
-This struct contanins the definition of the key holder.
-*/
-type ReaderPrivateKey struct {
-	privateKey crypto.PrivateKey
-	keyId      string
-}
-
-/*
-Creates a new ReaderPrivateKey.
-*/
-func NewReaderPrivateKey(publicKey crypto.PublicKey, privateKey crypto.PrivateKey) (*ReaderPrivateKey, error) {
-	id, err := mycrypto.CreatePublicKeyHash(publicKey)
-	if err != nil {
-		return nil, err
-	}
-	return &ReaderPrivateKey{privateKey: privateKey, keyId: id}, nil
-}
-
-/*
-Returns the key id.
-*/
-func (p *ReaderPrivateKey) KeyID() string {
-	return p.keyId
-}
-
-/*
-Deciphers the JSON document.
-*/
-func (p *ReaderPrivateKey) DecipherJSON(encIV, encKey, encrypted []byte) (string, error) {
-	iv, err := mycrypto.DecryptRSAWithPrivate(p.privateKey, encIV)
+func decipherJSONCore(key mycrypto.ReaderKey, encKey, encIV, encrypted []byte) (string, error) {
+	iv, err := key.Unwrap(encIV)
 	if err != nil {
 		return "", err
 	}
 	defer utils.ShredBytes(iv)
-	key, err := mycrypto.DecryptRSAWithPrivate(p.privateKey, encIV)
+	k, err := key.Unwrap(encKey)
 	if err != nil {
 		return "", err
 	}
-	defer utils.ShredBytes(key)
-	return mycrypto.DecipherJSON(key, iv, encrypted)
+	defer utils.ShredBytes(k)
+	return mycrypto.DecipherJSON(k, iv, encrypted)
+}
+
+func decipherJSONProcessParameters(key mycrypto.ReaderKey, params *models.ReadingKeyModel, cipherText string) (string, error) {
+	binIV, err := models.DecodeBytes(params.EncryptedIV)
+	if err != nil {
+		return "", err
+	}
+	defer utils.ShredBytes(binIV)
+	binKey, err := models.DecodeBytes(params.EncryptedKey)
+	if err != nil {
+		return "", err
+	}
+	defer utils.ShredBytes(binKey)
+	binEnc, err := models.DecodeBytes(cipherText)
+	if err != nil {
+		return "", err
+	}
+	return decipherJSONCore(key, binKey, binIV, binEnc)
 }
 
 /*
-Deciphers the
+Deciphers JSON received from the server using the specified reader key.
 */
-func DecipherJSON(key *ReaderPrivateKey, doc models.JsonDocumentModel) (string, error) {
-
-	return "", nil
+func DecipherJSON(key mycrypto.ReaderKey, json models.JsonDocumentModel) (string, error) {
+	if json.EncryptedJson == nil {
+		return "", fmt.Errorf("EncryptedJson is not set.")
+	}
+	if json.EncryptedJson.Cipher == nil || *json.EncryptedJson.Cipher != models.AES256_CipherAlgorithm {
+		return "", ErrUnsupportedCipher
+	}
+	k := json.EncryptedJson.FindReadingKey(key.PublicKeyHash())
+	if k == nil {
+		return "", ErrNotAReadingKey
+	}
+	return decipherJSONProcessParameters(key, k, json.EncryptedJson.CipherText)
 }
