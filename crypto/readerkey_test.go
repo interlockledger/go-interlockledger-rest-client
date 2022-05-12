@@ -28,17 +28,15 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-/*
-This package contains the implementation of all cryptographic utilities used
-by this client library.
-*/
 package crypto
 
 import (
 	"crypto"
 	"crypto/ecdsa"
 	"crypto/rsa"
+	"fmt"
 	"math/big"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -76,6 +74,20 @@ func TestNewReaderKeyFromPrivateKey(t *testing.T) {
 	rk, err = NewReaderKeyFromPrivateKey(&ecdsa.PrivateKey{})
 	assert.Error(t, err)
 	assert.Nil(t, rk)
+}
+
+func ExampleNewReaderKeyFromPrivateKey() {
+	pair, err := LoadCertificateWithKey("cert.pem", "key.pem")
+	if err != nil {
+		fmt.Printf("Unable to load the key pair: %v\n", err.Error())
+		os.Exit(1)
+	}
+	rk, err := NewReaderKeyFromPrivateKey(pair.PrivateKey)
+	if err != nil {
+		fmt.Printf("Unable create the ReaderKey: %v\n", err.Error())
+		os.Exit(1)
+	}
+	fmt.Printf("The public key hash is: %s\n", rk.PublicKeyHash())
 }
 
 func createTestReaderKey(t *testing.T) ReaderKey {
