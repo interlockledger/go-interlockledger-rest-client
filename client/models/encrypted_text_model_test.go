@@ -30,18 +30,23 @@
 
 package models
 
-type EncryptedTextModel struct {
-	Cipher      *CipherAlgorithm  `json:"cipher,omitempty"`
-	CipherText  string            `json:"cipherText,omitempty"`
-	ReadingKeys []ReadingKeyModel `json:"readingKeys,omitempty"`
-}
+import (
+	"testing"
 
-// Finds the reading key based on the publicKeyHash.
-func (m *EncryptedTextModel) FindReadingKey(publicKeyHash string) *ReadingKeyModel {
-	for _, v := range m.ReadingKeys {
-		if v.PublicKeyHash == publicKeyHash {
-			return &v
-		}
-	}
-	return nil
+	"github.com/stretchr/testify/assert"
+)
+
+func TestEncryptedTextModelFindReadingKey(t *testing.T) {
+	var m EncryptedTextModel
+
+	assert.Nil(t, m.FindReadingKey("hash1"))
+
+	m.ReadingKeys = append(m.ReadingKeys, ReadingKeyModel{PublicKeyHash: "hash1"})
+	m.ReadingKeys = append(m.ReadingKeys, ReadingKeyModel{PublicKeyHash: "hash2"})
+	m.ReadingKeys = append(m.ReadingKeys, ReadingKeyModel{PublicKeyHash: "hash3"})
+
+	assert.Equal(t, "hash1", m.FindReadingKey("hash1").PublicKeyHash)
+	assert.Equal(t, "hash2", m.FindReadingKey("hash2").PublicKeyHash)
+	assert.Equal(t, "hash3", m.FindReadingKey("hash3").PublicKeyHash)
+	assert.Nil(t, m.FindReadingKey("hash4"))
 }

@@ -30,18 +30,42 @@
 
 package models
 
-type EncryptedTextModel struct {
-	Cipher      *CipherAlgorithm  `json:"cipher,omitempty"`
-	CipherText  string            `json:"cipherText,omitempty"`
-	ReadingKeys []ReadingKeyModel `json:"readingKeys,omitempty"`
+import (
+	"encoding/base64"
+)
+
+/*
+Decodes a byte array encoded as a base64 string.
+*/
+func DecodeBytes(value string) ([]byte, error) {
+	return base64.StdEncoding.DecodeString(value)
 }
 
-// Finds the reading key based on the publicKeyHash.
-func (m *EncryptedTextModel) FindReadingKey(publicKeyHash string) *ReadingKeyModel {
-	for _, v := range m.ReadingKeys {
-		if v.PublicKeyHash == publicKeyHash {
-			return &v
-		}
+/*
+Decodes an optional byte array encoded as a base64 string. It returns nil if the
+input is nil.
+*/
+func DecodeOptionalBytes(value *string) ([]byte, error) {
+	return DecodeBytes(*value)
+}
+
+/*
+Encodes a byte array into a base64 value.
+*/
+func EncodeBytes(value []byte) string {
+	if value == nil {
+		return ""
 	}
-	return nil
+	return base64.StdEncoding.EncodeToString(value)
+}
+
+/*
+Encodes an optional byte array into a base64 value.
+*/
+func EncodeOptionalBytes(value []byte) *string {
+	if value == nil {
+		return nil
+	}
+	enc := EncodeBytes(value)
+	return &enc
 }

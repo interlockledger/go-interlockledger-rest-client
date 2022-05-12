@@ -30,18 +30,57 @@
 
 package models
 
-type EncryptedTextModel struct {
-	Cipher      *CipherAlgorithm  `json:"cipher,omitempty"`
-	CipherText  string            `json:"cipherText,omitempty"`
-	ReadingKeys []ReadingKeyModel `json:"readingKeys,omitempty"`
+import (
+	"testing"
+
+	"github.com/stretchr/testify/assert"
+)
+
+func TestDecodeBytes(t *testing.T) {
+
+	b, err := DecodeBytes("")
+	assert.Nil(t, err)
+	assert.Equal(t, []byte{}, b)
+
+	b, err = DecodeBytes("AAAA")
+	assert.Nil(t, err)
+	assert.Equal(t, []byte{0, 0, 0}, b)
+
+	_, err = DecodeBytes("AAA")
+	assert.Error(t, err)
 }
 
-// Finds the reading key based on the publicKeyHash.
-func (m *EncryptedTextModel) FindReadingKey(publicKeyHash string) *ReadingKeyModel {
-	for _, v := range m.ReadingKeys {
-		if v.PublicKeyHash == publicKeyHash {
-			return &v
-		}
-	}
-	return nil
+func TestDecodeOptionalBytes(t *testing.T) {
+
+	b, err := DecodeOptionalBytes(nil)
+	assert.Nil(t, err)
+	assert.Nil(t, b)
+
+	enc := ""
+	b, err = DecodeOptionalBytes(&enc)
+	assert.Nil(t, err)
+	assert.Equal(t, []byte{}, b)
+
+	enc = "AAAA"
+	b, err = DecodeOptionalBytes(&enc)
+	assert.Nil(t, err)
+	assert.Equal(t, []byte{0, 0, 0}, b)
+
+	enc = "AAA"
+	_, err = DecodeOptionalBytes(&enc)
+	assert.Error(t, err)
+}
+
+func TestEncodeBytes(t *testing.T) {
+
+	assert.Equal(t, "", EncodeBytes(nil))
+	assert.Equal(t, "", EncodeBytes([]byte{}))
+	assert.Equal(t, "AAAA", EncodeBytes([]byte{0, 0, 0}))
+}
+
+func TestEncodeOptionalBytes(t *testing.T) {
+
+	assert.Nil(t, EncodeOptionalBytes(nil))
+	assert.Equal(t, "", *EncodeOptionalBytes([]byte{}))
+	assert.Equal(t, "AAAA", *EncodeOptionalBytes([]byte{0, 0, 0}))
 }
