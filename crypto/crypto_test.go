@@ -93,13 +93,28 @@ func TestDecryptRSAWithPrivate(t *testing.T) {
 	pair, err := LoadCertificateWithKey(certFile, keyFile)
 	require.Nil(t, err)
 	require.NotNil(t, pair)
+	pk, err := castRSAPrivateKey(pair.PrivateKey)
+	require.Nil(t, err)
 
-	bin, err := DecryptRSAWithPrivate(pair.PrivateKey, SAMPLE_ENC_IV)
+	bin, err := DecryptRSAWithPrivate(pk, SAMPLE_ENC_IV)
+	require.Nil(t, err)
+	require.Equal(t, SAMPLE_IV, bin)
+}
+
+func TestDecryptWithPrivate(t *testing.T) {
+	certFile := getSampleFile("cert.pem")
+	keyFile := getSampleFile("key.pem")
+
+	pair, err := LoadCertificateWithKey(certFile, keyFile)
+	require.Nil(t, err)
+	require.NotNil(t, pair)
+
+	bin, err := DecryptWithPrivate(pair.PrivateKey, SAMPLE_ENC_IV)
 	require.Nil(t, err)
 	require.Equal(t, SAMPLE_IV, bin)
 
 	badKey := &ecdsa.PrivateKey{}
-	bin, err = DecryptRSAWithPrivate(badKey, SAMPLE_ENC_IV)
+	bin, err = DecryptWithPrivate(badKey, SAMPLE_ENC_IV)
 	require.ErrorIs(t, err, ErrInvalidPrivateKey)
 	require.Nil(t, bin)
 }

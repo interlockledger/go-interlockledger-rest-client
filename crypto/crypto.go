@@ -80,13 +80,18 @@ func castRSAPublicKey(publicKey crypto.PublicKey) (*rsa.PublicKey, error) {
 }
 
 // Deciphers the message using the specified private key.
-func DecryptRSAWithPrivate(privateKey crypto.PrivateKey, encrypted []byte) ([]byte, error) {
+func DecryptRSAWithPrivate(privateKey *rsa.PrivateKey, encrypted []byte) ([]byte, error) {
+	return rsa.DecryptOAEP(crypto.SHA1.New(), nil, privateKey, encrypted, nil)
+}
+
+// Deciphers the message using the specified private key.
+func DecryptWithPrivate(privateKey crypto.PrivateKey, encrypted []byte) ([]byte, error) {
 	// This code is based on the python version of this code.
 	pkey, err := castRSAPrivateKey(privateKey)
 	if err != nil {
 		return nil, err
 	}
-	return rsa.DecryptOAEP(crypto.SHA1.New(), nil, pkey, encrypted, nil)
+	return DecryptRSAWithPrivate(pkey, encrypted)
 }
 
 /*
@@ -193,7 +198,7 @@ func CreatePublicKeyHash(publicKey crypto.PublicKey) (string, error) {
 	// Convert
 	bin, err := ConvertPublicKey(publicKey)
 	if err != nil {
-		return "", nil
+		return "", err
 	}
 	return CreatePublicKeyHashBin(bin)
 }
