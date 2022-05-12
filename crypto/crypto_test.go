@@ -268,3 +268,10 @@ func TestCreatePublicKeyHash(t *testing.T) {
 	assert.Nil(t, err)
 	assert.Equal(t, "QVxUC2T2B_YI4wc4xylO0prlMEhgx1vOqc8NqTqn2lE#SHA256", s)
 }
+
+func TestCreateReaderId(t *testing.T) {
+
+	id, err := CreateReaderId([]byte("test"))
+	assert.Nil(t, err)
+	assert.Equal(t, "Key!qUqP5cyxm6YcTAhz05Hph5gvu9M#SHA1", id)
+}

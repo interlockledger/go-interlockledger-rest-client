@@ -197,3 +197,26 @@ func CreatePublicKeyHash(publicKey crypto.PublicKey) (string, error) {
 	}
 	return CreatePublicKeyHashBin(bin)
 }
+
+/*
+Creates a probably unique ReaderId from a string of bytes. It may be a key, the
+certificate payload or even a random value.
+*/
+func CreateReaderId(data []byte) (string, error) {
+
+	sha1 := crypto.SHA1.New()
+	n, err := sha1.Write(data)
+	if err != nil {
+		return "", err
+	}
+	if n != len(data) {
+		return "", fmt.Errorf("Unable to hash the certificate.")
+	}
+	h := sha1.Sum(nil)
+	s := base64.URLEncoding.WithPadding(base64.NoPadding).EncodeToString(h)
+	sb := strings.Builder{}
+	sb.WriteString("Key!")
+	sb.WriteString(s)
+	sb.WriteString("#SHA1")
+	return sb.String(), nil
+}
