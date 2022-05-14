@@ -329,6 +329,7 @@ func (c *APIClient) prepareRequest(
 }
 
 func (c *APIClient) decode(v interface{}, b []byte, contentType string) (err error) {
+
 	if strings.Contains(contentType, "application/xml") {
 		if err = xml.Unmarshal(b, v); err != nil {
 			return err

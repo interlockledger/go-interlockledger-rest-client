@@ -1,0 +1,30 @@
+{
+  "applicationId": 8,
+  "chainId": "COZNzQs9KFFD8xMyxrH-ZTk8l0Ym4Z9lWX0OX5fFvbE",
+  "createdAt": "2022-05-14T19:04:22.1711336Z",
+  "network": "Minerva",
+  "payloadTagId": 2100,
+  "reference": "Minerva:COZNzQs9KFFD8xMyxrH-ZTk8l0Ym4Z9lWX0OX5fFvbE@17",
+  "serial": 17,
+  "type": "Data",
+  "version": 3,
+  "encryptedJson": {
+    "cipher": "AES256",
+    "cipherText": "eqqyEJ5aoPRUYqtfYm4skP1m8BED5BuIvQCqzAG/tTQ=",
+    "readingKeys": [
+      {
+        "encryptedIV": "FND+pMsBR+keuqO07OuSRBH9efV6KHr91K14oKk8BiPDYD6riH8JTylpCroJ461+GKhJm97ZoNAWfC3uDEZS5TcCl1+CUEONAlHaNEuuzAuC3sg+3witwcp1erfiyX6w6cAd4+xhAH63IJEVDL8HyfGzeorIkw0gloeDYpwEKVvZShUyxCuyLk2spHuZ5z0UFvu4xKgPWtcnDd4zBl+Pd/rXIM4T7W1Nre4Cw3KzR8msDVbxDUaqmvTwCNKzCm/QLzRrfG1rmuEfcwcba5CbPFLAcZo5f866bwCisMLX51ENeyhWKsyiAWWQ5SEmmBj0nVVB2QC1XbrDGJ5Gmxvp32/GS8Wntg50+l8oHe6DxpvLF7EvDpbuvyLnbQ2Gx/gpZ99yvA8/LjotyCrgizGL82qwCoFEXOj/jBSbSzChzuMSrfUJsednHUtyhvfL2Qdhmy6KvaHzVhtD/JdmuUIGvID/xWS6v5pNCKMxYQyiKaigh39Iu14YYizdGHRTy1uT",
+        "encryptedKey": "Kerlz44kARpI1lYy7doXSzPdP6uVUT8+9NP/vR3s76ZxsPYqH9sMHEFHabK5jmvvDx+7baNfYYqt9EZPTVi3rQ+Mt3BNGMBhkrQ9TaMVI1kDTwvIocp/kD84hlsYS4hv5lC9hM0mM/m8r2zJ4YDtiUgFGllg+G6zDlfyKTrRJeY1ssVgP9+Y1IO2i5oMsoQAou9ApfQBCAK35pf5PHPt8I9pwVV+Q84HicvlIB1Dmq+DKNj6c2Gb8Zcfv0hWoTaLf2lunMghVbK8RmQ6KpVfNcHBJYVIJ9TTWr4A9pU9WOSnMYzFVGUOq9vGq5o7X5skLTbbpXgplM9/Hx0qrsvVjSAhto70awWKo2fjgQWW4MtJrYa52tTgzixDVmUmVx7RqfnQYQek+dYb6ebxaAEubBBjVcbZCGxAsKW4dGrx3abjLHV/M9nf43pzhkRBIEm7g8eRmDdTzcGNL+o2KBNtjf2uON5whSGqDPg/1S8GJ68VO+6oZ/f+gsH4UW+psMbv",
+        "publicKeyHash": "QVxUC2T2B_YI4wc4xylO0prlMEhgx1vOqc8NqTqn2lE#SHA256",
+        "readerId": "Key!N-YsugK43Qrp4EsCwpnF5SjVseA#SHA1"
+      },
+      {
+        "encryptedIV": "G9PB9dA7QT2xFzQbhIuv6twnEgymmU9u0X4RJFvSiMDDOonmhoZL8TjPpRjWUMOE/ZY31BLmnMSbt1JyAILqpnJ3nIV3hbi0Z6Pyi4tyz5ej/rCILjdWxlFdrsLqIXbJCRODk8pd8jQK+FqNRakZF9epBH2MXVT3tNexPiRxcOhVjQWt186JT3vO5f4GR7XARXcO2RItqoEwDiehNhSZe3YOC08p3M2quwrYyzQElEJOBY4Zq+6nzHUHpTG8MbT9I0ceutLWBMn/XMcHWbHsl1o3SOFcwguUZ775FwmMJCKQiIoh+0epuAJ13Bv78McaiauA7Ab2Z9bAImJXuit2Ag==",
+        "encryptedKey": "PhuBLgHyVmcdd5cv2UJjdsbnWiZlNT6HZ6thEDWu/wKPVT1J+zRg/IMToA3XXNxjgMHXE8NyUfiU+DFUwK/as2la6YQ1Ru8s247wlOsnRUZSpuStWjDJ21g2qBX8gvASIEEk8R5VHNBhF6AQXfNpwF333M7DTYTeHwJL3ovwWubBxCq2fsBrYaJ2dIfaY50nGeuStseBd7Qlh11bIzeHGioPNABzTq0b5ahCTv2+azEWpj+10PTEy1BA878ZDm/FmvzA3W5xKYffno9rKFe3Pq5xP9U6lhWUWCEIEEWh0rGFCL2BGO52pU37WAO6dmcRADsrQBUukNbp9nNg/qPcsg==",
+        "publicKeyHash": "mQ9L7BboXNmIDL_4HbNHjWGW1tMQUMelTzbnK4lHg-E#SHA256",
+        "readerId": "Key!sunrzo4_cbjau-a_02egWdYtBJ4#SHA1"
+      }
+    ]
+  }
+}
+

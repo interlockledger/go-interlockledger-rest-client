@@ -607,13 +607,14 @@ type JsonDocumentApiJsonDocumentsAllowReadersOpts struct {
 	Body optional.Interface
 }
 
-func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, chain string, localVarOptionals *JsonDocumentApiJsonDocumentsAllowReadersOpts) (RecordReference, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, chain string,
+	allowedReaders *AllowedReadersModel) (string, *http.Response, error) {
 	var (
-		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
+		localVarHttpMethod = strings.ToUpper("Post")
+
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordReference
+		localVarReturnValue string
 	)
 
 	// create path and map variables
@@ -642,12 +643,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, 
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, allowedReaders, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
