@@ -539,6 +539,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, ch
 		}
 		if localVarHttpResponse.StatusCode == 400 {
 			var v map[string]Object
+			fmt.Println(string(localVarBody))
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

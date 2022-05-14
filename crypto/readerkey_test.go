@@ -112,7 +112,7 @@ func TestReaderKeyEncodedPublicKey(t *testing.T) {
 	rk := createTestReaderKey(t)
 	key, id, err := rk.EncodedPublicKey()
 	assert.Nil(t, err)
-	assert.Equal(t, "KPgQEPgImalwNPIEhRmEy_69WCGSVidHhP8_MqzOZSBn2AwZsjdDBy84F6TfomZQfCPTf4ND7j8FpHhOpASK5gjBnhAo65QxKYytxsyUXYJ1CO9hB55XJgn7q0B94SYhaO7Va5N2ixailbLbP9D9rnkVuVDp2rPjeahVKC4lYgL8Od_9dvOw5C_emFphJszKKx9-_0ot_bNefcMa_jKJuhwuaNkaArepMfQT6-TvVukTR31BRxSg5wrMNDOrLClKFHTtPtApzDW0sMuCyNKmOOHGwB4jzDDVxqcu46h7BEIKxPYtMCTCqs0M1i5gwZmNSaFu6m3RqrLvttMC2-vVJadL0QvTPRADAQAB", key)
+	assert.Equal(t, "PubKey!KPgQEPgImalwNPIEhRmEy_69WCGSVidHhP8_MqzOZSBn2AwZsjdDBy84F6TfomZQfCPTf4ND7j8FpHhOpASK5gjBnhAo65QxKYytxsyUXYJ1CO9hB55XJgn7q0B94SYhaO7Va5N2ixailbLbP9D9rnkVuVDp2rPjeahVKC4lYgL8Od_9dvOw5C_emFphJszKKx9-_0ot_bNefcMa_jKJuhwuaNkaArepMfQT6-TvVukTR31BRxSg5wrMNDOrLClKFHTtPtApzDW0sMuCyNKmOOHGwB4jzDDVxqcu46h7BEIKxPYtMCTCqs0M1i5gwZmNSaFu6m3RqrLvttMC2-vVJadL0QvTPRADAQAB#RSA", key)
 	assert.Equal(t, "Key!sunrzo4_cbjau-a_02egWdYtBJ4#SHA1", id)
 }
 

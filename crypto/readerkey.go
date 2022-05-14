@@ -32,8 +32,22 @@ package crypto
 
 import (
 	"crypto"
+	"crypto/rsa"
 	"encoding/base64"
 )
+
+// Header of the public key.
+var PUBLIC_KEY_HEADER = []byte("PubKey!")
+
+func keySuffix(publicKey crypto.PublicKey) string {
+
+	switch publicKey.(type) {
+	case *rsa.PublicKey:
+		return "#RSA"
+	default:
+		return ""
+	}
+}
 
 /*
 This is the interface of all reader key. Reader keys are used to decipher some
@@ -58,6 +72,10 @@ type ReaderKey interface {
 		Unwraps the given wrapped value with the specified private key.
 	*/
 	Unwrap(enc []byte) ([]byte, error)
+	/*
+		Returns true if the private key is present.
+	*/
+	HasPrivateKey() bool
 }
 
 /*
@@ -111,9 +129,25 @@ func (k *readerKeyImpl) EncodedPublicKey() (string, string, error) {
 	if err != nil {
 		return "", "", err
 	}
-	return base64.URLEncoding.EncodeToString(encBin), readerId, nil
+	// Compute the value
+	suffix := keySuffix(k.publicKey)
+	encBinLen := base64.URLEncoding.EncodedLen(len(encBin))
+	headerLen := len(PUBLIC_KEY_HEADER)
+	tmp := make([]byte, headerLen+encBinLen+len(suffix))
+	copy(tmp[0:], PUBLIC_KEY_HEADER)
+	base64.URLEncoding.Encode(tmp[headerLen:], encBin)
+	copy(tmp[headerLen+encBinLen:], []byte(suffix))
+	return string(tmp), readerId, nil
 }
 
 func (k *readerKeyImpl) Unwrap(enc []byte) ([]byte, error) {
-	return DecryptWithPrivate(k.privateKey, enc)
+	if k.HasPrivateKey() {
+		return DecryptWithPrivate(k.privateKey, enc)
+	} else {
+		return nil, ErrInvalidPrivateKey
+	}
+}
+
+func (k *readerKeyImpl) HasPrivateKey() bool {
+	return k.privateKey != nil
 }

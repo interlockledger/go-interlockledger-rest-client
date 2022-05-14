@@ -100,6 +100,17 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	return c
 }
 
+// This helper function tries to convert a given error into a
+// GenericSwaggerError. Returns nil if the type does not match.
+func (c *APIClient) ToGenericSwaggerError(err error) *GenericSwaggerError {
+	switch err.(type) {
+	case *GenericSwaggerError:
+		return err.(*GenericSwaggerError)
+	default:
+		return nil
+	}
+}
+
 func atoi(in string) (int, error) {
 	return strconv.Atoi(in)
 }
