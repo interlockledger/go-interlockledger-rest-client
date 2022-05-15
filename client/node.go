@@ -487,10 +487,9 @@ type NodeApiMirrorAddOpts struct {
 	Body optional.Interface
 }
 
-func (a *NodeApiService) MirrorAdd(ctx context.Context, localVarOptionals *NodeApiMirrorAddOpts) ([]ChainIdModel, *http.Response, error) {
+func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]ChainIdModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue []ChainIdModel
@@ -520,13 +519,7 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, localVarOptionals *NodeA
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, chains, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
