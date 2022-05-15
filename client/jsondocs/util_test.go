@@ -28,67 +28,21 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package crypto
+package jsondocs
 
 import (
-	"crypto/rsa"
-	"testing"
-
-	"github.com/stretchr/testify/assert"
+	"path"
+	"runtime"
 )
 
-func TestLoadCertificateWithKey(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
-	keyFile := getSampleFile("key.pem")
+var sampleDir = findSampleDir()
 
-	pair, err := LoadCertificateWithKey(certFile, keyFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, pair.PrivateKey)
+// Returns the sample dir for this package
+func findSampleDir() string {
+	_, filename, _, _ := runtime.Caller(0)
+	return path.Join(path.Dir(path.Dir(path.Dir(filename))), "samples")
 }
 
-func TestLoadCertificate(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
-	cert, err := LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 1, len(cert))
-
-	certFile = getSampleFile("certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 2, len(cert))
-
-	certFile = getSampleFile("empty-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-entry-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	cert, err = LoadCertificate("this file does not exist.")
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-}
-
-func TestLoadPrivateKey(t *testing.T) {
-	keyFile := getSampleFile("key.pem")
-
-	key, err := LoadPrivateKey(keyFile)
-	assert.Nil(t, err)
-	var exp *rsa.PrivateKey
-	assert.IsType(t, exp, key)
-
-	certFile := getSampleFile("cert.pem")
-	key, err = LoadPrivateKey(certFile)
-	assert.ErrorIs(t, err, ErrInvalidPrivateKey)
-	assert.Nil(t, key)
+func getSampleFile(file string) string {
+	return path.Join(sampleDir, file)
 }

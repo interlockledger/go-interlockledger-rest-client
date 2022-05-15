@@ -82,7 +82,7 @@ func decipherJSONProcessParameters(key mycrypto.ReaderKey, params *models.Readin
 /*
 Deciphers JSON received from the server using the specified reader key.
 */
-func DecipherJSON(key mycrypto.ReaderKey, json models.JsonDocumentModel) (string, error) {
+func DecipherJSON(key mycrypto.ReaderKey, json *models.JsonDocumentModel) (string, error) {
 	if json.EncryptedJson == nil {
 		return "", fmt.Errorf("EncryptedJson is not set.")
 	}

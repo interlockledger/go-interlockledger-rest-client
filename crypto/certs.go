@@ -31,6 +31,10 @@
 package crypto
 
 import (
+	"crypto"
+	"crypto/ecdsa"
+	"crypto/ed25519"
+	"crypto/rsa"
 	"crypto/tls"
 	"crypto/x509"
 	"encoding/pem"
@@ -84,4 +88,34 @@ func LoadCertificate(certificateFile string) ([]*x509.Certificate, error) {
 		return certs, nil
 	}
 
+}
+
+/*
+Loads the private key from a PEM file. It can load RSA, ECDSA and EdDSA keys.
+*/
+func LoadPrivateKey(keyFile string) (crypto.PrivateKey, error) {
+	bytes, err := os.ReadFile(keyFile)
+	if err != nil {
+		return nil, err
+	}
+	pemBlock, _ := pem.Decode(bytes)
+	if pemBlock == nil || pemBlock.Type != "PRIVATE KEY" {
+		return nil, ErrInvalidPrivateKey
+	}
+	// This code is based on the code inside standard library tls.
+	if key, err := x509.ParsePKCS1PrivateKey(pemBlock.Bytes); err == nil {
+		return key, nil
+	}
+	if key, err := x509.ParsePKCS8PrivateKey(pemBlock.Bytes); err == nil {
+		switch key.(type) {
+		case *rsa.PrivateKey, *ecdsa.PrivateKey, ed25519.PrivateKey:
+			return key, nil
+		default:
+			return ErrInvalidPrivateKey, nil
+		}
+	}
+	if key, err := x509.ParseECPrivateKey(pemBlock.Bytes); err == nil {
+		return key, nil
+	}
+	return nil, ErrInvalidPrivateKey
 }

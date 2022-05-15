@@ -28,67 +28,46 @@
 // OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
 // OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
-package crypto
+package jsondocs
 
 import (
-	"crypto/rsa"
+	"encoding/json"
+	"os"
 	"testing"
 
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/crypto"
 	"github.com/stretchr/testify/assert"
+	"github.com/stretchr/testify/require"
 )
 
-func TestLoadCertificateWithKey(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
+func loadReaderKey(t *testing.T) crypto.ReaderKey {
 	keyFile := getSampleFile("key.pem")
-
-	pair, err := LoadCertificateWithKey(certFile, keyFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, pair.PrivateKey)
+	privateKey, err := crypto.LoadPrivateKey(keyFile)
+	require.Nil(t, err)
+	k, err := crypto.NewReaderKeyFromPrivateKey(privateKey)
+	require.Nil(t, err)
+	return k
 }
 
-func TestLoadCertificate(t *testing.T) {
-	certFile := getSampleFile("cert.pem")
-	cert, err := LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 1, len(cert))
-
-	certFile = getSampleFile("certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Nil(t, err)
-	assert.NotNil(t, cert)
-	assert.Equal(t, 2, len(cert))
-
-	certFile = getSampleFile("empty-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	certFile = getSampleFile("bad-entry-certs.pem")
-	cert, err = LoadCertificate(certFile)
-	assert.Error(t, err)
-	assert.Nil(t, cert)
-
-	cert, err = LoadCertificate("this file does not exist.")
-	assert.Error(t, err)
-	assert.Nil(t, cert)
+func loadSampleJSON(t *testing.T, file string, model any) {
+	b, err := os.ReadFile(file)
+	require.Nil(t, err)
+	err = json.Unmarshal(b, model)
+	require.Nil(t, err)
 }
 
-func TestLoadPrivateKey(t *testing.T) {
-	keyFile := getSampleFile("key.pem")
+func TestDecipherJSON(t *testing.T) {
+	var model models.JsonDocumentModel
 
-	key, err := LoadPrivateKey(keyFile)
+	key := loadReaderKey(t)
+
+	loadSampleJSON(t, getSampleFile("encrypted-json.json"), &model)
+	s, err := DecipherJSON(key, &model)
 	assert.Nil(t, err)
-	var exp *rsa.PrivateKey
-	assert.IsType(t, exp, key)
+	assert.Equal(t, "{\"dummy\":\"DUMMY\"}", s)
 
-	certFile := getSampleFile("cert.pem")
-	key, err = LoadPrivateKey(certFile)
-	assert.ErrorIs(t, err, ErrInvalidPrivateKey)
-	assert.Nil(t, key)
+	loadSampleJSON(t, getSampleFile("encrypted-json-no-key.json"), &model)
+	_, err = DecipherJSON(key, &model)
+	assert.ErrorIs(t, err, ErrNotAReadingKey)
 }
