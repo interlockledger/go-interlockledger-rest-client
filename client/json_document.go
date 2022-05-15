@@ -223,10 +223,13 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Conte
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	localVarHeaderParams["X-PubKeyChains"] = parameterToString(xPubKeyChains, "")
+
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonDoc, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
+	}
+	for _, v := range xPubKeyChains {
+		r.Header.Add("X-PubKeyChains", v)
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
