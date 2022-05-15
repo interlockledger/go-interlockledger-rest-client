@@ -31,9 +31,9 @@
 package models
 
 type InterlockingRecordModelPageOf struct {
-	Items              []InterlockingRecordModel `json:"items,omitempty"`
-	Page               int32                     `json:"page,omitempty"`
-	PageSize           int32                     `json:"pageSize,omitempty"`
-	TotalNumberOfPages int32                     `json:"totalNumberOfPages,omitempty"`
-	LastToFirst        bool                      `json:"lastToFirst,omitempty"`
+	Items              []InterlockingRecordModel `json:"items"`
+	Page               int32                     `json:"page"`
+	PageSize           int32                     `json:"pageSize"`
+	TotalNumberOfPages int32                     `json:"totalNumberOfPages"`
+	LastToFirst        bool                      `json:"lastToFirst"`
 }

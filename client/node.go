@@ -334,7 +334,7 @@ type NodeApiInterlockingsListOpts struct {
 	PageSize       optional.Int32
 }
 
-func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain string, localVarOptionals *NodeApiInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
+func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain string, optionalParams *NodeApiInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -351,17 +351,17 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.LastKnownBlock.IsSet() {
-		localVarQueryParams.Add("lastKnownBlock", parameterToString(localVarOptionals.LastKnownBlock.Value(), ""))
+	if optionalParams != nil && optionalParams.LastKnownBlock.IsSet() {
+		localVarQueryParams.Add("lastKnownBlock", parameterToString(optionalParams.LastKnownBlock.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastToFirst.IsSet() {
-		localVarQueryParams.Add("lastToFirst", parameterToString(localVarOptionals.LastToFirst.Value(), ""))
+	if optionalParams != nil && optionalParams.LastToFirst.IsSet() {
+		localVarQueryParams.Add("lastToFirst", parameterToString(optionalParams.LastToFirst.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+	if optionalParams != nil && optionalParams.Page.IsSet() {
+		localVarQueryParams.Add("page", parameterToString(optionalParams.Page.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if optionalParams != nil && optionalParams.PageSize.IsSet() {
+		localVarQueryParams.Add("pageSize", parameterToString(optionalParams.PageSize.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
