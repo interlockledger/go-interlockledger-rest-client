@@ -340,15 +340,9 @@ ChainApiService Creates a new chain in this node
      * @param "Body" (optional.Interface of ChainCreationModel) -
 @return ChainCreatedModel
 */
-
-type ChainApiChainCreateOpts struct {
-	Body optional.Interface
-}
-
-func (a *ChainApiService) ChainCreate(ctx context.Context, localVarOptionals *ChainApiChainCreateOpts) (ChainCreatedModel, *http.Response, error) {
+func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams ChainCreatedModel) (ChainCreatedModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue ChainCreatedModel
@@ -379,12 +373,7 @@ func (a *ChainApiService) ChainCreate(ctx context.Context, localVarOptionals *Ch
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, creationParams, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}

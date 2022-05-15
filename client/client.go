@@ -106,6 +106,9 @@ func (c *APIClient) ToGenericSwaggerError(err error) *GenericSwaggerError {
 	switch err.(type) {
 	case *GenericSwaggerError:
 		return err.(*GenericSwaggerError)
+	case GenericSwaggerError:
+		e := err.(GenericSwaggerError)
+		return &e
 	default:
 		return nil
 	}
