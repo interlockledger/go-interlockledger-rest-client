@@ -894,14 +894,10 @@ ChainApiService Add keys to the permitted list for the chain
 @return []KeyDetailsModel
 */
 
-type ChainApiChainPermittedKeysAddOpts struct {
-	Body optional.Interface
-}
-
-func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain string, localVarOptionals *ChainApiChainPermittedKeysAddOpts) ([]KeyDetailsModel, *http.Response, error) {
+func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain string, keys []KeyPermitModel) ([]KeyDetailsModel, *http.Response, error) {
 	var (
-		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
+		localVarHttpMethod = strings.ToUpper("Post")
+
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue []KeyDetailsModel
@@ -932,13 +928,7 @@ func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain strin
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, keys, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
