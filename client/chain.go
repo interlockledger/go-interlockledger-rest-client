@@ -330,7 +330,7 @@ ChainApiService Creates a new chain in this node
      * @param "Body" (optional.Interface of ChainCreationModel) -
 @return ChainCreatedModel
 */
-func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams ChainCreatedModel) (ChainCreatedModel, *http.Response, error) {
+func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *ChainCreatedModel) (ChainCreatedModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
