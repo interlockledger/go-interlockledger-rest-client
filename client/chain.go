@@ -58,15 +58,10 @@ ChainApiService Add apps to the permitted list for the chain
      * @param "Body" (optional.Interface of []int64) -  List of apps to be permitted
 @return []int64
 */
-
-type ChainApiChainActiveAppsAddOpts struct {
-	Body optional.Interface
-}
-
-func (a *ChainApiService) ChainActiveAppsAdd(ctx context.Context, chain string, localVarOptionals *ChainApiChainActiveAppsAddOpts) ([]int64, *http.Response, error) {
+func (a *ChainApiService) ChainActiveAppsAdd(ctx context.Context, chain string, localVarPostBody []int64) ([]int64, *http.Response, error) {
 	var (
-		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
+		localVarHttpMethod = strings.ToUpper("Post")
+
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue []int64
@@ -98,11 +93,6 @@ func (a *ChainApiService) ChainActiveAppsAdd(ctx context.Context, chain string, 
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
 	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
 	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
@@ -612,14 +602,9 @@ ChainApiService Forces an interlock on a target chain
 @return InterlockingRecordModel
 */
 
-type ChainApiChainInterlockingAddOpts struct {
-	Body optional.Interface
-}
-
-func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string, localVarOptionals *ChainApiChainInterlockingAddOpts) (InterlockingRecordModel, *http.Response, error) {
+func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string, params *ForceInterlockModel) (InterlockingRecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue InterlockingRecordModel
@@ -650,13 +635,7 @@ func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, params, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -768,7 +747,7 @@ type ChainApiChainInterlockingsListOpts struct {
 	PageSize        optional.Int32
 }
 
-func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain string, localVarOptionals *ChainApiChainInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
+func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain string, params *ChainApiChainInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -785,14 +764,14 @@ func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain stri
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.HowManyFromLast.IsSet() {
-		localVarQueryParams.Add("howManyFromLast", parameterToString(localVarOptionals.HowManyFromLast.Value(), ""))
+	if params != nil && params.HowManyFromLast.IsSet() {
+		localVarQueryParams.Add("howManyFromLast", parameterToString(params.HowManyFromLast.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+	if params != nil && params.Page.IsSet() {
+		localVarQueryParams.Add("page", parameterToString(params.Page.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if params != nil && params.PageSize.IsSet() {
+		localVarQueryParams.Add("pageSize", parameterToString(params.PageSize.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
