@@ -55,7 +55,7 @@ JsonDocumentApiService Adds a new record - json document data in the body  It wi
  * @param chain Id of the chain
 @return JsonDocumentModel
 */
-func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain string, json interface{}) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
@@ -88,7 +88,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain str
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, json, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonDoc, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -190,7 +190,7 @@ JsonDocumentApiService Adds a new record - json document data in the body
  * @param xPubKeyChains Id of a local chain from which the &#x27;allowed readers&#x27; list of public keys will be used to encrypt the content
 @return JsonDocumentModel
 */
-func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Context, chain string, xPubKeyChains []string, json interface{}) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Context, chain string, xPubKeyChains []string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
@@ -224,7 +224,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Conte
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
 	localVarHeaderParams["X-PubKeyChains"] = parameterToString(xPubKeyChains, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, json, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonDoc, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -326,7 +326,8 @@ JsonDocumentApiService Adds a new record - json document data in the body
  * @param xPubKeyReferences List of references to records on a local chain containing AllowedReaders, the collection of public key will be used to encrypt the content
 @return JsonDocumentModel
 */
-func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Context, chain string, xPubKeyReferences []RecordReference, json interface{}) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Context, chain string, xPubKeyReferences []string,
+	jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
@@ -359,10 +360,12 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Co
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	localVarHeaderParams["X-PubKeyReferences"] = parameterToString(xPubKeyReferences, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, json, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonDoc, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
+	}
+	for _, v := range xPubKeyReferences {
+		r.Header.Add("X-PubKeyReferences", v)
 	}
 
 	localVarHttpResponse, err := a.client.callAPI(r)
@@ -463,7 +466,7 @@ JsonDocumentApiService Adds a new record - json document data in the body
  * @param xPubKeyId Id of the key
 @return JsonDocumentModel
 */
-func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, chain string, xPubKey string, xPubKeyId string, json interface{}) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, chain string, xPubKey string, xPubKeyId string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
@@ -498,7 +501,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, ch
 	}
 	localVarHeaderParams["X-PubKey"] = parameterToString(xPubKey, "")
 	localVarHeaderParams["X-PubKeyId"] = parameterToString(xPubKeyId, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, json, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonDoc, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
