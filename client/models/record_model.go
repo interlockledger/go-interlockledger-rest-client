@@ -38,11 +38,11 @@ import (
 type RecordModel struct {
 	ApplicationId int64 `json:"applicationId,omitempty"`
 	// Chain unique ID
-	ChainId      string     `json:"chainId,omitempty"`
-	CreatedAt    time.Time  `json:"createdAt,omitempty"`
-	Hash         string     `json:"hash,omitempty"`
-	Network      *NetworkId `json:"network,omitempty"`
-	PayloadTagId int64      `json:"payloadTagId,omitempty"`
+	ChainId      string    `json:"chainId,omitempty"`
+	CreatedAt    time.Time `json:"createdAt,omitempty"`
+	Hash         string    `json:"hash,omitempty"`
+	Network      string    `json:"network,omitempty"`
+	PayloadTagId int64     `json:"payloadTagId,omitempty"`
 	// A universal record reference in the form networkName:chainId@recordSerial
 	Reference string      `json:"reference,omitempty"`
 	Serial    int64       `json:"serial,omitempty"`
