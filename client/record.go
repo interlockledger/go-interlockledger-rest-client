@@ -200,16 +200,14 @@ RecordApiService Adds a new record with a payload encoded as json.  Payload cont
 */
 
 type RecordApiRecordAddAsJsonOpts struct {
-	Body          optional.Interface
 	ApplicationId optional.Int64
 	PayloadTagId  optional.Int64
-	Type_         optional.Interface
+	Type_         optional.String
 }
 
-func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, localVarOptionals *RecordApiRecordAddAsJsonOpts) (RecordModel, *http.Response, error) {
+func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, options *RecordApiRecordAddAsJsonOpts, jsonPayload interface{}) (RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue RecordModel
@@ -223,14 +221,14 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, lo
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.ApplicationId.IsSet() {
-		localVarQueryParams.Add("applicationId", parameterToString(localVarOptionals.ApplicationId.Value(), ""))
+	if options != nil && options.ApplicationId.IsSet() {
+		localVarQueryParams.Add("applicationId", parameterToString(options.ApplicationId.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PayloadTagId.IsSet() {
-		localVarQueryParams.Add("payloadTagId", parameterToString(localVarOptionals.PayloadTagId.Value(), ""))
+	if options != nil && options.PayloadTagId.IsSet() {
+		localVarQueryParams.Add("payloadTagId", parameterToString(options.PayloadTagId.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Type_.IsSet() {
-		localVarQueryParams.Add("type", parameterToString(localVarOptionals.Type_.Value(), ""))
+	if options != nil && options.Type_.IsSet() {
+		localVarQueryParams.Add("type", parameterToString(options.Type_.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{"application/json"}
@@ -249,13 +247,7 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, lo
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	// body params
-	if localVarOptionals != nil && localVarOptionals.Body.IsSet() {
-
-		localVarOptionalBody := localVarOptionals.Body.Value()
-		localVarPostBody = &localVarOptionalBody
-	}
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, jsonPayload, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
