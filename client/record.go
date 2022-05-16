@@ -820,7 +820,7 @@ type RecordApiRecordsListAsJsonOpts struct {
 	LastToFirst optional.Bool
 }
 
-func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, localVarOptionals *RecordApiRecordsListAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, options *RecordApiRecordsListAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -837,20 +837,20 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.FirstSerial.IsSet() {
-		localVarQueryParams.Add("firstSerial", parameterToString(localVarOptionals.FirstSerial.Value(), ""))
+	if options != nil && options.FirstSerial.IsSet() {
+		localVarQueryParams.Add("firstSerial", parameterToString(options.FirstSerial.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastSerial.IsSet() {
-		localVarQueryParams.Add("lastSerial", parameterToString(localVarOptionals.LastSerial.Value(), ""))
+	if options != nil && options.LastSerial.IsSet() {
+		localVarQueryParams.Add("lastSerial", parameterToString(options.LastSerial.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+	if options != nil && options.Page.IsSet() {
+		localVarQueryParams.Add("page", parameterToString(options.Page.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if options != nil && options.PageSize.IsSet() {
+		localVarQueryParams.Add("pageSize", parameterToString(options.PageSize.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastToFirst.IsSet() {
-		localVarQueryParams.Add("lastToFirst", parameterToString(localVarOptionals.LastToFirst.Value(), ""))
+	if options != nil && options.LastToFirst.IsSet() {
+		localVarQueryParams.Add("lastToFirst", parameterToString(options.LastToFirst.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
@@ -985,7 +985,7 @@ type RecordApiRecordsQueryOpts struct {
 	PageSize           optional.Int32
 }
 
-func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, localVarOptionals *RecordApiRecordsQueryOpts) (RecordModelPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, options *RecordApiRecordsQueryOpts) (RecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
@@ -1002,20 +1002,20 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, local
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	if localVarOptionals != nil && localVarOptionals.QueryAsInterlockQL.IsSet() {
-		localVarQueryParams.Add("queryAsInterlockQL", parameterToString(localVarOptionals.QueryAsInterlockQL.Value(), ""))
+	if options != nil && options.QueryAsInterlockQL.IsSet() {
+		localVarQueryParams.Add("queryAsInterlockQL", parameterToString(options.QueryAsInterlockQL.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.HowMany.IsSet() {
-		localVarQueryParams.Add("howMany", parameterToString(localVarOptionals.HowMany.Value(), ""))
+	if options != nil && options.HowMany.IsSet() {
+		localVarQueryParams.Add("howMany", parameterToString(options.HowMany.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.LastToFirst.IsSet() {
-		localVarQueryParams.Add("lastToFirst", parameterToString(localVarOptionals.LastToFirst.Value(), ""))
+	if options != nil && options.LastToFirst.IsSet() {
+		localVarQueryParams.Add("lastToFirst", parameterToString(options.LastToFirst.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.Page.IsSet() {
-		localVarQueryParams.Add("page", parameterToString(localVarOptionals.Page.Value(), ""))
+	if options != nil && options.Page.IsSet() {
+		localVarQueryParams.Add("page", parameterToString(options.Page.Value(), ""))
 	}
-	if localVarOptionals != nil && localVarOptionals.PageSize.IsSet() {
-		localVarQueryParams.Add("pageSize", parameterToString(localVarOptionals.PageSize.Value(), ""))
+	if options != nil && options.PageSize.IsSet() {
+		localVarQueryParams.Add("pageSize", parameterToString(options.PageSize.Value(), ""))
 	}
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
