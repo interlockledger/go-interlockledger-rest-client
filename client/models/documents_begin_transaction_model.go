@@ -38,7 +38,12 @@ type DocumentsBeginTransactionModel struct {
 	Encryption              string `json:"encryption,omitempty"`
 	GeneratePublicDirectory bool   `json:"generatePublicDirectory,omitempty"`
 	Iterations              int32  `json:"iterations,omitempty"`
-	Password                string `json:"password,omitempty"`
+	Password                []byte `json:"password,omitempty"`
 	// A Documents Storage Locator
 	Previous string `json:"previous,omitempty"`
+}
+
+// Sets the password from a string.
+func (m *DocumentsBeginTransactionModel) SetPassword(password string) {
+	m.Password = []byte(password)
 }

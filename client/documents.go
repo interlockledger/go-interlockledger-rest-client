@@ -33,12 +33,12 @@ package client
 import (
 	"context"
 	"fmt"
+	"io"
 	"io/ioutil"
 	"net/http"
 	"net/url"
 	"strings"
 
-	"github.com/antihax/optional"
 	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
@@ -61,15 +61,18 @@ DocumentsApiService Adds another document to a pending transaction of a MultiDoc
 @return DocumentsTransactionModel
 */
 
-type DocumentsApiDocumentsAddDocumentOpts struct {
-	Comment optional.String
-	Path    optional.String
+type DocumentsApiDocumentsAddDocumentParams struct {
+	Name        string
+	Comment     string
+	Path        string
+	ContentType string
+	Contents    io.Reader
 }
 
-func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transactionId string, name string, contentType string, localVarOptionals *DocumentsApiDocumentsAddDocumentOpts) (DocumentsTransactionModel, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transactionId string,
+	document *DocumentsApiDocumentsAddDocumentParams) (DocumentsTransactionModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
-		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
 		localVarReturnValue DocumentsTransactionModel
@@ -83,13 +86,10 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	localVarQueryParams.Add("name", parameterToString(name, ""))
-	if localVarOptionals != nil && localVarOptionals.Comment.IsSet() {
-		localVarQueryParams.Add("comment", parameterToString(localVarOptionals.Comment.Value(), ""))
-	}
-	if localVarOptionals != nil && localVarOptionals.Path.IsSet() {
-		localVarQueryParams.Add("path", parameterToString(localVarOptionals.Path.Value(), ""))
-	}
+	localVarQueryParams.Add("name", parameterToString(document.Name, ""))
+	localVarQueryParams.Add("comment", parameterToString(document.Comment, ""))
+	localVarQueryParams.Add("path", parameterToString(document.Path, ""))
+
 	// to determine the Content-Type header
 	localVarHttpContentTypes := []string{}
 
@@ -107,8 +107,8 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 	if localVarHttpHeaderAccept != "" {
 		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
 	}
-	localVarHeaderParams["Content-Type"] = parameterToString(contentType, "")
-	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	localVarHeaderParams["Content-Type"] = parameterToString(document.ContentType, "")
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, document.Contents, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
 	if err != nil {
 		return localVarReturnValue, nil, err
 	}
@@ -209,7 +209,7 @@ DocumentsApiService Begin a transaction to store a set of documents (may &#x27;r
  * @param body Chosen parameters to start the transaction
 @return DocumentsTransactionModel
 */
-func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, body DocumentsBeginTransactionModel) (DocumentsTransactionModel, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, body *DocumentsBeginTransactionModel) (DocumentsTransactionModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
