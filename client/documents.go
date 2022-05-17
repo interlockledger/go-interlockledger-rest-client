@@ -475,10 +475,9 @@ func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, tr
 }
 
 /*
-DocumentsApiService Retrieve a zip file with all documents
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param locator
-
+On success, the Body inside the returned http.Response.Body will have a stream
+to the contents of the file. The caller must close http.Response.Body when it is
+no longer required.
 */
 func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, locator string) (*http.Response, error) {
 	var (
@@ -523,6 +522,12 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 		return localVarHttpResponse, err
 	}
 
+	// On success, returns a stream to read the body.
+	if localVarHttpResponse.StatusCode == 200 {
+		return localVarHttpResponse, nil
+	}
+
+	// Otherwise read the body and process it.
 	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
 	localVarHttpResponse.Body.Close()
 	if err != nil {
@@ -586,7 +591,6 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 		}
 		return localVarHttpResponse, newErr
 	}
-
 	return localVarHttpResponse, nil
 }
 
@@ -859,11 +863,9 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 }
 
 /*
-DocumentsApiService Retrieve document by position from the set of documents
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param locator
- * @param index
-
+On success, the Body inside the returned http.Response.Body will have a stream
+to the contents of the file. The caller must close http.Response.Body when it is
+no longer required.
 */
 func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, locator string, index int32) (*http.Response, error) {
 	var (
@@ -907,6 +909,10 @@ func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, lo
 	localVarHttpResponse, err := a.client.callAPI(r)
 	if err != nil || localVarHttpResponse == nil {
 		return localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode == 200 {
+		return localVarHttpResponse, nil
 	}
 
 	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
