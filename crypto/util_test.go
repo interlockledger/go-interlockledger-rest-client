@@ -37,12 +37,13 @@ import (
 
 var sampleDir = findSampleDir()
 
-// Returns the sample dir for this package
+// Returns the sample dir for this package.
 func findSampleDir() string {
 	_, filename, _, _ := runtime.Caller(0)
 	return path.Join(path.Dir(path.Dir(filename)), "samples")
 }
 
+// Returns a sample file for this package.
 func getSampleFile(file string) string {
 	return path.Join(sampleDir, file)
 }
