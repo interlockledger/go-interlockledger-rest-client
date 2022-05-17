@@ -47,17 +47,19 @@ var (
 	_ context.Context
 )
 
+// Base RecordApi record options.
+type RecordApiPagingOpts struct {
+	Page        optional.Int32
+	PageSize    optional.Int32
+	LastToFirst optional.Bool
+}
+
+// Record API service.
 type RecordApiService service
 
 /*
-RecordApiService Adds a new record
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Id of the chain
- * @param optional nil or *RecordApiRecordAddOpts - Optional Parameters:
-     * @param "Body" (optional.Interface of NewRecordModel) -  Record data
-@return RecordModel
+Calls POST /records@{chain}.
 */
-
 func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVarPostBody *NewRecordModel) (RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
@@ -121,7 +123,8 @@ func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVar
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -130,8 +133,7 @@ func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVar
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -140,71 +142,25 @@ func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVar
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Adds a new record with a payload encoded as json.  Payload content MUST go in the body, in json, with content type \&quot;application/json\&quot;  The json value will be mapped to the payload tagged format as described by the metadata  associated with the payloadTagId - [THIS AFFECTS THE PERFORMANCE SIGNIFICANTLY].
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Id of the chain
- * @param optional nil or *RecordApiRecordAddAsJsonOpts - Optional Parameters:
-     * @param "Body" (optional.Interface of Object) -  Payload data encoded as json
-     * @param "ApplicationId" (optional.Int64) -  Application id of the record
-     * @param "PayloadTagId" (optional.Int64) -  Payload tag id of the record
-     * @param "Type_" (optional.Interface of NewRecordType) -  [OPTIONAL] Type of record
-@return RecordModel
+Options for POST /records@{chain}/asJson.
 */
-
 type RecordApiRecordAddAsJsonOpts struct {
 	ApplicationId optional.Int64
 	PayloadTagId  optional.Int64
 	Type_         optional.String
 }
 
+/*
+Calls POST /records@{chain}/asJson.
+*/
 func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, options *RecordApiRecordAddAsJsonOpts, jsonPayload interface{}) (RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
@@ -276,7 +232,8 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -285,8 +242,7 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -295,59 +251,15 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Gets an specific record
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Id of the chain
- * @param serial Record serial number
-@return RecordModel
+Calls GET /records@{chain}/{serial}.
 */
 func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial int64) (RecordModel, *http.Response, error) {
 	var (
@@ -413,7 +325,8 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -422,8 +335,7 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -432,59 +344,15 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Gets an specific record with payload mapped to json (using published metadata)
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Id of the chain
- * @param serial Record serial number
-@return RecordModelAsJson
+Calls GET /records@{chain}/asJson/{serial}.
 */
 func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, serial int64) (RecordModelAsJson, *http.Response, error) {
 	var (
@@ -550,7 +418,8 @@ func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, se
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModelAsJson
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -559,8 +428,7 @@ func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, se
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -569,74 +437,26 @@ func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, se
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
 
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Gets list of records
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Chain to query
- * @param optional nil or *RecordApiRecordsListOpts - Optional Parameters:
-     * @param "FirstSerial" (optional.Int64) -  Serial number of first record to read. Default: First in whole chain
-     * @param "LastSerial" (optional.Int64) -  Serial number of last record to read. Default: Last in whole chain
-     * @param "Page" (optional.Int32) -  Page number starting on 0 (zero). Default: 0
-     * @param "PageSize" (optional.Int32) -  Page size in records. Default: 10
-     * @param "LastToFirst" (optional.Bool) -  Should records come in reversed order, from last to first. Default: false
-@return RecordModelPageOf
+Options for GET /records@{chain}.
 */
-
 type RecordApiRecordsListOpts struct {
+	RecordApiPagingOpts
 	FirstSerial optional.Int64
 	LastSerial  optional.Int64
-	Page        optional.Int32
-	PageSize    optional.Int32
-	LastToFirst optional.Bool
 }
 
+/*
+Calls GET /records@{chain}.
+*/
 func (a *RecordApiService) RecordsList(ctx context.Context, chain string, options *RecordApiRecordsListOpts) (RecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
@@ -715,7 +535,8 @@ func (a *RecordApiService) RecordsList(ctx context.Context, chain string, option
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -724,8 +545,7 @@ func (a *RecordApiService) RecordsList(ctx context.Context, chain string, option
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -734,74 +554,25 @@ func (a *RecordApiService) RecordsList(ctx context.Context, chain string, option
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Gets list of records with payload mapped to json
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Chain to query
- * @param optional nil or *RecordApiRecordsListAsJsonOpts - Optional Parameters:
-     * @param "FirstSerial" (optional.Int64) -  Serial number of first record to read. Default: First in whole chain
-     * @param "LastSerial" (optional.Int64) -  Serial number of last record to read. Default: Last in whole chain
-     * @param "Page" (optional.Int32) -  Page number starting on 0 (zero). Default: 0
-     * @param "PageSize" (optional.Int32) -  Page size in records. Default: 10
-     * @param "LastToFirst" (optional.Bool) -  Should records come in reversed order, from last to first. Default: false
-@return RecordModelAsJsonPageOf
+Options for GET /records@{chain}/asJson.
 */
-
 type RecordApiRecordsListAsJsonOpts struct {
+	RecordApiPagingOpts
 	FirstSerial optional.Int64
 	LastSerial  optional.Int64
-	Page        optional.Int32
-	PageSize    optional.Int32
-	LastToFirst optional.Bool
 }
 
+/*
+Calls GET /records@{chain}/asJson.
+*/
 func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, options *RecordApiRecordsListAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
@@ -880,7 +651,8 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModelAsJsonPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -889,8 +661,7 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -899,74 +670,25 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Queries using InterlockQL some records
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Chain to query
- * @param optional nil or *RecordApiRecordsQueryOpts - Optional Parameters:
-     * @param "QueryAsInterlockQL" (optional.String) -  Query in the InterlockQL language
-     * @param "HowMany" (optional.Int64) -  How many records to return. Default: all
-     * @param "LastToFirst" (optional.Bool) -  Should records come in reversed order, from last to first. Default: false
-     * @param "Page" (optional.Int32) -  Page number starting on 0 (zero). Default: 0
-     * @param "PageSize" (optional.Int32) -  Page size in records. Default: 10
-@return RecordModelPageOf
+Options for GET /records@{chain}/query.
 */
-
 type RecordApiRecordsQueryOpts struct {
+	RecordApiPagingOpts
 	QueryAsInterlockQL optional.String
 	HowMany            optional.Int64
-	LastToFirst        optional.Bool
-	Page               optional.Int32
-	PageSize           optional.Int32
 }
 
+/*
+Calls GET /records@{chain}/query.
+*/
 func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, options *RecordApiRecordsQueryOpts) (RecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
@@ -1045,7 +767,8 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, optio
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1054,8 +777,7 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, optio
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1064,74 +786,25 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, optio
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-RecordApiService Queries using InterlockQL some records with payload mapped to json
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param chain Chain to query
- * @param optional nil or *RecordApiRecordsQueryAsJsonOpts - Optional Parameters:
-     * @param "QueryAsInterlockQL" (optional.String) -  Query in the InterlockQL language
-     * @param "HowMany" (optional.Int64) -  How many records to return. Default: all
-     * @param "LastToFirst" (optional.Bool) -  Should records come in reversed order, from last to first. Default: false
-     * @param "Page" (optional.Int32) -
-     * @param "PageSize" (optional.Int32) -
-@return RecordModelAsJsonPageOf
+Options for Calls GET /records@{chain}/asJson/query.
 */
-
 type RecordApiRecordsQueryAsJsonOpts struct {
+	RecordApiPagingOpts
 	QueryAsInterlockQL optional.String
 	HowMany            optional.Int64
-	LastToFirst        optional.Bool
-	Page               optional.Int32
-	PageSize           optional.Int32
 }
 
+/*
+Calls GET /records@{chain}/asJson/query.
+*/
 func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string, options *RecordApiRecordsQueryAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
@@ -1210,7 +883,8 @@ func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string,
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v RecordModelAsJsonPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1219,8 +893,7 @@ func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string,
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1229,49 +902,9 @@ func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string,
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }

@@ -47,12 +47,11 @@ var (
 	_ context.Context
 )
 
+// Node API service.
 type NodeApiService service
 
 /*
-NodeApiService Get REST API version [\&quot;v4.1\&quot;]
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return string
+Calls GET /apiVersion.
 */
 func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response, error) {
 	var (
@@ -116,7 +115,8 @@ func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v string
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -125,8 +125,7 @@ func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -135,57 +134,15 @@ func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Get list of valid apps in the network
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return AppsModel
+Calls GET /apps.
 */
 func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Response, error) {
 	var (
@@ -249,7 +206,8 @@ func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Respons
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v AppsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -258,8 +216,7 @@ func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Respons
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -268,65 +225,16 @@ func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Respons
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Gets list of interlocking records pointing to a target chain instance
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param targetChain
- * @param optional nil or *NodeApiInterlockingsListOpts - Optional Parameters:
-     * @param "LastKnownBlock" (optional.Int64) -
-     * @param "LastToFirst" (optional.Bool) -
-     * @param "Page" (optional.Int32) -
-     * @param "PageSize" (optional.Int32) -
-@return InterlockingRecordModelPageOf
+Optional parameters of GET /interlockings/{targetChain}.
 */
-
 type NodeApiInterlockingsListOpts struct {
 	LastKnownBlock optional.Int64
 	LastToFirst    optional.Bool
@@ -334,6 +242,9 @@ type NodeApiInterlockingsListOpts struct {
 	PageSize       optional.Int32
 }
 
+/*
+Calls GET /interlockings/{targetChain}.
+*/
 func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain string, optionalParams *NodeApiInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
@@ -409,7 +320,8 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v InterlockingRecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -418,8 +330,7 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -428,65 +339,16 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Creates a new mirror of a chain in this node
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param optional nil or *NodeApiMirrorAddOpts - Optional Parameters:
-     * @param "Body" (optional.Interface of []string) -
-@return []ChainIdModel
+Calls POST /mirrors.
 */
-
-type NodeApiMirrorAddOpts struct {
-	Body optional.Interface
-}
-
 func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]ChainIdModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
@@ -548,7 +410,8 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v []ChainIdModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -557,8 +420,7 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -567,57 +429,15 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Gets list of mirror instances
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []ChainIdModel
+Calls GET /mirrors.
 */
 func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http.Response, error) {
 	var (
@@ -681,7 +501,8 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v []ChainIdModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -690,8 +511,7 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -700,57 +520,15 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Get node details
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return NodeDetailsModel
+Calls GET /.
 */
 func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *http.Response, error) {
 	var (
@@ -814,7 +592,8 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v NodeDetailsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -823,8 +602,7 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -833,57 +611,15 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-NodeApiService Gets list of known peers
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return []PeerModel
+Calls GET /peers.
 */
 func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Response, error) {
 	var (
@@ -947,7 +683,8 @@ func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Resp
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v []PeerModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -956,8 +693,7 @@ func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Resp
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -966,49 +702,9 @@ func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Resp
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }

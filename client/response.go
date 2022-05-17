@@ -34,6 +34,7 @@ import (
 	"net/http"
 )
 
+// This is an API response.
 type APIResponse struct {
 	*http.Response `json:"-"`
 	Message        string `json:"message,omitempty"`
@@ -51,14 +52,14 @@ type APIResponse struct {
 	Payload []byte `json:"-"`
 }
 
+// Creates a new API response.
 func NewAPIResponse(r *http.Response) *APIResponse {
-
 	response := &APIResponse{Response: r}
 	return response
 }
 
+// Creates a new API response with an error.
 func NewAPIResponseWithError(errorMessage string) *APIResponse {
-
 	response := &APIResponse{Message: errorMessage}
 	return response
 }

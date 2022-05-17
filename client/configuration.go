@@ -34,18 +34,7 @@ import (
 	"net/http"
 )
 
-// BasicAuth provides basic http authentication to a request passed via context using ContextBasicAuth
-type BasicAuth struct {
-	UserName string `json:"userName,omitempty"`
-	Password string `json:"password,omitempty"`
-}
-
-// APIKey provides API key based authentication to a request passed via context using ContextAPIKey
-type APIKey struct {
-	Key    string
-	Prefix string
-}
-
+// Configuration of the client.
 type Configuration struct {
 	BasePath      string            `json:"basePath,omitempty"`
 	Host          string            `json:"host,omitempty"`
@@ -55,6 +44,7 @@ type Configuration struct {
 	HTTPClient    *http.Client
 }
 
+// Creates a new client configuration.
 func NewConfiguration() *Configuration {
 	cfg := &Configuration{
 		BasePath:      "/",
@@ -64,6 +54,7 @@ func NewConfiguration() *Configuration {
 	return cfg
 }
 
+// Adds custom headers to all connections from this client.
 func (c *Configuration) AddDefaultHeader(key string, value string) {
 	c.DefaultHeader[key] = value
 }

@@ -47,20 +47,10 @@ var (
 	_ context.Context
 )
 
+// Document API service.
 type DocumentsApiService service
 
-/*
-DocumentsApiService Adds another document to a pending transaction of a MultiDocument
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transactionId
- * @param name
- * @param contentType
- * @param optional nil or *DocumentsApiDocumentsAddDocumentOpts - Optional Parameters:
-     * @param "Comment" (optional.String) -
-     * @param "Path" (optional.String) -
-@return DocumentsTransactionModel
-*/
-
+// Parameters of POST /documents/transaction/{transactionId}.
 type DocumentsApiDocumentsAddDocumentParams struct {
 	Name        string
 	Comment     string
@@ -69,6 +59,9 @@ type DocumentsApiDocumentsAddDocumentParams struct {
 	Contents    io.Reader
 }
 
+/*
+Calls POST /documents/transaction/{transactionId}.
+*/
 func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transactionId string,
 	document *DocumentsApiDocumentsAddDocumentParams) (DocumentsTransactionModel, *http.Response, error) {
 	var (
@@ -137,7 +130,8 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -146,8 +140,7 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -156,58 +149,15 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-DocumentsApiService Begin a transaction to store a set of documents (may &#x27;rollback&#x27; on timeout or errors)
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param body Chosen parameters to start the transaction
-@return DocumentsTransactionModel
+Calls POST /documents/transaction
 */
 func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, body *DocumentsBeginTransactionModel) (DocumentsTransactionModel, *http.Response, error) {
 	var (
@@ -273,7 +223,8 @@ func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, bod
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 201 {
+		switch localVarHttpResponse.StatusCode {
+		case 201:
 			var v DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -282,8 +233,7 @@ func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, bod
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -292,58 +242,15 @@ func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, bod
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-DocumentsApiService Store set of uploaded documents returning the locator
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transactionId
-@return string
+Calls POST /documents/transaction/{transactionId}/commit.
 */
 func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, transactionId string) (string, *http.Response, error) {
 	var (
@@ -408,7 +315,8 @@ func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, tr
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v string
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -417,8 +325,7 @@ func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, tr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -427,54 +334,16 @@ func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, tr
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
+Calls GET /documents/{locator}/zip.
+
 On success, the Body inside the returned http.Response.Body will have a stream
 to the contents of the file. The caller must close http.Response.Body when it is
 no longer required.
@@ -533,13 +402,13 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 	if err != nil {
 		return localVarHttpResponse, err
 	}
-
 	if localVarHttpResponse.StatusCode >= 300 {
 		newErr := GenericSwaggerError{
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 400 {
+		switch localVarHttpResponse.StatusCode {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -548,56 +417,15 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 			}
 			newErr.model = v
 			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		return localVarHttpResponse, newErr
 	}
 	return localVarHttpResponse, nil
 }
 
 /*
-DocumentsApiService Retrieve limits and defaults configured for MultiDocument support on this node
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
-@return DocumentUploadConfiguration
+Calls GET /documents/configuration.
 */
 func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentUploadConfiguration, *http.Response, error) {
 	var (
@@ -661,7 +489,8 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v DocumentUploadConfiguration
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -670,8 +499,7 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -680,58 +508,15 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
-DocumentsApiService Retrieve the metadata for set of documents from chain
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param locator
-@return DocumentsMetadataModel
+Calls GET /documents/{locator}/metadata.
 */
 func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator string) (DocumentsMetadataModel, *http.Response, error) {
 	var (
@@ -796,7 +581,8 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v DocumentsMetadataModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -805,8 +591,7 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -815,54 +600,16 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }
 
 /*
+Calls GET /documents/{locator}/{index}.
+
 On success, the Body inside the returned http.Response.Body will have a stream
 to the contents of the file. The caller must close http.Response.Body when it is
 no longer required.
@@ -926,7 +673,8 @@ func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, lo
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 400 {
+		switch localVarHttpResponse.StatusCode {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -935,58 +683,15 @@ func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, lo
 			}
 			newErr.model = v
 			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarHttpResponse, newErr
-		}
-		return localVarHttpResponse, newErr
 	}
-
 	return localVarHttpResponse, nil
 }
 
 /*
-DocumentsApiService Returns the ongoing status of a transaction
- * @param ctx context.Context - for authentication, logging, cancellation, deadlines, tracing, etc. Passed from http.Request or context.Background().
- * @param transactionId Id of the transaction
-@return DocumentsTransactionModel
+Calls GET /documents/transaction/{transactionId}.
 */
 func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context, transactionId string) (DocumentsTransactionModel, *http.Response, error) {
 	var (
@@ -1051,7 +756,8 @@ func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context,
 			body:  localVarBody,
 			error: localVarHttpResponse.Status,
 		}
-		if localVarHttpResponse.StatusCode == 200 {
+		switch localVarHttpResponse.StatusCode {
+		case 200:
 			var v DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1060,8 +766,7 @@ func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context,
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 400 {
+		case 400, 401, 403, 404, 422:
 			var v map[string]Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -1070,49 +775,9 @@ func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context,
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 401 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
+		default:
 			return localVarReturnValue, localVarHttpResponse, newErr
 		}
-		if localVarHttpResponse.StatusCode == 403 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 404 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		if localVarHttpResponse.StatusCode == 422 {
-			var v map[string]Object
-			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
-			if err != nil {
-				newErr.error = err.Error()
-				return localVarReturnValue, localVarHttpResponse, newErr
-			}
-			newErr.model = v
-			return localVarReturnValue, localVarHttpResponse, newErr
-		}
-		return localVarReturnValue, localVarHttpResponse, newErr
 	}
-
 	return localVarReturnValue, localVarHttpResponse, nil
 }

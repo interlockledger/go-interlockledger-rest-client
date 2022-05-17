@@ -48,6 +48,7 @@ var (
 	_ context.Context
 )
 
+// Chain API service.
 type ChainApiService service
 
 /*
