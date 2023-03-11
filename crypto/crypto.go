@@ -48,35 +48,33 @@ import (
 
 var (
 	// The private key is invalid.
-	ErrInvalidPrivateKey = fmt.Errorf("Invalid private key.")
+	ErrInvalidPrivateKey = fmt.Errorf("invalid private key")
 	// The public key is invalid.
-	ErrInvalidPublicKey = fmt.Errorf("Invalid public key.")
+	ErrInvalidPublicKey = fmt.Errorf("invalid public key")
 	// The size of the IV is invalid.
-	ErrInvalidBlockCipherIv = fmt.Errorf("Invalid block size IV.")
+	ErrInvalidBlockCipherIv = fmt.Errorf("invalid block size IV")
 	// The encrypted message is invalid.
-	ErrInvalidEncryptedMessage = fmt.Errorf("Invalid encrypted message.")
+	ErrInvalidEncryptedMessage = fmt.Errorf("invalid encrypted message")
 	// The message padding is invalid.
-	ErrInvalidPadding = fmt.Errorf("Invalid message padding.")
+	ErrInvalidPadding = fmt.Errorf("invalid message padding")
+	// Invalid certificate file.
+	ErrInvalidCertificateFile = fmt.Errorf("invalid cetificate file")
 )
 
 // Try to cast the given private key into a RSA private key.
 func castRSAPrivateKey(privateKey crypto.PrivateKey) (*rsa.PrivateKey, error) {
-	switch privateKey.(type) {
-	case *rsa.PrivateKey:
-		return privateKey.(*rsa.PrivateKey), nil
-	default:
-		return nil, ErrInvalidPrivateKey
+	if k, ok := privateKey.(*rsa.PrivateKey); ok {
+		return k, nil
 	}
+	return nil, ErrInvalidPrivateKey
 }
 
 // Try to cast the given public key into a RSA private key.
 func castRSAPublicKey(publicKey crypto.PublicKey) (*rsa.PublicKey, error) {
-	switch publicKey.(type) {
-	case *rsa.PublicKey:
-		return publicKey.(*rsa.PublicKey), nil
-	default:
-		return nil, ErrInvalidPublicKey
+	if k, ok := publicKey.(*rsa.PublicKey); ok {
+		return k, nil
 	}
+	return nil, ErrInvalidPublicKey
 }
 
 // Deciphers the message using the specified private key.
@@ -181,7 +179,7 @@ func CreatePublicKeyHashBin(publicKey []byte) (string, error) {
 		return "", err
 	}
 	if n != len(publicKey) {
-		return "", fmt.Errorf("Unable to hash the key.")
+		return "", fmt.Errorf("unable to hash the key")
 	}
 	h := sha256.Sum(nil)
 	s := base64.URLEncoding.WithPadding(base64.NoPadding).EncodeToString(h)
@@ -215,7 +213,7 @@ func CreateReaderId(data []byte) (string, error) {
 		return "", err
 	}
 	if n != len(data) {
-		return "", fmt.Errorf("Unable to hash the certificate.")
+		return "", fmt.Errorf("unable to hash the certificate")
 	}
 	h := sha1.Sum(nil)
 	s := base64.URLEncoding.WithPadding(base64.NoPadding).EncodeToString(h)

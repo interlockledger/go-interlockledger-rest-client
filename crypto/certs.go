@@ -61,16 +61,23 @@ func LoadCertificate(certificateFile string) ([]*x509.Certificate, error) {
 	if err != nil {
 		return nil, err
 	}
+	return ParseCertificate(bytes)
+}
+
+/*
+Parses all certificates inside the specified file and returns them as a list. The
+certificates must be in PEM format.
+
+It fails if there is no certificates to load or if one of them is invalid.
+*/
+func ParseCertificate(bytes []byte) ([]*x509.Certificate, error) {
 	certs := make([]*x509.Certificate, 0, 1)
 	for {
 		pemBlock, rest := pem.Decode(bytes)
 		if pemBlock == nil {
 			break
 		} else if pemBlock.Type != "CERTIFICATE" {
-			return nil, fmt.Errorf("Entry %d at file %s is not a certificate but a %s.",
-				len(certs),
-				certificateFile,
-				pemBlock.Type)
+			return nil, ErrInvalidCertificateFile
 		}
 		if cert, err := x509.ParseCertificate(pemBlock.Bytes); err != nil {
 			return nil, err
@@ -83,11 +90,9 @@ func LoadCertificate(certificateFile string) ([]*x509.Certificate, error) {
 		bytes = rest
 	}
 	if len(certs) == 0 {
-		return nil, fmt.Errorf("No certificates found in the file.")
-	} else {
-		return certs, nil
+		return nil, fmt.Errorf("no certifcates in the file: %w", ErrInvalidCertificateFile)
 	}
-
+	return certs, nil
 }
 
 /*
@@ -98,6 +103,13 @@ func LoadPrivateKey(keyFile string) (crypto.PrivateKey, error) {
 	if err != nil {
 		return nil, err
 	}
+	return ParsePrivateKey(bytes)
+}
+
+/*
+Parses the private key from a PEM file. It can load RSA, ECDSA and EdDSA keys.
+*/
+func ParsePrivateKey(bytes []byte) (crypto.PrivateKey, error) {
 	pemBlock, _ := pem.Decode(bytes)
 	if pemBlock == nil || pemBlock.Type != "PRIVATE KEY" {
 		return nil, ErrInvalidPrivateKey
