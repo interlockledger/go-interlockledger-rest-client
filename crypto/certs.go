@@ -40,6 +40,8 @@ import (
 	"encoding/pem"
 	"fmt"
 	"os"
+
+	"golang.org/x/crypto/pkcs12"
 )
 
 /*
@@ -130,4 +132,30 @@ func ParsePrivateKey(bytes []byte) (crypto.PrivateKey, error) {
 		return key, nil
 	}
 	return nil, ErrInvalidPrivateKey
+}
+
+/*
+Loads a certificate with its private key from a PKCS #12 file.
+*/
+func LoadCertificateWithKeyFromPKCS12(file string, password string) (tls.Certificate, error) {
+	bytes, err := os.ReadFile(file)
+	if err != nil {
+		return tls.Certificate{}, err
+	}
+	return ParseCertificateWithKeyFromPKCS12(bytes, password)
+}
+
+/*
+Parses a certificate with its private key from a PKCS #12 file.
+*/
+func ParseCertificateWithKeyFromPKCS12(bytes []byte, password string) (tls.Certificate, error) {
+	blocks, err := pkcs12.ToPEM(bytes, password)
+	if err != nil {
+		return tls.Certificate{}, err
+	}
+	var pemData []byte
+	for _, b := range blocks {
+		pemData = append(pemData, pem.EncodeToMemory(b)...)
+	}
+	return tls.X509KeyPair(pemData, pemData)
 }

@@ -43,6 +43,15 @@ Loads the client certificate required to access the API and sets the
 `http.Client`.
 */
 func (c *Configuration) SetClientCertificate(certificateFile string, keyFile string) error {
+	return c.SetClientCertificateEx(certificateFile, keyFile, false)
+}
+
+/*
+Loads the client certificate required to access the API and sets the
+`http.Client`.
+*/
+func (c *Configuration) SetClientCertificateEx(
+	certificateFile string, keyFile string, noServerVerification bool) error {
 	cert, err := crypto.LoadCertificateWithKey(certificateFile, keyFile)
 	if err != nil {
 		return err
@@ -56,8 +65,40 @@ func (c *Configuration) SetClientCertificate(certificateFile string, keyFile str
 		return err
 	}
 	tlsConfig := &tls.Config{
-		Certificates: []tls.Certificate{cert},
-		RootCAs:      certPool,
+		Certificates:       []tls.Certificate{cert},
+		RootCAs:            certPool,
+		InsecureSkipVerify: noServerVerification,
+	}
+	c.HTTPClient = &http.Client{Transport: &http.Transport{TLSClientConfig: tlsConfig}}
+	return nil
+}
+
+/*
+Loads the client certificate required to access the API and sets the
+`http.Client`.
+*/
+func (c *Configuration) SetClientCertificatePKCS12(file string, password string) error {
+	return c.SetClientCertificatePKCS12Ex(file, password, false)
+}
+
+/*
+Loads the client certificate required to access the API and sets the
+`http.Client`.
+*/
+func (c *Configuration) SetClientCertificatePKCS12Ex(
+	file string, password string, noServerVerification bool) error {
+	cert, err := crypto.LoadCertificateWithKeyFromPKCS12(file, password)
+	if err != nil {
+		return err
+	}
+	certPool, err := x509.SystemCertPool()
+	if err != nil {
+		return err
+	}
+	tlsConfig := &tls.Config{
+		Certificates:       []tls.Certificate{cert},
+		RootCAs:            certPool,
+		InsecureSkipVerify: noServerVerification,
 	}
 	c.HTTPClient = &http.Client{Transport: &http.Transport{TLSClientConfig: tlsConfig}}
 	return nil

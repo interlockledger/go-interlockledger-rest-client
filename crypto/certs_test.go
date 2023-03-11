@@ -92,3 +92,10 @@ func TestLoadPrivateKey(t *testing.T) {
 	assert.ErrorIs(t, err, ErrInvalidPrivateKey)
 	assert.Nil(t, key)
 }
+
+func TestLoadCertificateWithKeyFromPKCS12(t *testing.T) {
+
+	cert, err := LoadCertificateWithKeyFromPKCS12(getSampleFile("sample.pfx"), "password")
+	assert.Nil(t, err)
+	assert.NotNil(t, cert.PrivateKey)
+}
