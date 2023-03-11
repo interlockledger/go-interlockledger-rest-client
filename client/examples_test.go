@@ -31,6 +31,7 @@
 package client
 
 import (
+	"context"
 	"fmt"
 	"os"
 )
@@ -52,7 +53,7 @@ func ExampleNewAPIClient() {
 	client := NewAPIClient(configuration)
 
 	// Query the version of the server.
-	version, _, err := client.NodeApi.ApiVersion(nil)
+	version, _, err := client.NodeApi.ApiVersion(context.TODO())
 	if err != nil {
 		fmt.Fprintf(os.Stderr, "Unable to query the server's version: %v\n", err)
 		os.Exit(1)

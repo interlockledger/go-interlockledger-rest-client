@@ -40,11 +40,11 @@ import (
 
 var (
 	// If the cipher scheme is unsupported.
-	ErrUnsupportedCipher = fmt.Errorf("Unsupported cipher.")
+	ErrUnsupportedCipher = fmt.Errorf("unsupported cipher")
 	// The key is not available.
-	ErrKeyNotAvailable = fmt.Errorf("Key not available.")
+	ErrKeyNotAvailable = fmt.Errorf("key not available")
 	// The current key is not a reading key for the given entry.
-	ErrNotAReadingKey = fmt.Errorf("Not a reading key.")
+	ErrNotAReadingKey = fmt.Errorf("not a reading key")
 )
 
 func decipherJSONCore(key mycrypto.ReaderKey, encKey, encIV, encrypted []byte) (string, error) {
@@ -84,7 +84,7 @@ Deciphers JSON received from the server using the specified reader key.
 */
 func DecipherJSON(key mycrypto.ReaderKey, json *models.JsonDocumentModel) (string, error) {
 	if json.EncryptedJson == nil {
-		return "", fmt.Errorf("EncryptedJson is not set.")
+		return "", fmt.Errorf("encryptedJson is not set")
 	}
 	if json.EncryptedJson.Cipher == nil || *json.EncryptedJson.Cipher != models.AES256_CipherAlgorithm {
 		return "", ErrUnsupportedCipher

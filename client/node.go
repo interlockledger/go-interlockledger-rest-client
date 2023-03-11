@@ -39,7 +39,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
-	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
@@ -126,7 +126,7 @@ func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -144,13 +144,13 @@ func (a *NodeApiService) ApiVersion(ctx context.Context) (string, *http.Response
 /*
 Calls GET /apps.
 */
-func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Response, error) {
+func (a *NodeApiService) AppsList(ctx context.Context) (models.AppsModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue AppsModel
+		localVarReturnValue models.AppsModel
 	)
 
 	// create path and map variables
@@ -208,7 +208,7 @@ func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Respons
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v AppsModel
+			var v models.AppsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -217,7 +217,7 @@ func (a *NodeApiService) AppsList(ctx context.Context) (AppsModel, *http.Respons
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -245,13 +245,13 @@ type NodeApiInterlockingsListOpts struct {
 /*
 Calls GET /interlockings/{targetChain}.
 */
-func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain string, optionalParams *NodeApiInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
+func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain string, optionalParams *NodeApiInterlockingsListOpts) (models.InterlockingRecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue InterlockingRecordModelPageOf
+		localVarReturnValue models.InterlockingRecordModelPageOf
 	)
 
 	// create path and map variables
@@ -322,7 +322,7 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v InterlockingRecordModelPageOf
+			var v models.InterlockingRecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -331,7 +331,7 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -349,12 +349,12 @@ func (a *NodeApiService) InterlockingsList(ctx context.Context, targetChain stri
 /*
 Calls POST /mirrors.
 */
-func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]ChainIdModel, *http.Response, error) {
+func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]models.ChainIdModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []ChainIdModel
+		localVarReturnValue []models.ChainIdModel
 	)
 
 	// create path and map variables
@@ -412,7 +412,7 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []ChainIdModel
+			var v []models.ChainIdModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -421,7 +421,7 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -439,13 +439,13 @@ func (a *NodeApiService) MirrorAdd(ctx context.Context, chains []string) ([]Chai
 /*
 Calls GET /mirrors.
 */
-func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http.Response, error) {
+func (a *NodeApiService) MirrorsList(ctx context.Context) ([]models.ChainIdModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []ChainIdModel
+		localVarReturnValue []models.ChainIdModel
 	)
 
 	// create path and map variables
@@ -503,7 +503,7 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []ChainIdModel
+			var v []models.ChainIdModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -512,7 +512,7 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -530,13 +530,13 @@ func (a *NodeApiService) MirrorsList(ctx context.Context) ([]ChainIdModel, *http
 /*
 Calls GET /.
 */
-func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *http.Response, error) {
+func (a *NodeApiService) NodeDetails(ctx context.Context) (models.NodeDetailsModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue NodeDetailsModel
+		localVarReturnValue models.NodeDetailsModel
 	)
 
 	// create path and map variables
@@ -594,7 +594,7 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v NodeDetailsModel
+			var v models.NodeDetailsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -603,7 +603,7 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -621,13 +621,13 @@ func (a *NodeApiService) NodeDetails(ctx context.Context) (NodeDetailsModel, *ht
 /*
 Calls GET /peers.
 */
-func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Response, error) {
+func (a *NodeApiService) PeersList(ctx context.Context) ([]models.PeerModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []PeerModel
+		localVarReturnValue []models.PeerModel
 	)
 
 	// create path and map variables
@@ -685,7 +685,7 @@ func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Resp
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []PeerModel
+			var v []models.PeerModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -694,7 +694,7 @@ func (a *NodeApiService) PeersList(ctx context.Context) ([]PeerModel, *http.Resp
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

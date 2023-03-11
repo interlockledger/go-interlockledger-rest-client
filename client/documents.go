@@ -39,7 +39,7 @@ import (
 	"net/url"
 	"strings"
 
-	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
@@ -63,12 +63,12 @@ type DocumentsApiDocumentsAddDocumentParams struct {
 Calls POST /documents/transaction/{transactionId}.
 */
 func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transactionId string,
-	document *DocumentsApiDocumentsAddDocumentParams) (DocumentsTransactionModel, *http.Response, error) {
+	document *DocumentsApiDocumentsAddDocumentParams) (models.DocumentsTransactionModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue DocumentsTransactionModel
+		localVarReturnValue models.DocumentsTransactionModel
 	)
 
 	// create path and map variables
@@ -132,7 +132,7 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v DocumentsTransactionModel
+			var v models.DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -141,7 +141,7 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -159,13 +159,13 @@ func (a *DocumentsApiService) DocumentsAddDocument(ctx context.Context, transact
 /*
 Calls POST /documents/transaction
 */
-func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, body *DocumentsBeginTransactionModel) (DocumentsTransactionModel, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, body *models.DocumentsBeginTransactionModel) (models.DocumentsTransactionModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue DocumentsTransactionModel
+		localVarReturnValue models.DocumentsTransactionModel
 	)
 
 	// create path and map variables
@@ -225,7 +225,7 @@ func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, bod
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 201:
-			var v DocumentsTransactionModel
+			var v models.DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -234,7 +234,7 @@ func (a *DocumentsApiService) DocumentsBeginTransaction(ctx context.Context, bod
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -326,7 +326,7 @@ func (a *DocumentsApiService) DocumentsCommitTransaction(ctx context.Context, tr
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -409,7 +409,7 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -427,13 +427,13 @@ func (a *DocumentsApiService) DocumentsGetAllDocuments(ctx context.Context, loca
 /*
 Calls GET /documents/configuration.
 */
-func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentUploadConfiguration, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (models.DocumentUploadConfiguration, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue DocumentUploadConfiguration
+		localVarReturnValue models.DocumentUploadConfiguration
 	)
 
 	// create path and map variables
@@ -491,7 +491,7 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v DocumentUploadConfiguration
+			var v models.DocumentUploadConfiguration
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -500,7 +500,7 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -518,13 +518,13 @@ func (a *DocumentsApiService) DocumentsGetConfig(ctx context.Context) (DocumentU
 /*
 Calls GET /documents/{locator}/metadata.
 */
-func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator string) (DocumentsMetadataModel, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator string) (models.DocumentsMetadataModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue DocumentsMetadataModel
+		localVarReturnValue models.DocumentsMetadataModel
 	)
 
 	// create path and map variables
@@ -583,7 +583,7 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v DocumentsMetadataModel
+			var v models.DocumentsMetadataModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -592,7 +592,7 @@ func (a *DocumentsApiService) DocumentsGetMetadata(ctx context.Context, locator 
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -675,7 +675,7 @@ func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, lo
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -693,13 +693,13 @@ func (a *DocumentsApiService) DocumentsGetSingleDocument(ctx context.Context, lo
 /*
 Calls GET /documents/transaction/{transactionId}.
 */
-func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context, transactionId string) (DocumentsTransactionModel, *http.Response, error) {
+func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context, transactionId string) (models.DocumentsTransactionModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue DocumentsTransactionModel
+		localVarReturnValue models.DocumentsTransactionModel
 	)
 
 	// create path and map variables
@@ -758,7 +758,7 @@ func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context,
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v DocumentsTransactionModel
+			var v models.DocumentsTransactionModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -767,7 +767,7 @@ func (a *DocumentsApiService) DocumentsGetTransactionStatus(ctx context.Context,
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

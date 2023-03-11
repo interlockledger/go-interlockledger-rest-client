@@ -40,7 +40,7 @@ import (
 
 	"github.com/antihax/optional"
 
-	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
@@ -129,7 +129,7 @@ func (a *ChainApiService) ChainActiveAppsAdd(ctx context.Context, chain string, 
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -221,7 +221,7 @@ func (a *ChainApiService) ChainActiveAppsList(ctx context.Context, chain string)
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -239,12 +239,12 @@ func (a *ChainApiService) ChainActiveAppsList(ctx context.Context, chain string)
 /*
 Calls POST /chain.
 */
-func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *ChainCreatedModel) (ChainCreatedModel, *http.Response, error) {
+func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *models.ChainCreatedModel) (models.ChainCreatedModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue ChainCreatedModel
+		localVarReturnValue models.ChainCreatedModel
 	)
 
 	// create path and map variables
@@ -303,7 +303,7 @@ func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *Chain
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 201:
-			var v ChainCreatedModel
+			var v models.ChainCreatedModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -312,7 +312,7 @@ func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *Chain
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -330,13 +330,13 @@ func (a *ChainApiService) ChainCreate(ctx context.Context, creationParams *Chain
 /*
 Calls GET /chain/{chain}.
 */
-func (a *ChainApiService) ChainDetails(ctx context.Context, chain string) (ChainSummaryModel, *http.Response, error) {
+func (a *ChainApiService) ChainDetails(ctx context.Context, chain string) (models.ChainSummaryModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue ChainSummaryModel
+		localVarReturnValue models.ChainSummaryModel
 	)
 
 	// create path and map variables
@@ -395,7 +395,7 @@ func (a *ChainApiService) ChainDetails(ctx context.Context, chain string) (Chain
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v ChainSummaryModel
+			var v models.ChainSummaryModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -404,7 +404,7 @@ func (a *ChainApiService) ChainDetails(ctx context.Context, chain string) (Chain
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -423,12 +423,12 @@ func (a *ChainApiService) ChainDetails(ctx context.Context, chain string) (Chain
 Calls POST /chain/{chain}/interlockings.
 */
 
-func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string, params *ForceInterlockModel) (InterlockingRecordModel, *http.Response, error) {
+func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string, params *models.ForceInterlockModel) (models.InterlockingRecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue InterlockingRecordModel
+		localVarReturnValue models.InterlockingRecordModel
 	)
 
 	// create path and map variables
@@ -487,7 +487,7 @@ func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v InterlockingRecordModel
+			var v models.InterlockingRecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -496,7 +496,7 @@ func (a *ChainApiService) ChainInterlockingAdd(ctx context.Context, chain string
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -523,13 +523,13 @@ type ChainApiChainInterlockingsListOpts struct {
 /*
 Calls GET /chain/{chain}/interlockings.
 */
-func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain string, params *ChainApiChainInterlockingsListOpts) (InterlockingRecordModelPageOf, *http.Response, error) {
+func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain string, params *ChainApiChainInterlockingsListOpts) (models.InterlockingRecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue InterlockingRecordModelPageOf
+		localVarReturnValue models.InterlockingRecordModelPageOf
 	)
 
 	// create path and map variables
@@ -597,7 +597,7 @@ func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain stri
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v InterlockingRecordModelPageOf
+			var v models.InterlockingRecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -606,7 +606,7 @@ func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain stri
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -625,13 +625,13 @@ func (a *ChainApiService) ChainInterlockingsList(ctx context.Context, chain stri
 Calls POST /chain/{chain}/key.
 */
 
-func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain string, keys []KeyPermitModel) ([]KeyDetailsModel, *http.Response, error) {
+func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain string, keys []models.KeyPermitModel) ([]models.KeyDetailsModel, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []KeyDetailsModel
+		localVarReturnValue []models.KeyDetailsModel
 	)
 
 	// create path and map variables
@@ -690,7 +690,7 @@ func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain strin
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []KeyDetailsModel
+			var v []models.KeyDetailsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -699,7 +699,7 @@ func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain strin
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -717,13 +717,13 @@ func (a *ChainApiService) ChainPermittedKeysAdd(ctx context.Context, chain strin
 /*
 Calls GET /chain/{chain}/key.
 */
-func (a *ChainApiService) ChainPermittedKeysList(ctx context.Context, chain string) ([]KeyDetailsModel, *http.Response, error) {
+func (a *ChainApiService) ChainPermittedKeysList(ctx context.Context, chain string) ([]models.KeyDetailsModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []KeyDetailsModel
+		localVarReturnValue []models.KeyDetailsModel
 	)
 
 	// create path and map variables
@@ -782,7 +782,7 @@ func (a *ChainApiService) ChainPermittedKeysList(ctx context.Context, chain stri
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []KeyDetailsModel
+			var v []models.KeyDetailsModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -791,7 +791,7 @@ func (a *ChainApiService) ChainPermittedKeysList(ctx context.Context, chain stri
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -809,13 +809,13 @@ func (a *ChainApiService) ChainPermittedKeysList(ctx context.Context, chain stri
 /*
 Calls GET /chain.
 */
-func (a *ChainApiService) ChainsList(ctx context.Context) ([]ChainIdModel, *http.Response, error) {
+func (a *ChainApiService) ChainsList(ctx context.Context) ([]models.ChainIdModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue []ChainIdModel
+		localVarReturnValue []models.ChainIdModel
 	)
 
 	// create path and map variables
@@ -873,7 +873,7 @@ func (a *ChainApiService) ChainsList(ctx context.Context) ([]ChainIdModel, *http
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v []ChainIdModel
+			var v []models.ChainIdModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -882,7 +882,7 @@ func (a *ChainApiService) ChainsList(ctx context.Context) ([]ChainIdModel, *http
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

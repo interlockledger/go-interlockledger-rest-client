@@ -39,7 +39,7 @@ import (
 	"strings"
 
 	"github.com/antihax/optional"
-	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
@@ -60,13 +60,13 @@ type RecordApiService service
 /*
 Calls POST /records@{chain}.
 */
-func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVarPostBody *NewRecordModel) (RecordModel, *http.Response, error) {
+func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVarPostBody *models.NewRecordModel) (models.RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModel
+		localVarReturnValue models.RecordModel
 	)
 
 	// create path and map variables
@@ -125,7 +125,7 @@ func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVar
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModel
+			var v models.RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -134,7 +134,7 @@ func (a *RecordApiService) RecordAdd(ctx context.Context, chain string, localVar
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -161,12 +161,12 @@ type RecordApiRecordAddAsJsonOpts struct {
 /*
 Calls POST /records@{chain}/asJson.
 */
-func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, options *RecordApiRecordAddAsJsonOpts, jsonPayload interface{}) (RecordModel, *http.Response, error) {
+func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, options *RecordApiRecordAddAsJsonOpts, jsonPayload interface{}) (models.RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModel
+		localVarReturnValue models.RecordModel
 	)
 
 	// create path and map variables
@@ -234,7 +234,7 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModel
+			var v models.RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -243,7 +243,7 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -261,13 +261,13 @@ func (a *RecordApiService) RecordAddAsJson(ctx context.Context, chain string, op
 /*
 Calls GET /records@{chain}/{serial}.
 */
-func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial int64) (RecordModel, *http.Response, error) {
+func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial int64) (models.RecordModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModel
+		localVarReturnValue models.RecordModel
 	)
 
 	// create path and map variables
@@ -327,7 +327,7 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModel
+			var v models.RecordModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -336,7 +336,7 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -354,13 +354,13 @@ func (a *RecordApiService) RecordGet(ctx context.Context, chain string, serial i
 /*
 Calls GET /records@{chain}/asJson/{serial}.
 */
-func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, serial int64) (RecordModelAsJson, *http.Response, error) {
+func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, serial int64) (models.RecordModelAsJson, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModelAsJson
+		localVarReturnValue models.RecordModelAsJson
 	)
 
 	// create path and map variables
@@ -420,7 +420,7 @@ func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, se
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModelAsJson
+			var v models.RecordModelAsJson
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -429,7 +429,7 @@ func (a *RecordApiService) RecordGetAsJson(ctx context.Context, chain string, se
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -457,13 +457,13 @@ type RecordApiRecordsListOpts struct {
 /*
 Calls GET /records@{chain}.
 */
-func (a *RecordApiService) RecordsList(ctx context.Context, chain string, options *RecordApiRecordsListOpts) (RecordModelPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsList(ctx context.Context, chain string, options *RecordApiRecordsListOpts) (models.RecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModelPageOf
+		localVarReturnValue models.RecordModelPageOf
 	)
 
 	// create path and map variables
@@ -537,7 +537,7 @@ func (a *RecordApiService) RecordsList(ctx context.Context, chain string, option
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModelPageOf
+			var v models.RecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -546,7 +546,7 @@ func (a *RecordApiService) RecordsList(ctx context.Context, chain string, option
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -573,13 +573,13 @@ type RecordApiRecordsListAsJsonOpts struct {
 /*
 Calls GET /records@{chain}/asJson.
 */
-func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, options *RecordApiRecordsListAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, options *RecordApiRecordsListAsJsonOpts) (models.RecordModelAsJsonPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModelAsJsonPageOf
+		localVarReturnValue models.RecordModelAsJsonPageOf
 	)
 
 	// create path and map variables
@@ -653,7 +653,7 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModelAsJsonPageOf
+			var v models.RecordModelAsJsonPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -662,7 +662,7 @@ func (a *RecordApiService) RecordsListAsJson(ctx context.Context, chain string, 
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -689,13 +689,13 @@ type RecordApiRecordsQueryOpts struct {
 /*
 Calls GET /records@{chain}/query.
 */
-func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, options *RecordApiRecordsQueryOpts) (RecordModelPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, options *RecordApiRecordsQueryOpts) (models.RecordModelPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModelPageOf
+		localVarReturnValue models.RecordModelPageOf
 	)
 
 	// create path and map variables
@@ -769,7 +769,7 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, optio
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModelPageOf
+			var v models.RecordModelPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -778,7 +778,7 @@ func (a *RecordApiService) RecordsQuery(ctx context.Context, chain string, optio
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -805,13 +805,13 @@ type RecordApiRecordsQueryAsJsonOpts struct {
 /*
 Calls GET /records@{chain}/asJson/query.
 */
-func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string, options *RecordApiRecordsQueryAsJsonOpts) (RecordModelAsJsonPageOf, *http.Response, error) {
+func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string, options *RecordApiRecordsQueryAsJsonOpts) (models.RecordModelAsJsonPageOf, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue RecordModelAsJsonPageOf
+		localVarReturnValue models.RecordModelAsJsonPageOf
 	)
 
 	// create path and map variables
@@ -885,7 +885,7 @@ func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string,
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordModelAsJsonPageOf
+			var v models.RecordModelAsJsonPageOf
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -894,7 +894,7 @@ func (a *RecordApiService) RecordsQueryAsJson(ctx context.Context, chain string,
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()

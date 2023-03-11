@@ -38,7 +38,7 @@ import (
 	"net/url"
 	"strings"
 
-	. "github.com/interlockledger/go-interlockledger-rest-client/client/models"
+	"github.com/interlockledger/go-interlockledger-rest-client/client/models"
 )
 
 // Linger please
@@ -51,12 +51,12 @@ type JsonDocumentApiService service
 /*
 Calls POST /jsonDocuments@{chain}.
 */
-func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain string, jsonDoc models.Object) (models.JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue JsonDocumentModel
+		localVarReturnValue models.JsonDocumentModel
 	)
 
 	// create path and map variables
@@ -115,7 +115,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain str
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v JsonDocumentModel
+			var v models.JsonDocumentModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -124,7 +124,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain str
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -142,12 +142,12 @@ func (a *JsonDocumentApiService) JsonDocumentsAdd(ctx context.Context, chain str
 /*
 Calls POST /jsonDocuments@{chain}/withChainKeys
 */
-func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Context, chain string, xPubKeyChains []string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Context, chain string, xPubKeyChains []string, jsonDoc models.Object) (models.JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue JsonDocumentModel
+		localVarReturnValue models.JsonDocumentModel
 	)
 
 	// create path and map variables
@@ -210,7 +210,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Conte
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v JsonDocumentModel
+			var v models.JsonDocumentModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -219,7 +219,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Conte
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -238,12 +238,12 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithChainKeys(ctx context.Conte
 Calls POST /jsonDocuments@{chain}/withIndirectKeys.
 */
 func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Context, chain string, xPubKeyReferences []string,
-	jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
+	jsonDoc models.Object) (models.JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue JsonDocumentModel
+		localVarReturnValue models.JsonDocumentModel
 	)
 
 	// create path and map variables
@@ -305,7 +305,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Co
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v JsonDocumentModel
+			var v models.JsonDocumentModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -314,7 +314,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Co
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -332,12 +332,12 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithIndirectKeys(ctx context.Co
 /*
 Calls POST /jsonDocuments@{chain}/withKey.
 */
-func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, chain string, xPubKey string, xPubKeyId string, jsonDoc Object) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, chain string, xPubKey string, xPubKeyId string, jsonDoc models.Object) (models.JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Post")
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue JsonDocumentModel
+		localVarReturnValue models.JsonDocumentModel
 	)
 
 	// create path and map variables
@@ -398,7 +398,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, ch
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v JsonDocumentModel
+			var v models.JsonDocumentModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -407,7 +407,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, ch
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			fmt.Println(string(localVarBody))
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
@@ -428,7 +428,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAddWithKey(ctx context.Context, ch
 Calls POST /jsonDocuments@{chain}/allow.
 */
 func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, chain string,
-	allowedReaders *AllowedReadersModel) (string, *http.Response, error) {
+	allowedReaders *models.AllowedReadersModel) (string, *http.Response, error) {
 	var (
 		localVarHttpMethod = strings.ToUpper("Post")
 
@@ -494,7 +494,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, 
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v RecordReference
+			var v models.RecordReference
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -503,7 +503,7 @@ func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, 
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -521,13 +521,13 @@ func (a *JsonDocumentApiService) JsonDocumentsAllowReaders(ctx context.Context, 
 /*
 Calls GET /jsonDocuments@{chain}/{serial}.
 */
-func (a *JsonDocumentApiService) JsonDocumentsGet(ctx context.Context, chain string, serial int64) (JsonDocumentModel, *http.Response, error) {
+func (a *JsonDocumentApiService) JsonDocumentsGet(ctx context.Context, chain string, serial int64) (models.JsonDocumentModel, *http.Response, error) {
 	var (
 		localVarHttpMethod  = strings.ToUpper("Get")
 		localVarPostBody    interface{}
 		localVarFileName    string
 		localVarFileBytes   []byte
-		localVarReturnValue JsonDocumentModel
+		localVarReturnValue models.JsonDocumentModel
 	)
 
 	// create path and map variables
@@ -587,7 +587,7 @@ func (a *JsonDocumentApiService) JsonDocumentsGet(ctx context.Context, chain str
 		}
 		switch localVarHttpResponse.StatusCode {
 		case 200:
-			var v JsonDocumentModel
+			var v models.JsonDocumentModel
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
@@ -596,7 +596,7 @@ func (a *JsonDocumentApiService) JsonDocumentsGet(ctx context.Context, chain str
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
 		case 400, 401, 403, 404, 422:
-			var v map[string]Object
+			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
 			if err != nil {
 				newErr.error = err.Error()
