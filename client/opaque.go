@@ -138,3 +138,101 @@ func (a *OpaqueService) Create(ctx context.Context,
 	}
 	return localVarReturnValue, localVarHttpResponse, nil
 }
+
+/*
+Calls GET /opaque/{chain}@{serial}. It returns the current payload, the appId
+(reserved for future uses), the payloadTypeId and the actual response.
+*/
+func (a *OpaqueService) Get(ctx context.Context,
+	chain string, serial int64) ([]byte, int64, int64, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Get")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "@" +
+		strconv.FormatInt(serial, 10)
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// Set the content type to application/octet-stream
+	localVarHeaderParams["Content-Type"] = "application/octet-stream"
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+
+	// body params
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return nil, 0, 0, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return nil, 0, 0, localVarHttpResponse, err
+	}
+
+	// Get the payloadTypeId
+	var typeId int64
+	typeIdStr := localVarHttpResponse.Header.Get("x-payload-type-id")
+	if typeIdStr != "" {
+		typeId, err = strconv.ParseInt(typeIdStr, 10, 64)
+		if err != nil {
+			return nil, 0, 0, localVarHttpResponse, err
+		}
+	}
+	// TODO
+	var appId int64
+
+	// Read the body
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return nil, 0, 0, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		return localVarBody, appId, typeId, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body:  localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		switch localVarHttpResponse.StatusCode {
+		case 201:
+			var v models.ChainCreatedModel
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return nil, 0, 0, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return nil, 0, 0, localVarHttpResponse, newErr
+		case 400, 401, 403, 404, 422:
+			var v map[string]models.Object
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return nil, 0, 0, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return nil, 0, 0, localVarHttpResponse, newErr
+		default:
+			return nil, 0, 0, localVarHttpResponse, newErr
+		}
+	}
+	return nil, 0, 0, localVarHttpResponse, nil
+}
