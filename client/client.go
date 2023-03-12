@@ -71,6 +71,8 @@ type APIClient struct {
 	NodeApi *NodeApiService
 
 	RecordApi *RecordApiService
+
+	OpaqueApi *OpaqueService
 }
 
 type service struct {
@@ -94,7 +96,7 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 	c.JsonDocumentApi = (*JsonDocumentApiService)(&c.common)
 	c.NodeApi = (*NodeApiService)(&c.common)
 	c.RecordApi = (*RecordApiService)(&c.common)
-
+	c.OpaqueApi = (*OpaqueService)(&c.common)
 	return c
 }
 
