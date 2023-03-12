@@ -160,11 +160,17 @@ func (a *OpaqueService) Get(ctx context.Context,
 	localVarQueryParams := url.Values{}
 	localVarFormParams := url.Values{}
 
-	// Set the content type to application/octet-stream
-	localVarHeaderParams["Content-Type"] = "application/octet-stream"
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
 
 	// to determine the Accept header
-	localVarHttpHeaderAccepts := []string{"application/json"}
+	localVarHttpHeaderAccepts := []string{"application/octet-stream", "application/json"}
 
 	// set Accept header
 	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
@@ -235,4 +241,111 @@ func (a *OpaqueService) Get(ctx context.Context,
 		}
 	}
 	return nil, 0, 0, localVarHttpResponse, nil
+}
+
+/*
+Calls GET /opaque/{chain}@{serial}. It returns the current payload, the lastChangedRecordSerial
+(reserved for future uses) and the actual response.
+*/
+func (a *OpaqueService) Query(ctx context.Context,
+	chain string, appId int64, payloadTypeIds []int64, howMany int64, lastToFirst bool, page int, pageSize int) ([]byte, int64, *http.Response, error) {
+	var (
+		localVarHttpMethod = strings.ToUpper("Get")
+		localVarPostBody   interface{}
+		localVarFileName   string
+		localVarFileBytes  []byte
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "/query"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/octet-stream", "application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+
+	localVarQueryParams.Add("appId", strconv.FormatInt(appId, 10))
+	for _, payloadTypeId := range payloadTypeIds {
+		localVarQueryParams.Add("payloadTypeIds", strconv.FormatInt(payloadTypeId, 10))
+
+	}
+	localVarQueryParams.Add("howMany", strconv.FormatInt(howMany, 10))
+	localVarQueryParams.Add("lastToFirst", strconv.FormatBool(lastToFirst))
+	if page > 0 {
+		localVarQueryParams.Add("page", strconv.FormatInt(int64(page), 10))
+	}
+	if pageSize > 0 {
+		localVarQueryParams.Add("pageSize", strconv.FormatInt((int64(pageSize)), 10))
+	}
+
+	// body params
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return nil, 0, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return nil, 0, localVarHttpResponse, err
+	}
+
+	var lastChangedRecordSerial int64
+
+	// Read the body
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return nil, lastChangedRecordSerial, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		return localVarBody, lastChangedRecordSerial, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body:  localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		switch localVarHttpResponse.StatusCode {
+		case 201:
+			var v models.ChainCreatedModel
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return nil, 0, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return nil, 0, localVarHttpResponse, newErr
+		case 400, 401, 403, 404, 422:
+			var v map[string]models.Object
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return nil, 0, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return nil, 0, localVarHttpResponse, newErr
+		default:
+			return nil, 0, localVarHttpResponse, newErr
+		}
+	}
+	return nil, lastChangedRecordSerial, localVarHttpResponse, nil
 }
