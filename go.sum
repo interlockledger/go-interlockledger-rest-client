@@ -5,6 +5,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/interlockledger/go-iltags v0.1.0 h1:QVLkNq2RTQ2DvktPIhh9u6cmhE9eq7iOUWBMjHN/F38=
 github.com/interlockledger/go-iltags v0.1.0/go.mod h1:wzaZb5damw2OKewJZG9AYR9ifCUhKtRatI+SgTz6/kY=
+github.com/interlockledger/go-iltags v0.2.2 h1:Z4AzQCYWa3NOqZe0dtP4msirzS6N8DqdJxTSM7b4xtM=
+github.com/interlockledger/go-iltags v0.2.2/go.mod h1:6GtncVOkwkBM/u+xKnd8Cjypv9nE+oqtfm8lDMm9kng=
 github.com/pmezard/go-difflib v1.0.0 h1:4DBwDE0NGyQoBHbLQYPwSUPoCMWR5BEzIk/f1lZbAQM=
 github.com/pmezard/go-difflib v1.0.0/go.mod h1:iKH77koFhYxTK1pcRnkKkqfTogsbg7gZNVY4sRDYZ/4=
 github.com/stretchr/objx v0.1.0/go.mod h1:HFkY916IF+rwdDfMAkV7OtwuqBVzrE8GR6GFx+wExME=

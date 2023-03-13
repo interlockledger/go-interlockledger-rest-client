@@ -42,6 +42,7 @@ import (
 	"strings"
 
 	"github.com/interlockledger/go-iltags/tags"
+	"github.com/interlockledger/go-iltags/tags/direct"
 	"github.com/interlockledger/go-iltags/tags/impl"
 	"github.com/interlockledger/go-iltags/utils"
 )
@@ -146,7 +147,7 @@ func DecipherJSON(key, iv, encrypted []byte) (string, error) {
 	}
 	defer utils.ShredBytes(plain)
 	plain = RemoveZeroPadding(plain)
-	return impl.DeserializeStdStringTag(bytes.NewReader(plain))
+	return direct.DeserializeStdStringTag(bytes.NewReader(plain))
 }
 
 func convertRSAPublicKey(publicKey *rsa.PublicKey) ([]byte, error) {
