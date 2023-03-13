@@ -46,7 +46,10 @@ Decodes an optional byte array encoded as a base64 string. It returns nil if the
 input is nil.
 */
 func DecodeOptionalBytes(value *string) ([]byte, error) {
-	return DecodeBytes(*value)
+	if value != nil {
+		return DecodeBytes(*value)
+	}
+	return nil, nil
 }
 
 /*
