@@ -153,7 +153,7 @@ func (a *OpaqueService) Get(ctx context.Context,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "@" +
+	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "/@" +
 		strconv.FormatInt(serial, 10)
 
 	localVarHeaderParams := make(map[string]string)
