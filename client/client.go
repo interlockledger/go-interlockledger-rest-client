@@ -103,15 +103,12 @@ func NewAPIClient(cfg *Configuration) *APIClient {
 // This helper function tries to convert a given error into a
 // GenericSwaggerError. Returns nil if the type does not match.
 func (c *APIClient) ToGenericSwaggerError(err error) *GenericSwaggerError {
-	switch err.(type) {
-	case *GenericSwaggerError:
-		return err.(*GenericSwaggerError)
-	case GenericSwaggerError:
-		e := err.(GenericSwaggerError)
-		return &e
-	default:
-		return nil
+	if e1, ok := err.(*GenericSwaggerError); ok {
+		return e1
+	} else if e2, ok := err.(GenericSwaggerError); ok {
+		return &e2
 	}
+	return nil
 }
 
 // selectHeaderContentType select a content type from the available list.
