@@ -247,6 +247,7 @@ func (a *OpaqueService) Get(ctx context.Context,
 Calls GET /opaque/{chain}@{serial}. It returns the current payload, the lastChangedRecordSerial
 (reserved for future uses) and the actual response.
 */
+/*
 func (a *OpaqueService) Query(ctx context.Context,
 	chain string, appId int64, payloadTypeIds []int64, howMany int64, lastToFirst bool, page int, pageSize int) ([]byte, int64, *http.Response, error) {
 	var (
@@ -349,6 +350,7 @@ func (a *OpaqueService) Query(ctx context.Context,
 	}
 	return nil, lastChangedRecordSerial, localVarHttpResponse, nil
 }
+*/
 
 /*
 Calls GET /opaque/{chain}@{serial}. It returns the current payload, the lastChangedRecordSerial
