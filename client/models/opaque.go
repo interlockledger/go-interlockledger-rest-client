@@ -10,3 +10,12 @@ type OpaqueRecordModel struct {
 	PayloadTagId  int64     `json:"payloadTagId,omitempty"`
 	CreatedAt     time.Time `json:"createdAt,omitempty"`
 }
+
+type PageOfOpaqueRecordsModel struct {
+	Items                   []OpaqueRecordModel `json:"items,omitempty"`
+	Page                    int                 `json:"page,omitempty"`
+	PageSize                int                 `json:"pageSize,omitempty"`
+	TotalNumberOfPages      int                 `json:"totalNumberOfPages,omitempty"`
+	LastToFirst             bool                `json:"lastToFirst,omitempty"`
+	LastChangedRecordSerial int64               `json:"lastChangedRecordSerial,omitempty"`
+}

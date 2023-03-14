@@ -349,3 +349,116 @@ func (a *OpaqueService) Query(ctx context.Context,
 	}
 	return nil, lastChangedRecordSerial, localVarHttpResponse, nil
 }
+
+/*
+Calls GET /opaque/{chain}@{serial}. It returns the current payload, the lastChangedRecordSerial
+(reserved for future uses) and the actual response.
+*/
+func (a *OpaqueService) QueryJson(ctx context.Context,
+	chain string, appId int64, payloadTypeIds []int64, howMany int64, lastToFirst bool, page int, pageSize int) (models.PageOfOpaqueRecordsModel, *http.Response, error) {
+	var (
+		localVarHttpMethod  = strings.ToUpper("Get")
+		localVarPostBody    interface{}
+		localVarFileName    string
+		localVarFileBytes   []byte
+		localVarReturnValue models.PageOfOpaqueRecordsModel
+	)
+
+	// create path and map variables
+	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "/asJson/query"
+
+	localVarHeaderParams := make(map[string]string)
+	localVarQueryParams := url.Values{}
+	localVarFormParams := url.Values{}
+
+	// to determine the Content-Type header
+	localVarHttpContentTypes := []string{}
+
+	// set Content-Type header
+	localVarHttpContentType := selectHeaderContentType(localVarHttpContentTypes)
+	if localVarHttpContentType != "" {
+		localVarHeaderParams["Content-Type"] = localVarHttpContentType
+	}
+
+	// to determine the Accept header
+	localVarHttpHeaderAccepts := []string{"application/json"}
+
+	// set Accept header
+	localVarHttpHeaderAccept := selectHeaderAccept(localVarHttpHeaderAccepts)
+	if localVarHttpHeaderAccept != "" {
+		localVarHeaderParams["Accept"] = localVarHttpHeaderAccept
+	}
+
+	localVarQueryParams.Add("appId", strconv.FormatInt(appId, 10))
+	for _, payloadTypeId := range payloadTypeIds {
+		localVarQueryParams.Add("payloadTypeIds", strconv.FormatInt(payloadTypeId, 10))
+
+	}
+	if howMany > 0 {
+		localVarQueryParams.Add("howMany", strconv.FormatInt(howMany, 10))
+	}
+	localVarQueryParams.Add("lastToFirst", strconv.FormatBool(lastToFirst))
+	if page > 0 {
+		localVarQueryParams.Add("page", strconv.FormatInt(int64(page), 10))
+	}
+	if pageSize > 0 {
+		localVarQueryParams.Add("pageSize", strconv.FormatInt((int64(pageSize)), 10))
+	}
+
+	// body params
+	r, err := a.client.prepareRequest(ctx, localVarPath, localVarHttpMethod, localVarPostBody, localVarHeaderParams, localVarQueryParams, localVarFormParams, localVarFileName, localVarFileBytes)
+	if err != nil {
+		return localVarReturnValue, nil, err
+	}
+
+	localVarHttpResponse, err := a.client.callAPI(r)
+	if err != nil || localVarHttpResponse == nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	// Read the body
+	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
+	localVarHttpResponse.Body.Close()
+	if err != nil {
+		return localVarReturnValue, localVarHttpResponse, err
+	}
+
+	if localVarHttpResponse.StatusCode < 300 {
+		// If we succeed, return the data, otherwise pass on to decode error.
+
+		err = a.client.decode(&localVarReturnValue, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+		if err == nil {
+			return localVarReturnValue, localVarHttpResponse, err
+		}
+	}
+
+	if localVarHttpResponse.StatusCode >= 300 {
+		newErr := GenericSwaggerError{
+			body:  localVarBody,
+			error: localVarHttpResponse.Status,
+		}
+		switch localVarHttpResponse.StatusCode {
+		case 201:
+			var v models.ChainCreatedModel
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		case 400, 401, 403, 404, 422:
+			var v map[string]models.Object
+			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
+			if err != nil {
+				newErr.error = err.Error()
+				return localVarReturnValue, localVarHttpResponse, newErr
+			}
+			newErr.model = v
+			return localVarReturnValue, localVarHttpResponse, newErr
+		default:
+			return localVarReturnValue, localVarHttpResponse, newErr
+		}
+	}
+	return localVarReturnValue, localVarHttpResponse, nil
+}
