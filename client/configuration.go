@@ -51,7 +51,7 @@ type Configuration struct {
 	DefaultHeader map[string]string `json:"defaultHeader,omitempty"`
 	// The client's user agent.
 	UserAgent string `json:"userAgent,omitempty"`
-	// If true, clients created by this configuration will
+	// If true, the server connections will not be validated.
 	NoServerVerification bool `json:"noServerVerification"`
 	// Path to the client certificate file (PEM).
 	CertFile string `json:"certFile,omitempty"`
@@ -63,6 +63,12 @@ type Configuration struct {
 	PFXPassword string `json:"pfxPassword,omitempty"`
 	// The client associated with this configuration.
 	HTTPClient *http.Client `json:"-"`
+	// The set of client certificates to be used. It will be initialized according
+	// to the current configuration if necessary.
+	ClientCertificates []tls.Certificate `json:"-"`
+	// The certificate pool to be used. It will be automatically initialized
+	// when required.
+	CertPool *x509.CertPool `json:"-"`
 }
 
 // Creates a new client configuration.
@@ -98,10 +104,6 @@ func (c *Configuration) SetClientCertificateEx(
 	if err != nil {
 		return err
 	}
-	tls.LoadX509KeyPair(certificateFile, keyFile)
-	if err != nil {
-		return err
-	}
 	return c.SetClientCert(cert, noServerVerification)
 }
 
@@ -131,13 +133,25 @@ Loads the client certificate required to access the API and sets the
 `http.Client`.
 */
 func (c *Configuration) SetClientCert(cert tls.Certificate, noServerVerification bool) error {
-	certPool, err := x509.SystemCertPool()
-	if err != nil {
-		return err
+	c.ClientCertificates = []tls.Certificate{cert}
+	return c.createHTTPClient(noServerVerification)
+}
+
+/*
+Loads the client certificate required to access the API and sets the
+`http.Client`.
+*/
+func (c *Configuration) createHTTPClient(noServerVerification bool) error {
+	if c.CertPool == nil {
+		pool, err := x509.SystemCertPool()
+		if err != nil {
+			return err
+		}
+		c.CertPool = pool
 	}
 	tlsConfig := &tls.Config{
-		Certificates:       []tls.Certificate{cert},
-		RootCAs:            certPool,
+		Certificates:       c.ClientCertificates,
+		RootCAs:            c.CertPool,
 		InsecureSkipVerify: noServerVerification,
 	}
 	c.HTTPClient = &http.Client{Transport: &http.Transport{TLSClientConfig: tlsConfig}}
@@ -153,11 +167,16 @@ verification based on the value of NoServerVerification.
 
 If called more than once, the previos HTTPClient will be replaced by the new one.
 
+On success, if the fields CertPool and ClientCertificates are not initialized,
+they will be initialized according to the current configuration.
+
 If fails if there is no valid client certificate to load.
 */
 func (c *Configuration) Init() error {
 
-	if c.PFXFile != "" {
+	if c.ClientCertificates != nil {
+		return c.createHTTPClient(c.NoServerVerification)
+	} else if c.PFXFile != "" {
 		return c.SetClientCertificatePKCS12Ex(c.PFXFile, c.PFXPassword, c.NoServerVerification)
 	} else if c.CertFile != "" {
 		return c.SetClientCertificateEx(c.CertFile, c.KeyFile, c.NoServerVerification)
