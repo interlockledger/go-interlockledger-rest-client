@@ -2,6 +2,7 @@ package client
 
 import (
 	"fmt"
+	"net/http"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -49,4 +50,27 @@ func TestAPIClient_ToGenericSwaggerError(t *testing.T) {
 
 	e = c.ToGenericSwaggerError(fmt.Errorf("dummy"))
 	assert.Nil(t, e)
+}
+
+func TestGetHeaderInt64(t *testing.T) {
+	h := make(http.Header)
+
+	h.Set("a", "9223372036854775807")
+	h.Set("b", "-9223372036854775808")
+	h.Set("c", "X")
+
+	v, err := GetHeaderInt64(h, "z", 123)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(123), v)
+
+	v, err = GetHeaderInt64(h, "a", 123)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(9223372036854775807), v)
+
+	v, err = GetHeaderInt64(h, "b", 123)
+	assert.Nil(t, err)
+	assert.Equal(t, int64(-9223372036854775808), v)
+
+	_, err = GetHeaderInt64(h, "c", 123)
+	assert.Error(t, err)
 }

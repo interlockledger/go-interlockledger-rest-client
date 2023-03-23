@@ -45,6 +45,7 @@ import (
 	"path/filepath"
 	"reflect"
 	"regexp"
+	"strconv"
 	"strings"
 	"time"
 )
@@ -464,4 +465,22 @@ func (e GenericSwaggerError) Body() []byte {
 // Model returns the unpacked model of the error
 func (e GenericSwaggerError) Model() interface{} {
 	return e.model
+}
+
+/*
+Helper function used to extract int64 values from a header.
+
+It returns the value of the header if it is valid. The default value if it is
+not present or the default value and an error if the header is invalid.
+*/
+func GetHeaderInt64(headers http.Header, name string, defVal int64) (int64, error) {
+	s := headers.Get(name)
+	if s == "" {
+		return defVal, nil
+	}
+	v, err := strconv.ParseInt(s, 10, 64)
+	if err != nil {
+		return defVal, err
+	}
+	return v, nil
 }

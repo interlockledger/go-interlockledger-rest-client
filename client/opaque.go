@@ -153,7 +153,7 @@ func (a *OpaqueService) Get(ctx context.Context,
 	)
 
 	// create path and map variables
-	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "/@" +
+	localVarPath := a.client.cfg.BasePath + "/opaque/" + chain + "@" +
 		strconv.FormatInt(serial, 10)
 
 	localVarHeaderParams := make(map[string]string)
@@ -190,16 +190,16 @@ func (a *OpaqueService) Get(ctx context.Context,
 	}
 
 	// Get the payloadTypeId
-	var typeId int64
-	typeIdStr := localVarHttpResponse.Header.Get("x-payload-type-id")
-	if typeIdStr != "" {
-		typeId, err = strconv.ParseInt(typeIdStr, 10, 64)
-		if err != nil {
-			return nil, 0, 0, localVarHttpResponse, err
-		}
+	typeId, err := GetHeaderInt64(localVarHttpResponse.Header, "x-payload-type-id", 0)
+	if err != nil {
+		return nil, 0, 0, localVarHttpResponse, err
 	}
-	// TODO
-	var appId int64
+
+	// app id
+	appId, err := GetHeaderInt64(localVarHttpResponse.Header, "x-app-id", 0)
+	if err != nil {
+		return nil, 0, 0, localVarHttpResponse, err
+	}
 
 	// Read the body
 	localVarBody, err := ioutil.ReadAll(localVarHttpResponse.Body)
