@@ -123,6 +123,9 @@ func (a *OpaqueService) Create(ctx context.Context,
 			}
 			newErr.model = v
 			return localVarReturnValue, localVarHttpResponse, newErr
+		case 409:
+			// Conflict
+			return localVarReturnValue, localVarHttpResponse, ErrOptimisticLockError
 		case 400, 401, 403, 404, 422:
 			var v map[string]models.Object
 			err = a.client.decode(&v, localVarBody, localVarHttpResponse.Header.Get("Content-Type"))
